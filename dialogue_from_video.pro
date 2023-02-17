@@ -13,14 +13,16 @@ SOURCES += \
     src/main.cpp \
     src/pipeline.cpp \
     src/stage.cpp \
-    src/window.cpp
+    src/widgets/window.cpp
 
 HEADERS += \
     src/application.hpp \
+    src/common/console.hpp \
+    src/common/singleton.hpp \
     src/pipe.hpp \
     src/pipeline.hpp \
     src/stage.hpp \
-    src/window.hpp
+    src/widgets/window.hpp
 
 TRANSLATIONS += \
     src/translations/dialogue_from_video_hu_HU.ts
