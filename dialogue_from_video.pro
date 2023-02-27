@@ -10,6 +10,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 SOURCES += \
     src/application.cpp \
+    src/file.cpp \
     src/main.cpp \
     src/pipeline.cpp \
     src/stage.cpp \
@@ -19,6 +20,7 @@ HEADERS += \
     src/application.hpp \
     src/common/console.hpp \
     src/common/singleton.hpp \
+    src/file.hpp \
     src/pipe.hpp \
     src/pipeline.hpp \
     src/stage.hpp \
@@ -26,6 +28,9 @@ HEADERS += \
 
 TRANSLATIONS += \
     src/translations/dialogue_from_video_hu_HU.ts
+
+INCLUDEPATH += \
+    /lib/ffmpeg
 
 CONFIG += lrelease
 CONFIG += embed_translations
