@@ -21,6 +21,7 @@ SOURCES += \
 HEADERS += \
     src/application.hpp \
     src/common/console.hpp \
+    src/common/messenger.hpp \
     src/common/singleton.hpp \
     src/fileinfo.hpp \
     src/pipe.hpp \

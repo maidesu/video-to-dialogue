@@ -5,14 +5,16 @@
 #include <QFileDialog>
 #include <QVector>
 
+#include "common/messenger.hpp"
+
 namespace DialogueFromVideo {
 
-class FileInfo : public QObject
+class FileInfo : public Messenger
 {
     Q_OBJECT
 public:
     FileInfo(QObject *parent = nullptr) :
-        QObject(parent) {}
+        Messenger(parent) {}
 
     QString openFilePath();
     void getAudioCodecs();

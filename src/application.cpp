@@ -11,8 +11,8 @@ void Application::run()
 {
     m_window.show();
 
-    m_console.print("First console entry");
-    m_console.print("Second console entry!");
+    emit m_fileinfo.print("First console entry from FileInfo", "FileInfo", MessageLevel::Debug);
+    emit m_fileinfo.print("Second console entry!", "FileInfo");
 }
 
 } // namespace DialogueFromVideo

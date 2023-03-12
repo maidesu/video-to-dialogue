@@ -17,9 +17,9 @@ public:
 
 private:
     Window m_window;
-    Console& m_console;
-    FileInfo& m_fileinfo;
+    FileInfo m_fileinfo;
     //Settings& m_settings;
+    Console& m_console;
 };
 
 } // namespace DialogueFromVideo
