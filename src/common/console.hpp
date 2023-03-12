@@ -19,17 +19,9 @@ class Console : public QObject, public Singleton<Console>
 {
     Q_OBJECT
 
+    friend class Singleton<Console>;
+
 public:
-    Console(QObject *parent = nullptr) :
-        QObject(parent),
-        m_textEdit(new QTextEdit()) // Expects QWidget which we are not
-    {
-        m_textEdit->setReadOnly(true);
-        m_textEdit->setStyleSheet("background-color: black; color: white;");
-    }
-
-    //~Console() { delete m_textEdit; }
-
     QTextEdit* textEdit() const { return m_textEdit; }
 
     const QStringList messageLevels { "Debug", "Info", "Warning", "Error" };
@@ -44,6 +36,14 @@ public slots:
     void clearHandler() const { clear(); }
 
 private:
+    Console(QObject *parent = nullptr) :
+        QObject(parent),
+        m_textEdit(new QTextEdit()) // Expects QWidget which we are not
+    {
+        m_textEdit->setReadOnly(true);
+        m_textEdit->setStyleSheet("background-color: black; color: white;");
+    }
+
     void print(const QString &msg,
                const QString &id,
                const DialogueFromVideo::MessageLevel level) const
