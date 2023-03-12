@@ -7,11 +7,11 @@
 
 namespace DialogueFromVideo {
 
-class File : public QObject
+class FileInfo : public QObject
 {
     Q_OBJECT
 public:
-    File(QObject *parent = nullptr) :
+    FileInfo(QObject *parent = nullptr) :
         QObject(parent) {}
 
     QString openFilePath();
@@ -19,7 +19,7 @@ public:
 
 private:
     QString path;
-    QVector<QString> audioCodecs;
+    QStringList audioCodecs;
 };
 
 } // namespace DialogueFromVideo

@@ -1,12 +1,13 @@
-#include "file.hpp"
+#include "fileinfo.hpp"
 
 extern "C" {
-    #include "libavcodec/avcodec.h"
+    #include <libavcodec/avcodec.h>
+    #include <libavformat/avformat.h>
 }
 
 namespace DialogueFromVideo {
 
-QString File::openFilePath()
+QString FileInfo::openFilePath()
 {
     QString openPath =
             QFileDialog::getOpenFileName(nullptr,
@@ -22,10 +23,13 @@ QString File::openFilePath()
     return path;
 }
 
-void File::getAudioCodecs()
+void FileInfo::getAudioCodecs()
 {
-    av_register_all();
-    avcodec_register_all();
+    const char    *url = "in.mp3";
+    AVFormatContext *s = NULL;
+    int ret = avformat_open_input(&s, url, NULL, NULL);
+    if (ret < 0)
+        abort();
 }
 
 } // namespace DialogueFromVideo

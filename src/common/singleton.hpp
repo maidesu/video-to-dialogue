@@ -8,7 +8,7 @@ class Singleton
 public:
     static T& instance()
     {
-        static T instance { new T{} };
+        static T instance;
         return instance;
     }
 

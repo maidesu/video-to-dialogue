@@ -1,3 +1,5 @@
+TARGET = DialogueFromVideo
+
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -10,7 +12,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 SOURCES += \
     src/application.cpp \
-    src/file.cpp \
+    src/fileinfo.cpp \
     src/main.cpp \
     src/pipeline.cpp \
     src/stage.cpp \
@@ -20,17 +22,24 @@ HEADERS += \
     src/application.hpp \
     src/common/console.hpp \
     src/common/singleton.hpp \
-    src/file.hpp \
+    src/fileinfo.hpp \
     src/pipe.hpp \
     src/pipeline.hpp \
     src/stage.hpp \
     src/widgets/window.hpp
 
+INCLUDEPATH += lib/ffmpeg-6.0-full_build-shared/include
+
+LIBS += \
+    -L"$$PWD/lib/ffmpeg-6.0-full_build-shared/lib"
+
+LIBS += \
+    -lavformat \
+    -lavcodec \
+    -lavutil
+
 TRANSLATIONS += \
     src/translations/dialogue_from_video_hu_HU.ts
-
-INCLUDEPATH += \
-    /lib/ffmpeg
 
 CONFIG += lrelease
 CONFIG += embed_translations

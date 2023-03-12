@@ -2,13 +2,14 @@
 
 #include "common/console.hpp"
 #include "widgets/window.hpp"
+#include "fileinfo.hpp"
+//#include "settings.hpp"
 
 namespace DialogueFromVideo {
 
 class Application
 {
 public:
-    //static Application* instance;
     Application();
     ~Application() = default;
 
@@ -16,7 +17,9 @@ public:
 
 private:
     Window m_window;
-    Console const& m_console;
+    Console& m_console;
+    FileInfo& m_fileinfo;
+    //Settings& m_settings;
 };
 
 } // namespace DialogueFromVideo
