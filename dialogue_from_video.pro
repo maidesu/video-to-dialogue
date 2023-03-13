@@ -14,8 +14,8 @@ SOURCES += \
     src/application.cpp \
     src/fileinfo.cpp \
     src/main.cpp \
-    src/pipeline.cpp \
-    src/stage.cpp \
+    src/pipe/pipeline.cpp \
+    src/pipe/stage.cpp \
     src/widgets/window.cpp
 
 HEADERS += \
@@ -24,9 +24,9 @@ HEADERS += \
     src/common/messenger.hpp \
     src/common/singleton.hpp \
     src/fileinfo.hpp \
-    src/pipe.hpp \
-    src/pipeline.hpp \
-    src/stage.hpp \
+    src/pipe/pipe.hpp \
+    src/pipe/pipeline.hpp \
+    src/pipe/stage.hpp \
     src/widgets/window.hpp
 
 INCLUDEPATH += lib/ffmpeg-6.0-full_build-shared/include

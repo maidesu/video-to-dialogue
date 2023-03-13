@@ -1,15 +1,15 @@
 #pragma once
 
-#include "common/singleton.hpp"
+#include "../common/singleton.hpp"
 #include "pipe.hpp"
 
 namespace DialogueFromVideo {
 
 template <class T, class U>
-class Pipeline : public IPipe<T, U>, public Singleton<Pipeline<T, U>>
+class Stage : public IPipe<T, U>, public Singleton<Stage<T, U>>
 {
 public:
-    Pipeline();
+    Stage();
 };
 
 } // namespace DialogueFromVideo
