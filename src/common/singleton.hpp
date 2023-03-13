@@ -12,6 +12,8 @@ public:
         return instance;
     }
 
+    virtual ~Singleton() {}
+
     Singleton(const Singleton& other) = delete;
     Singleton& operator=(const Singleton& other) = delete;
     Singleton(Singleton&&) = delete;

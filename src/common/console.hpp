@@ -24,7 +24,10 @@ class Console : public QObject, public Singleton<Console>
 public:
     QTextEdit* textEdit() const { return m_textEdit; }
 
-    const QStringList messageLevels { "Debug", "Info", "Warning", "Error" };
+    const QStringList messageLevels { "Debug",
+                                      "Info",
+                                      "Warning",
+                                      "Error" };
 
 public slots:
     void printHandler(const QString &msg,
@@ -49,8 +52,8 @@ private:
                const DialogueFromVideo::MessageLevel level) const
     {
         m_textEdit->append(QString("<%2, %3>:  %1").arg(msg,
-                                                       id,
-                                                       messageLevels.at((int)level)));
+                                                        id,
+                                                        messageLevels.at((int)level)));
     }
     void clear() const { m_textEdit->clear(); }
 

@@ -15,8 +15,10 @@ public:
         QObject::connect(this,
                          &Messenger::print,
                          &Console::instance(),
-                         &Console::printHandler);
+                         &Console::printHandler); // Let's not allow Messengers to clear console
     }
+
+    virtual ~Messenger() {}
 
 signals:
     void print(const QString &msg,
