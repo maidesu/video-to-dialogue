@@ -51,9 +51,15 @@ private:
                const QString &id,
                const DialogueFromVideo::MessageLevel level) const
     {
+#ifndef QT_DEBUG
+        if (level != MessageLevel::Debug) {
+#endif
         m_textEdit->append(QString("<%2, %3>:  %1").arg(msg,
                                                         id,
                                                         messageLevels.at((int)level)));
+#ifndef QT_DEBUG
+        }
+#endif
     }
     void clear() const { m_textEdit->clear(); }
 
