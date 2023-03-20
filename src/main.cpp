@@ -11,6 +11,7 @@ int main(int argc, char **argv)
     QApplication a(argc, argv);
 
     QCoreApplication::setApplicationName("Dialogue From Video");
+    QCoreApplication::setApplicationVersion("0.0.1");
 
     /*QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

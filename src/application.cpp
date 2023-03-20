@@ -1,3 +1,6 @@
+#include <QTranslator>
+#include <QCoreApplication>
+
 #include "application.hpp"
 
 namespace DialogueFromVideo {
@@ -5,14 +8,22 @@ namespace DialogueFromVideo {
 Application::Application() :
     m_console(Console::instance())
 {
+    QObject::connect(&m_window,
+                     &Window::openFileSignal,
+                     &m_fileinfo,
+                     &FileInfo::openFileHandler);
 }
 
 void Application::run()
 {
     m_window.show();
 
-    emit m_fileinfo.print("First console entry from FileInfo", "FileInfo", MessageLevel::Debug);
-    emit m_fileinfo.print("Second console entry!", "FileInfo");
+    emit m_fileinfo.print(QTranslator::tr("Running: %1 %2 via Qt %3")
+                          .arg(QCoreApplication::applicationName(),
+                               QCoreApplication::applicationVersion(),
+                               qVersion()),
+                          "Application",
+                          MessageLevel::Info);
 }
 
 } // namespace DialogueFromVideo
