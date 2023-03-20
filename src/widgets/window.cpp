@@ -7,9 +7,11 @@ namespace DialogueFromVideo {
 
 Window::Window(QWidget *parent) :
     QWidget(parent),
-    m_layout(new QVBoxLayout(this))
+    m_layout(new QVBoxLayout(this)),
+    m_infoGroupBox(new QGroupBox("File details"))
 {
     this->setMinimumSize(700, 400);
+
 
     QSplitter* splitter = new QSplitter();
     splitter->addWidget(new QWidget());

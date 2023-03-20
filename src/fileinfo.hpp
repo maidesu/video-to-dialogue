@@ -16,12 +16,17 @@ public:
     FileInfo(QObject *parent = nullptr) :
         Messenger(parent) {}
 
-    QString openFilePath();
-    void getAudioCodecs();
+    void openFile();
 
 private:
-    QString path;
-    QStringList audioCodecs;
+    void getFileInfoFfmpeg();
+
+    const char* path;
+    QStringList subStreams;
+    QStringList audioStreams;
+
+signals:
+    void fileChanged(const QStringList &subStreams, const QStringList &audioStreams);
 };
 
 } // namespace DialogueFromVideo

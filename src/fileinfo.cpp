@@ -7,7 +7,7 @@ extern "C" {
 
 namespace DialogueFromVideo {
 
-QString FileInfo::openFilePath()
+void FileInfo::openFile()
 {
     QString openPath =
             QFileDialog::getOpenFileName(nullptr,
@@ -17,19 +17,49 @@ QString FileInfo::openFilePath()
 
     if (!openPath.isEmpty())
     {
-        path = openPath;
-    }
+        path = openPath.toUtf8().constData();
+        emit print(QString("Selected file: %1").arg(path), "FileInfo", MessageLevel::Info);
 
-    return path;
+        getFileInfoFfmpeg();
+    }
+    else
+    {
+        emit print("Received an invalid file path!", "FileInfo", MessageLevel::Error);
+    }
 }
 
-void FileInfo::getAudioCodecs()
+void FileInfo::getFileInfoFfmpeg()
 {
-    const char    *url = "in.mp3";
-    AVFormatContext *s = NULL;
-    int ret = avformat_open_input(&s, url, NULL, NULL);
-    if (ret < 0)
-        abort();
+    AVFormatContext* formatContext = NULL;
+
+    int res = avformat_open_input(&formatContext, path, NULL, NULL);
+    if (res < 0)
+    {
+        avformat_close_input(&formatContext);
+        emit print("Failed to open file path!", "FileInfo", MessageLevel::Error);
+
+        return;
+    }
+    else
+    {
+        emit print("Successfully opened file!", "FileInfo", MessageLevel::Info);
+    }
+
+    AVStream* stream;
+    for (uint i = 0; i < formatContext->nb_streams; ++i) {
+        stream = formatContext->streams[i];
+
+        if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
+            subStreams.append(QString::number(i));
+        }
+        else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+            audioStreams.append(QString::number(i));
+        }
+    }
+
+    avformat_close_input(&formatContext);
+
+    emit fileChanged(subStreams, audioStreams);
 }
 
 } // namespace DialogueFromVideo
