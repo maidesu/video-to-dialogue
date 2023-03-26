@@ -9,24 +9,46 @@
 
 namespace DialogueFromVideo {
 
+struct AudioInfo
+{
+    uint index;
+    QString lang;
+    QString codec;
+    QString format;
+    uint samplerate;
+    uint bitdepth;
+    uint bitrate;
+    bool lossless;
+};
+
+struct SubInfo
+{
+    uint index;
+    QString lang;
+    QString format;
+};
+
 class FileInfo : public Messenger
 {
     Q_OBJECT
 public:
-    FileInfo(QObject *parent = nullptr) :
-        Messenger(parent) {}
+    explicit FileInfo(QObject *parent = nullptr);
 
-    void openFile();
+    virtual ~FileInfo();
+
+public slots:
+    void openFileHandler() { openFile(); }
 
 private:
-    void getFileInfoFfmpeg();
+    bool openFile();
+    bool getFileInfoFfmpeg();
 
-    const char* path;
-    QStringList subStreams;
-    QStringList audioStreams;
+    const char* m_path;
+    QList<SubInfo*> m_subStreams;
+    QList<AudioInfo*> m_audioStreams;
 
 signals:
-    void fileChanged(const QStringList &subStreams, const QStringList &audioStreams);
+    void fileChanged(const QList<SubInfo*>& subStreams, const QList<AudioInfo*>& audioStreams);
 };
 
 } // namespace DialogueFromVideo

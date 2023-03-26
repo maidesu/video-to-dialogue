@@ -21,9 +21,9 @@ public:
     virtual ~Messenger() {}
 
 signals:
-    void print(const QString &msg,
-               const QString &id,
-               const DialogueFromVideo::MessageLevel &level = MessageLevel::Info);
+    void print(const QString& msg,
+               const QString& id,
+               const DialogueFromVideo::MessageLevel& level = MessageLevel::Info);
 };
 
 }

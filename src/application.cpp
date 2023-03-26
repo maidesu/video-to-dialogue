@@ -12,6 +12,11 @@ Application::Application() :
                      &Window::openFileSignal,
                      &m_fileinfo,
                      &FileInfo::openFileHandler);
+
+    QObject::connect(&m_fileinfo,
+                     &FileInfo::fileChanged,
+                     &m_window,
+                     &Window::fileChangedHandler);
 }
 
 void Application::run()
