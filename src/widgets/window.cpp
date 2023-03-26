@@ -87,10 +87,7 @@ Window::Window(QWidget *parent) :
 void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStreams,
                            const QList<DialogueFromVideo::AudioInfo*>& audioStreams)
 {
-    emit m_windowMessenger.print("File changed, updating file info", "MainWindow", MessageLevel::Debug);
-
-    m_subComboBox->setDisabled(false);
-    m_audioComboBox->setDisabled(false);
+    emit m_windowMessenger.print("File changed, updating file info...", "MainWindow", MessageLevel::Debug);
 
     m_subComboBox->clear();
     m_audioComboBox->clear();
@@ -100,6 +97,10 @@ void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStr
 
     for (const AudioInfo* const ai : audioStreams)
         m_audioComboBox->addItem(QString::number(ai->index));
+
+
+    m_subComboBox->setDisabled(m_subComboBox->count() < 1); // Disable if combobox content is less than 1
+    m_audioComboBox->setDisabled(m_audioComboBox->count() < 1);
 }
 
 } // namespace DialogueFromVideo
