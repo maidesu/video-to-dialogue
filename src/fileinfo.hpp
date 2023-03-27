@@ -48,7 +48,8 @@ private:
     QList<AudioInfo*> m_audioStreams;
 
 signals:
-    void fileChanged(const QList<SubInfo*>& subStreams, const QList<AudioInfo*>& audioStreams);
+    void fileChanged(const QList<DialogueFromVideo::SubInfo*>& subStreams,
+                     const QList<DialogueFromVideo::AudioInfo*>& audioStreams);
 };
 
 } // namespace DialogueFromVideo

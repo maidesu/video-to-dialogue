@@ -1,9 +1,9 @@
 #pragma once
 
-#include "common/console.hpp"
 #include "widgets/window.hpp"
 #include "fileinfo.hpp"
-//#include "settings.hpp"
+#include "settings.hpp"
+#include "common/console.hpp"
 
 namespace DialogueFromVideo {
 
@@ -18,7 +18,7 @@ public:
 private:
     Window m_window;
     FileInfo m_fileinfo;
-    //Settings& m_settings;
+    Settings m_settings;
     Console& m_console;
 };
 

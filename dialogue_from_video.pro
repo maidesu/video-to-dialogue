@@ -16,6 +16,7 @@ SOURCES += \
     src/main.cpp \
     src/pipe/pipeline.cpp \
     src/pipe/stage.cpp \
+    src/settings.cpp \
     src/widgets/window.cpp
 
 HEADERS += \
@@ -27,6 +28,7 @@ HEADERS += \
     src/pipe/pipe.hpp \
     src/pipe/pipeline.hpp \
     src/pipe/stage.hpp \
+    src/settings.hpp \
     src/widgets/window.hpp
 
 INCLUDEPATH += lib/ffmpeg-6.0-full_build-shared/include
