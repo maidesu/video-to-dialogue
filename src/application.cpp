@@ -1,5 +1,5 @@
 #include <QTranslator>
-#include <QCoreApplication>
+#include <QGuiApplication>
 
 #include "application.hpp"
 
@@ -23,12 +23,19 @@ void Application::run()
 {
     m_window.show();
 
-    emit m_fileinfo.print(QTranslator::tr("Running: %1 %2 via Qt %3")
-                          .arg(QCoreApplication::applicationName(),
-                               QCoreApplication::applicationVersion(),
-                               qVersion()),
-                          "Application",
-                          MessageLevel::Info);
+    emit m_applicationMessenger.print(QTranslator::tr("Running %1 - %2 via Qt %3")
+                                        .arg(QGuiApplication::applicationDisplayName(),
+                                             QGuiApplication::applicationName(),
+                                             QGuiApplication::applicationVersion(),
+                                             qVersion()),
+                                      "Application",
+                                      MessageLevel::Info);
+
+    m_settings.loadSettings();
+
+#ifdef QT_DEBUG
+    m_settings.settingsChangedHandler(1000, 1000, 1500);
+#endif
 }
 
 } // namespace DialogueFromVideo

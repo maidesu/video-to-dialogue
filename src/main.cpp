@@ -10,8 +10,9 @@ int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
 
-    QCoreApplication::setApplicationName("V2D - Video to dialogue");
-    QCoreApplication::setApplicationVersion("0.0.1");
+    QGuiApplication::setApplicationName("Video To Dialogue");
+    QGuiApplication::setApplicationDisplayName("V2D");
+    QGuiApplication::setApplicationVersion("0.0.1");
 
     /*QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

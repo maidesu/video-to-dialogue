@@ -16,6 +16,7 @@ public:
     void run();
 
 private:
+    Messenger m_applicationMessenger;
     Window m_window;
     FileInfo m_fileinfo;
     Settings m_settings;
