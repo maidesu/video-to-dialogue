@@ -39,9 +39,9 @@ public slots:
     void clearHandler() const { clear(); }
 
 private:
-    Console(QObject *parent = nullptr) :
-        QObject(parent),
-        m_textEdit(new QTextEdit()) // Expects QWidget which we are not
+    Console(QObject *parent = nullptr)
+        : QObject(parent)
+        , m_textEdit(new QTextEdit()) // Expects QWidget which we are not
     {
         m_textEdit->setReadOnly(true);
         m_textEdit->setStyleSheet("background-color: black; color: white;");

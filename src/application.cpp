@@ -1,12 +1,12 @@
+#include "application.hpp"
+
 #include <QTranslator>
 #include <QGuiApplication>
 
-#include "application.hpp"
-
 namespace DialogueFromVideo {
 
-Application::Application() :
-    m_console(Console::instance())
+Application::Application()
+    : m_console(Console::instance())
 {
     QObject::connect(&m_window,
                      &Window::openFileSignal,
@@ -24,10 +24,10 @@ void Application::run()
     m_window.show();
 
     emit m_applicationMessenger.print(QTranslator::tr("Running %1 - %2 via Qt %3")
-                                        .arg(QGuiApplication::applicationDisplayName(),
-                                             QGuiApplication::applicationName(),
-                                             QGuiApplication::applicationVersion(),
-                                             qVersion()),
+                                            .arg(QGuiApplication::applicationDisplayName(),
+                                                 QGuiApplication::applicationName(),
+                                                 QGuiApplication::applicationVersion(),
+                                                 qVersion()),
                                       "Application",
                                       MessageLevel::Info);
 

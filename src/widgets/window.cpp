@@ -1,26 +1,26 @@
-#include <QSplitter>
-
 #include "window.hpp"
 #include "../common/console.hpp"
 
+#include <QSplitter>
+
 namespace DialogueFromVideo {
 
-Window::Window(QWidget *parent) :
-    QWidget(parent),
-    m_layout(new QVBoxLayout(this)),
-    m_infoGroupBox(new QGroupBox(tr("File details"))),
-    m_settingsGroupBox(new QGroupBox(tr("Subtitle timing"))),
-    m_subGroupBox(new QGroupBox(tr("Subtitle"))),
-    m_audioGroupBox(new QGroupBox(tr("Audio"))),
-    m_subComboBox(new QComboBox()),
-    m_audioComboBox(new QComboBox()),
-    m_subLayerSpinBox(new QSpinBox()),
-    m_subPaddingLeftSpinBox(new QSpinBox()),
-    m_subPaddingRightSpinBox(new QSpinBox()),
-    m_subMergeSpinBox(new QSpinBox()),
-    m_openFileButton(new QPushButton(tr("Open file"))),
-    m_extractDialogueButton(new QPushButton(tr("Extract dialogue"))),
-    m_applySettingsButton(new QPushButton(tr("Apply")))
+Window::Window(QWidget *parent)
+    : QWidget(parent)
+    , m_layout(new QVBoxLayout(this))
+    , m_infoGroupBox(new QGroupBox(tr("File details")))
+    , m_settingsGroupBox(new QGroupBox(tr("Subtitle timing")))
+    , m_subGroupBox(new QGroupBox(tr("Subtitle")))
+    , m_audioGroupBox(new QGroupBox(tr("Audio")))
+    , m_subComboBox(new QComboBox())
+    , m_audioComboBox(new QComboBox())
+    , m_subLayerSpinBox(new QSpinBox())
+    , m_subPaddingLeftSpinBox(new QSpinBox())
+    , m_subPaddingRightSpinBox(new QSpinBox())
+    , m_subMergeSpinBox(new QSpinBox())
+    , m_openFileButton(new QPushButton(tr("Open file")))
+    , m_extractDialogueButton(new QPushButton(tr("Extract dialogue")))
+    , m_applySettingsButton(new QPushButton(tr("Apply")))
 {
     this->setMinimumSize(700, 400);
 
@@ -85,7 +85,7 @@ Window::Window(QWidget *parent) :
 }
 
 void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStreams,
-                           const QList<DialogueFromVideo::AudioInfo*>& audioStreams)
+                                const QList<DialogueFromVideo::AudioInfo*>& audioStreams)
 {
     emit m_windowMessenger.print("File changed, updating file info...", "MainWindow", MessageLevel::Debug);
 

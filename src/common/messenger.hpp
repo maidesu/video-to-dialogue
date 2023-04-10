@@ -9,8 +9,8 @@ class Messenger : public QObject
 {
     Q_OBJECT
 public:
-    explicit Messenger(QObject *parent = nullptr) :
-        QObject(parent)
+    explicit Messenger(QObject *parent = nullptr)
+        : QObject(parent)
     {
         QObject::connect(this,
                          &Messenger::print,
