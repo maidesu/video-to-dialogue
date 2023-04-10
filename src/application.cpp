@@ -33,7 +33,7 @@ void Application::run()
 {
     m_window.show();
 
-    emit m_applicationMessenger.print(QTranslator::tr("Running %1 - %2 via Qt %3")
+    emit m_applicationMessenger.print(QTranslator::tr("Running %1 - %2 %3 via Qt %4")
                                             .arg(QGuiApplication::applicationDisplayName(),
                                                  QGuiApplication::applicationName(),
                                                  QGuiApplication::applicationVersion(),
