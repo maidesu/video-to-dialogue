@@ -32,10 +32,10 @@ void Settings::loadInitialSettings()
     m_usMerge           = m_settings->value("Merge", 2000000).toLongLong(); // 2 seconds
 
     emit print(tr("Loaded settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
-                    .arg(QString::number(m_usPaddingLeft/1000),
-                         QString::number(m_usPaddingRight/1000),
-                         QString::number(m_usOffset/1000),
-                         QString::number(m_usMerge/1000)),
+                    .arg(QString::number(m_usPaddingLeft / 1000),
+                         QString::number(m_usPaddingRight / 1000),
+                         QString::number(m_usOffset / 1000),
+                         QString::number(m_usMerge / 1000)),
                "Settings",
                MessageLevel::Info);
 
@@ -63,10 +63,10 @@ void Settings::settingsChangedHandler(int64_t usPaddingLeft,
     //m_settings->sync(); Normally unneeded - refer to docs
 
     emit print(tr("Updated settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
-                    .arg(QString::number(m_usPaddingLeft/1000),
-                         QString::number(m_usPaddingRight/1000),
-                         QString::number(m_usOffset/1000),
-                         QString::number(m_usMerge/1000)),
+                    .arg(QString::number(m_usPaddingLeft / 1000),
+                         QString::number(m_usPaddingRight / 1000),
+                         QString::number(m_usOffset / 1000),
+                         QString::number(m_usMerge / 1000)),
                "Settings",
                MessageLevel::Info);
 }
