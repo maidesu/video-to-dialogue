@@ -1,0 +1,42 @@
+* text=auto eol=lf
+
+###### Git
+.gitattributes text
+.gitignore text
+.gitconfig text
+.gitmodules text
+
+##### Windows
+*.bat text eol=crlf
+*.exe binary
+*.dll binary
+
+##### Linux
+*.sh text eol=lf
+*.so binary
+
+##### Language
+*.ts  text
+*.tsx text
+*.c   text
+*.cc  text
+*.cxx text
+*.cpp text
+*.c++ text
+*.h   text
+*.hh  text
+*.h++ text
+*.hpp text
+*.slo binary
+*.lo  binary
+*.o   binary
+*.obj binary
+*.gch binary
+*.pch binary
+*.so  binary
+*.dylib binary
+*.lai binary
+*.la  binary
+*.a   binary
+*.lib binary
+*.out binary
