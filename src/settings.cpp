@@ -26,10 +26,12 @@ void Settings::loadInitialSettings()
                "Settings",
                MessageLevel::Debug);
 
+    m_settings->beginGroup("Subtitle");
     m_usPaddingLeft     = m_settings->value("PaddingLeft", 0).toLongLong();
     m_usPaddingRight    = m_settings->value("PaddingRight", 0).toLongLong();
     m_usOffset          = m_settings->value("Offset", 0).toLongLong();
     m_usMerge           = m_settings->value("Merge", 2000000).toLongLong(); // 2 seconds
+    m_settings->endGroup();
 
     emit print(tr("Loaded settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
                     .arg(QString::number(m_usPaddingLeft / 1000),
@@ -55,10 +57,12 @@ void Settings::settingsChangedHandler(int64_t usPaddingLeft,
     m_usOffset          = usOffset;
     m_usMerge           = usMerge;
 
+    m_settings->beginGroup("Subtitle");
     m_settings->setValue("PaddingLeft", m_usPaddingLeft);
     m_settings->setValue("PaddingRight", m_usPaddingRight);
     m_settings->setValue("Offset", m_usOffset);
     m_settings->setValue("Merge", m_usMerge);
+    m_settings->endGroup();
 
     //m_settings->sync(); Normally unneeded - refer to docs
 
