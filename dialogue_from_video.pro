@@ -47,6 +47,8 @@ TRANSLATIONS += \
 CONFIG += lrelease
 CONFIG += embed_translations
 
+QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wstrict-aliasing -pedantic -Werror
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
