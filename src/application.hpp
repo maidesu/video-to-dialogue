@@ -1,8 +1,8 @@
 #pragma once
 
-#include "widgets/window.hpp"
 #include "fileinfo.hpp"
 #include "settings.hpp"
+#include "widgets/window.hpp"
 #include "common/console.hpp"
 
 namespace DialogueFromVideo {

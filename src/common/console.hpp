@@ -1,9 +1,9 @@
 #pragma once
 
+#include "singleton.hpp"
+
 #include <QString>
 #include <QTextEdit>
-
-#include "singleton.hpp"
 
 namespace DialogueFromVideo {
 

@@ -1,8 +1,8 @@
 #include "application.hpp"
 
-#include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include <QApplication>
 
 using namespace DialogueFromVideo;
 

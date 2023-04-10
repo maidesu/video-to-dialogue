@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QWidget>
+#include "../fileinfo.hpp"
+
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QComboBox>
 #include <QSpinBox>
 #include <QPushButton>
-
-#include "../fileinfo.hpp"
+#include <QWidget>
 
 namespace DialogueFromVideo {
 
@@ -20,6 +20,13 @@ public:
 public slots:
     void fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStreams,
                             const QList<DialogueFromVideo::AudioInfo*>& audioStreams);
+
+    void applySettingsButtonHandler();
+
+    void initialSettingsHandler(int64_t usPaddingLeft,
+                                int64_t usPaddingRight,
+                                int64_t usOffset,
+                                int64_t usMerge);
 
 private:
     Messenger m_windowMessenger;
@@ -37,6 +44,7 @@ private:
     QSpinBox* m_subLayerSpinBox;
     QSpinBox* m_subPaddingLeftSpinBox;
     QSpinBox* m_subPaddingRightSpinBox;
+    QSpinBox* m_subOffsetSpinBox;
     QSpinBox* m_subMergeSpinBox;
 
     QPushButton* m_openFileButton;
@@ -45,6 +53,11 @@ private:
 
 signals:
     void openFileSignal();
+
+    void applySettingsSignal(int64_t usPaddingLeft,
+                             int64_t usPaddingRight,
+                             int64_t usOffset,
+                             int64_t usMerge);
 };
 
 } // namespace DialogueFromVideo

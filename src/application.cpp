@@ -17,6 +17,16 @@ Application::Application()
                      &FileInfo::fileChanged,
                      &m_window,
                      &Window::fileChangedHandler);
+
+    QObject::connect(&m_settings,
+                     &Settings::initialSettingsSignal,
+                     &m_window,
+                     &Window::initialSettingsHandler);
+
+    QObject::connect(&m_window,
+                     &Window::applySettingsSignal,
+                     &m_settings,
+                     &Settings::settingsChangedHandler);
 }
 
 void Application::run()
@@ -31,11 +41,7 @@ void Application::run()
                                       "Application",
                                       MessageLevel::Info);
 
-    m_settings.loadSettings();
-
-#ifdef QT_DEBUG
-    m_settings.settingsChangedHandler(1000, 1000, 1500);
-#endif
+    m_settings.loadInitialSettings();
 }
 
 } // namespace DialogueFromVideo

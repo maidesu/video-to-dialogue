@@ -1,7 +1,8 @@
 #pragma once
 
-#include <QObject>
 #include "console.hpp"
+
+#include <QObject>
 
 namespace DialogueFromVideo {
 

@@ -1,6 +1,8 @@
 #include "window.hpp"
+
 #include "../common/console.hpp"
 
+#include <QLabel>
 #include <QSplitter>
 
 namespace DialogueFromVideo {
@@ -17,6 +19,7 @@ Window::Window(QWidget *parent)
     , m_subLayerSpinBox(new QSpinBox())
     , m_subPaddingLeftSpinBox(new QSpinBox())
     , m_subPaddingRightSpinBox(new QSpinBox())
+    , m_subOffsetSpinBox(new QSpinBox())
     , m_subMergeSpinBox(new QSpinBox())
     , m_openFileButton(new QPushButton(tr("Open file")))
     , m_extractDialogueButton(new QPushButton(tr("Extract dialogue")))
@@ -36,23 +39,60 @@ Window::Window(QWidget *parent)
     // Sub timing group box contains
     QHBoxLayout* settingsLayout = new QHBoxLayout();
     m_settingsGroupBox->setLayout(settingsLayout);
-    settingsLayout->addWidget(m_subPaddingLeftSpinBox);
-    settingsLayout->addWidget(m_subPaddingRightSpinBox);
-    settingsLayout->addWidget(m_subMergeSpinBox);
+
+    QWidget* settingsRowsWidget = new QWidget();
+    QVBoxLayout* settingsRowsLayout = new QVBoxLayout();
+    settingsRowsWidget->setLayout(settingsRowsLayout);
+    settingsLayout->addWidget(settingsRowsWidget);
+
+    QWidget* settingsPaddingWidget = new QWidget();
+    QWidget* settingsMiscWidget = new QWidget();
+    QHBoxLayout* settingsPaddingLayout = new QHBoxLayout();
+    QHBoxLayout* settingsMiscLayout = new QHBoxLayout();
+    settingsPaddingWidget->setLayout(settingsPaddingLayout);
+    settingsMiscWidget->setLayout(settingsMiscLayout);
+    settingsRowsLayout->addWidget(settingsPaddingWidget);
+    settingsRowsLayout->addWidget(settingsMiscWidget);
+
+    settingsPaddingLayout->addWidget(new QLabel("Padding left (ms)"));
+    m_subPaddingLeftSpinBox->setSingleStep(100);
+    m_subPaddingLeftSpinBox->setMinimum(0);
+    m_subPaddingLeftSpinBox->setMaximum(INT_MAX);
+    settingsPaddingLayout->addWidget(m_subPaddingLeftSpinBox);
+
+    settingsPaddingLayout->addWidget(new QLabel("Padding right (ms)"));
+    m_subPaddingRightSpinBox->setSingleStep(100);
+    m_subPaddingRightSpinBox->setMinimum(0);
+    m_subPaddingRightSpinBox->setMaximum(INT_MAX);
+    settingsPaddingLayout->addWidget(m_subPaddingRightSpinBox);
+
+    settingsMiscLayout->addWidget(new QLabel("Offset (ms)"));
+    m_subOffsetSpinBox->setSingleStep(100);
+    m_subOffsetSpinBox->setMinimum(INT_MIN);
+    m_subOffsetSpinBox->setMaximum(INT_MAX);
+    settingsMiscLayout->addWidget(m_subOffsetSpinBox);
+
+    settingsMiscLayout->addWidget(new QLabel("Minimum gap after merge (ms)"));
+    m_subMergeSpinBox->setSingleStep(100);
+    m_subMergeSpinBox->setMinimum(0);
+    m_subMergeSpinBox->setMaximum(INT_MAX);
+    settingsMiscLayout->addWidget(m_subMergeSpinBox);
+
     settingsLayout->addWidget(m_applySettingsButton);
 
     // Sub group box contains
     QHBoxLayout* subLayout = new QHBoxLayout();
     m_subGroupBox->setLayout(subLayout);
+    subLayout->addWidget(new QLabel("Subtitle stream (id)"));
     subLayout->addWidget(m_subComboBox);
+    subLayout->addWidget(new QLabel("Subtitle layer (id)"));
     subLayout->addWidget(m_subLayerSpinBox);
-    //subLayout->addWidget(); TODO: Add properties
 
     // Audio group box contains
     QHBoxLayout* audioLayout = new QHBoxLayout();
     m_audioGroupBox->setLayout(audioLayout);
+    audioLayout->addWidget(new QLabel("Audio stream (id)"));
     audioLayout->addWidget(m_audioComboBox);
-    //audioLayout->addWidget(); TODO: Add properties
 
     // Action buttons
     QWidget* buttonWidget = new QWidget();
@@ -60,7 +100,6 @@ Window::Window(QWidget *parent)
     buttonWidget->setLayout(buttonLayout);
     buttonLayout->addWidget(m_openFileButton);
     buttonLayout->addWidget(m_extractDialogueButton);
-    //buttonLayout->addWidget(m_applySettingsButton);
 
     infoLayout->addWidget(buttonWidget);
 
@@ -82,6 +121,8 @@ Window::Window(QWidget *parent)
 
     // Connect
     connect(m_openFileButton, &QPushButton::pressed, this, &Window::openFileSignal);
+
+    connect(m_applySettingsButton, &QPushButton::pressed, this, &Window::applySettingsButtonHandler);
 }
 
 void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStreams,
@@ -101,6 +142,25 @@ void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStr
 
     m_subComboBox->setDisabled(m_subComboBox->count() < 1); // Disable if combobox content is less than 1
     m_audioComboBox->setDisabled(m_audioComboBox->count() < 1);
+}
+
+void Window::applySettingsButtonHandler()
+{
+    emit applySettingsSignal(static_cast<int64_t>(m_subPaddingLeftSpinBox->value() * 1000),
+                             static_cast<int64_t>(m_subPaddingRightSpinBox->value() * 1000),
+                             static_cast<int64_t>(m_subOffsetSpinBox->value() * 1000),
+                             static_cast<int64_t>(m_subMergeSpinBox->value() * 1000));
+}
+
+void Window::initialSettingsHandler(int64_t usPaddingLeft,
+                                    int64_t usPaddingRight,
+                                    int64_t usOffset,
+                                    int64_t usMerge)
+{
+    m_subPaddingLeftSpinBox->setValue(static_cast<int>(usPaddingLeft / 1000));
+    m_subPaddingRightSpinBox->setValue(static_cast<int>(usPaddingRight / 1000));
+    m_subOffsetSpinBox->setValue(static_cast<int>(usOffset / 1000));
+    m_subMergeSpinBox->setValue(static_cast<int>(usMerge / 1000));
 }
 
 } // namespace DialogueFromVideo

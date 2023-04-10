@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QObject>
-#include <QString>
-#include <QFileDialog>
-#include <QVector>
-
 #include "common/messenger.hpp"
+
+#include <QString>
+#include <QVector>
+#include <QFileDialog>
+#include <QObject>
 
 namespace DialogueFromVideo {
 
