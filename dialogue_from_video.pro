@@ -20,16 +20,16 @@ SOURCES += \
     src/widgets/window.cpp
 
 HEADERS += \
-    src/application.hpp \
-    src/common/console.hpp \
-    src/common/messenger.hpp \
-    src/common/singleton.hpp \
-    src/fileinfo.hpp \
-    src/pipe/pipe.hpp \
-    src/pipe/pipeline.hpp \
-    src/pipe/stage.hpp \
-    src/settings.hpp \
-    src/widgets/window.hpp
+    include/application.hpp \
+    include/common/console.hpp \
+    include/common/messenger.hpp \
+    include/common/singleton.hpp \
+    include/fileinfo.hpp \
+    include/pipe/pipe.hpp \
+    include/pipe/pipeline.hpp \
+    include/pipe/stage.hpp \
+    include/settings.hpp \
+    include/widgets/window.hpp
 
 INCLUDEPATH += lib/ffmpeg-6.0-full_build-shared/include
 
@@ -42,7 +42,7 @@ LIBS += \
     -lavutil
 
 TRANSLATIONS += \
-    src/translations/dialogue_from_video_hu_HU.ts
+    resource/translations/dialogue_from_video_hu_HU.ts
 
 CONFIG += lrelease
 CONFIG += embed_translations
