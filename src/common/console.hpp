@@ -24,10 +24,15 @@ class Console : public QObject, public Singleton<Console>
 public:
     QTextEdit* textEdit() const { return m_textEdit; }
 
-    const QStringList messageLevels { "Debug",
-                                      "Info",
-                                      "Warning",
-                                      "Error" };
+    const QStringList messageLevelLabels { "Debug",
+                                           "Info",
+                                           "Warning",
+                                           "Error" };
+
+    const QList<QColor> messageLevelColors { QColor(0xCCCCCC),
+                                             QColor(0x45C6D6),
+                                             QColor(0xFFC000),
+                                             QColor(0xFF8080) };
 
 public slots:
     void printHandler(const QString &msg,
@@ -44,7 +49,7 @@ private:
         , m_textEdit(new QTextEdit()) // Expects QWidget which we are not
     {
         m_textEdit->setReadOnly(true);
-        m_textEdit->setStyleSheet("background-color: black; color: white;");
+        m_textEdit->setStyleSheet("background-color: black;");
     }
 
     void print(const QString &msg,
@@ -54,9 +59,17 @@ private:
 #ifndef QT_DEBUG
         if (level != MessageLevel::Debug) {
 #endif
-        m_textEdit->append(QString("<%2, %3>:  %1").arg(msg,
-                                                        id,
-                                                        messageLevels.at((int)level)));
+            m_textEdit->setTextColor(Qt::white);
+            m_textEdit->insertPlainText("<");
+
+            m_textEdit->setTextColor(messageLevelColors.at((int)level));
+            m_textEdit->insertPlainText(messageLevelLabels.at((int)level));
+
+            m_textEdit->setTextColor(QColor(0xDBA15A));
+            m_textEdit->insertPlainText(QString(" %1").arg(id));
+
+            m_textEdit->setTextColor(Qt::white);
+            m_textEdit->insertPlainText(QString(">: %1\n").arg(msg));
 #ifndef QT_DEBUG
         }
 #endif
