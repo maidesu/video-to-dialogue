@@ -1,4 +1,4 @@
-#include "settings.hpp"
+#include "../include/settings.hpp"
 
 #include <QGuiApplication>
 

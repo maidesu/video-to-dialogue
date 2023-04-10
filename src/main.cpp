@@ -1,4 +1,4 @@
-#include "application.hpp"
+#include "../include/application.hpp"
 
 #include <QLocale>
 #include <QTranslator>

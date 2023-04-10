@@ -1,4 +1,4 @@
-#include "stage.hpp"
+#include "../../include/pipe/stage.hpp"
 
 namespace DialogueFromVideo {
 
