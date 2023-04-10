@@ -94,6 +94,17 @@ bool FileInfo::getFileInfoFfmpeg()
     avformat_close_input(&formatContext);
 
     emit print(tr("Found a total of %1 subtitle and %2 audio streams").arg(m_subStreams.count()).arg(m_audioStreams.count()), "FileInfo", MessageLevel::Info);
+
+    if (m_subStreams.count() < 1)
+    {
+        emit print(tr("This file contains no subtitles!"), "FileInfo", MessageLevel::Warning);
+    }
+
+    if (m_audioStreams.count() < 1)
+    {
+        emit print(tr("This file contains no audio!"), "FileInfo", MessageLevel::Warning);
+    }
+
     emit fileChanged(m_subStreams, m_audioStreams);
 
     return true;

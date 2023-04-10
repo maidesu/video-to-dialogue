@@ -3,6 +3,7 @@
 #include "singleton.hpp"
 
 #include <QString>
+#include <QScrollBar>
 #include <QTextEdit>
 
 namespace DialogueFromVideo {
@@ -59,6 +60,8 @@ private:
 #ifndef QT_DEBUG
         if (level != MessageLevel::Debug) {
 #endif
+            m_textEdit->moveCursor(QTextCursor::End);
+
             m_textEdit->setTextColor(Qt::white);
             m_textEdit->insertPlainText("<");
 
@@ -70,6 +73,8 @@ private:
 
             m_textEdit->setTextColor(Qt::white);
             m_textEdit->insertPlainText(QString(">: %1\n").arg(msg));
+
+            m_textEdit->ensureCursorVisible();
 #ifndef QT_DEBUG
         }
 #endif
