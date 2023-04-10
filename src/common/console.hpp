@@ -62,8 +62,8 @@ private:
             m_textEdit->setTextColor(Qt::white);
             m_textEdit->insertPlainText("<");
 
-            m_textEdit->setTextColor(messageLevelColors.at((int)level));
-            m_textEdit->insertPlainText(messageLevelLabels.at((int)level));
+            m_textEdit->setTextColor(messageLevelColors.at(static_cast<int>(level)));
+            m_textEdit->insertPlainText(messageLevelLabels.at(static_cast<int>(level)));
 
             m_textEdit->setTextColor(QColor(0xDBA15A));
             m_textEdit->insertPlainText(QString(" %1").arg(id));
