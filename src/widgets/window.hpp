@@ -2,6 +2,7 @@
 
 #include "../fileinfo.hpp"
 
+#include <QProgressBar>
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QComboBox>
@@ -34,7 +35,7 @@ private:
     QVBoxLayout* m_layout;
 
     QGroupBox* m_infoGroupBox;
-    QGroupBox* m_settingsGroupBox;
+    QGroupBox* m_subSettingsGroupBox;
     QGroupBox* m_subGroupBox;
     QGroupBox* m_audioGroupBox;
 
@@ -50,6 +51,8 @@ private:
     QPushButton* m_openFileButton;
     QPushButton* m_extractDialogueButton;
     QPushButton* m_applySettingsButton;
+
+    QProgressBar* m_progressBar;
 
 signals:
     void openFileSignal();

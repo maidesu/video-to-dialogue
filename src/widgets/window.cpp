@@ -11,7 +11,7 @@ Window::Window(QWidget *parent)
     : QWidget(parent)
     , m_layout(new QVBoxLayout(this))
     , m_infoGroupBox(new QGroupBox(tr("File details")))
-    , m_settingsGroupBox(new QGroupBox(tr("Subtitle timing")))
+    , m_subSettingsGroupBox(new QGroupBox(tr("Subtitle timing")))
     , m_subGroupBox(new QGroupBox(tr("Subtitle")))
     , m_audioGroupBox(new QGroupBox(tr("Audio")))
     , m_subComboBox(new QComboBox())
@@ -24,8 +24,9 @@ Window::Window(QWidget *parent)
     , m_openFileButton(new QPushButton(tr("Open file")))
     , m_extractDialogueButton(new QPushButton(tr("Extract dialogue")))
     , m_applySettingsButton(new QPushButton(tr("Apply")))
+    , m_progressBar(new QProgressBar())
 {
-    this->setMinimumSize(700, 400);
+    this->setMinimumSize(700, 500);
 
     m_subComboBox->setDisabled(true);
     m_audioComboBox->setDisabled(true);
@@ -33,17 +34,17 @@ Window::Window(QWidget *parent)
     // Info group box contains
     QHBoxLayout* infoLayout = new QHBoxLayout();
     m_infoGroupBox->setLayout(infoLayout);
-    infoLayout->addWidget(m_subGroupBox);
-    infoLayout->addWidget(m_audioGroupBox);
+    infoLayout->addWidget(m_subGroupBox, 3);   // 3/6 space of infoLayout
+    infoLayout->addWidget(m_audioGroupBox, 2); // 2/6 space of infoLayout
 
     // Sub timing group box contains
-    QHBoxLayout* settingsLayout = new QHBoxLayout();
-    m_settingsGroupBox->setLayout(settingsLayout);
+    QHBoxLayout* subSettingsLayout = new QHBoxLayout();
+    m_subSettingsGroupBox->setLayout(subSettingsLayout);
 
     QWidget* settingsRowsWidget = new QWidget();
     QVBoxLayout* settingsRowsLayout = new QVBoxLayout();
     settingsRowsWidget->setLayout(settingsRowsLayout);
-    settingsLayout->addWidget(settingsRowsWidget);
+    subSettingsLayout->addWidget(settingsRowsWidget, 5); // 5/6 space of subSettingsLayout
 
     QWidget* settingsPaddingWidget = new QWidget();
     QWidget* settingsMiscWidget = new QWidget();
@@ -58,41 +59,51 @@ Window::Window(QWidget *parent)
     m_subPaddingLeftSpinBox->setSingleStep(100);
     m_subPaddingLeftSpinBox->setMinimum(0);
     m_subPaddingLeftSpinBox->setMaximum(INT_MAX);
+    m_subPaddingLeftSpinBox->setMinimumWidth(60);
     settingsPaddingLayout->addWidget(m_subPaddingLeftSpinBox);
 
     settingsPaddingLayout->addWidget(new QLabel("Padding right (ms)"));
     m_subPaddingRightSpinBox->setSingleStep(100);
     m_subPaddingRightSpinBox->setMinimum(0);
     m_subPaddingRightSpinBox->setMaximum(INT_MAX);
+    m_subPaddingRightSpinBox->setMinimumWidth(60);
     settingsPaddingLayout->addWidget(m_subPaddingRightSpinBox);
 
     settingsMiscLayout->addWidget(new QLabel("Offset (ms)"));
     m_subOffsetSpinBox->setSingleStep(100);
     m_subOffsetSpinBox->setMinimum(INT_MIN);
     m_subOffsetSpinBox->setMaximum(INT_MAX);
+    m_subOffsetSpinBox->setMinimumWidth(60);
     settingsMiscLayout->addWidget(m_subOffsetSpinBox);
 
-    settingsMiscLayout->addWidget(new QLabel("Minimum gap after merge (ms)"));
+    settingsMiscLayout->addWidget(new QLabel("Minimum gap (ms)"));
     m_subMergeSpinBox->setSingleStep(100);
     m_subMergeSpinBox->setMinimum(0);
     m_subMergeSpinBox->setMaximum(INT_MAX);
+    m_subMergeSpinBox->setMinimumWidth(60);
     settingsMiscLayout->addWidget(m_subMergeSpinBox);
 
-    settingsLayout->addWidget(m_applySettingsButton);
+    subSettingsLayout->addWidget(m_applySettingsButton, 1); // 1/6 space of subSettingsLayout
 
     // Sub group box contains
     QHBoxLayout* subLayout = new QHBoxLayout();
     m_subGroupBox->setLayout(subLayout);
-    subLayout->addWidget(new QLabel("Subtitle stream (id)"));
-    subLayout->addWidget(m_subComboBox);
-    subLayout->addWidget(new QLabel("Subtitle layer (id)"));
-    subLayout->addWidget(m_subLayerSpinBox);
+
+    subLayout->addWidget(new QLabel("Subtitle stream (id)"), 3); // 3/8 space of subLayout
+    m_subComboBox->setMinimumWidth(40);
+    subLayout->addWidget(m_subComboBox, 1); // 1/8 space of subLayout
+
+    subLayout->addWidget(new QLabel("Subtitle layer (id)"), 3); // 3/8 space of subLayout
+    m_subLayerSpinBox->setMinimumWidth(40);
+    subLayout->addWidget(m_subLayerSpinBox, 1); // 1/8 space of subLayout
 
     // Audio group box contains
     QHBoxLayout* audioLayout = new QHBoxLayout();
     m_audioGroupBox->setLayout(audioLayout);
-    audioLayout->addWidget(new QLabel("Audio stream (id)"));
-    audioLayout->addWidget(m_audioComboBox);
+
+    audioLayout->addWidget(new QLabel("Audio stream (id)"), 3);
+    m_audioComboBox->setMinimumWidth(40);
+    audioLayout->addWidget(m_audioComboBox, 1);
 
     // Action buttons
     QWidget* buttonWidget = new QWidget();
@@ -101,14 +112,17 @@ Window::Window(QWidget *parent)
     buttonLayout->addWidget(m_openFileButton);
     buttonLayout->addWidget(m_extractDialogueButton);
 
-    infoLayout->addWidget(buttonWidget);
+    infoLayout->addWidget(buttonWidget, 1); // 1/6 space of infoLayout
 
     // Top content container
     QWidget* topContainer = new QWidget();
     QVBoxLayout* topLayout = new QVBoxLayout();
     topContainer->setLayout(topLayout);
     topLayout->addWidget(m_infoGroupBox);
-    topLayout->addWidget(m_settingsGroupBox);
+    topLayout->addWidget(m_subSettingsGroupBox);
+    topLayout->addWidget(m_progressBar);
+
+    m_progressBar->setAlignment(Qt::Alignment::enum_type::AlignHCenter);
 
     // Dynamic splitter
     QSplitter* splitter = new QSplitter();
