@@ -20,7 +20,7 @@ Settings::Settings(QObject *parent)
 
 void Settings::loadInitialSettings()
 {
-    emit print(tr("Settings format: %1, Settings path: %2")
+    emit print(QString("Settings format: %1, Settings path: %2")
                     .arg(QString::number(m_settings->format()),
                          m_settings->fileName()),
                "Settings",

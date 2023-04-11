@@ -11,10 +11,10 @@ namespace DialogueFromVideo {
 
 struct AudioInfo
 {
-    uint index;
-    uint samplerate;
-    uint bitdepth;
-    uint bitrate;
+    int index;
+    int samplerate;
+    int bitdepth;
+    int64_t bitrate;
     bool lossless;
     QString lang;
     QString codec;
@@ -23,7 +23,7 @@ struct AudioInfo
 
 struct SubInfo
 {
-    uint index;
+    int index;
     QString lang;
     QString format;
 };
@@ -45,6 +45,10 @@ public:
 public slots:
     void openFileHandler() { openFile(); }
 
+    void subDescriptionRequestedHandler(const QString& index);
+
+    void audioDescriptionRequestedHandler(const QString& index);
+
 private:
     bool openFile();
     bool getFileInfoFfmpeg();
@@ -56,6 +60,10 @@ private:
 signals:
     void fileChanged(const QList<DialogueFromVideo::SubInfo*>& subStreams,
                      const QList<DialogueFromVideo::AudioInfo*>& audioStreams);
+
+    void subDescriptionReceivedSignal(const SubInfo subInfo);
+
+    void audioDescriptionReceivedSignal(const AudioInfo audioInfo);
 };
 
 } // namespace DialogueFromVideo

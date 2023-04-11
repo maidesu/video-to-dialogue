@@ -2,6 +2,7 @@
 
 #include "../fileinfo.hpp"
 
+#include <QLabel>
 #include <QProgressBar>
 #include <QVBoxLayout>
 #include <QGroupBox>
@@ -29,6 +30,10 @@ public slots:
                                 int64_t usOffset,
                                 int64_t usMerge);
 
+    void subDescriptionReceivedHandler(const SubInfo subInfo); // Receive selected subtitle description copy
+
+    void audioDescriptionReceivedHandler(const AudioInfo audioInfo); // Receive selected audio description copy
+
 private:
     Messenger m_windowMessenger;
 
@@ -41,6 +46,9 @@ private:
 
     QComboBox* m_subComboBox;
     QComboBox* m_audioComboBox;
+
+    QLabel* m_subDescriptionLabel;
+    QLabel* m_audioDescriptionLabel;
 
     QSpinBox* m_subLayerSpinBox;
     QSpinBox* m_subPaddingLeftSpinBox;
@@ -61,6 +69,10 @@ signals:
                              int64_t usPaddingRight,
                              int64_t usOffset,
                              int64_t usMerge);
+
+    void subDescriptionRequestedSignal(const QString& index); // Request sub description copy
+
+    void audioDescriptionRequestedSignal(const QString& index); // Request audio description copy
 };
 
 } // namespace DialogueFromVideo
