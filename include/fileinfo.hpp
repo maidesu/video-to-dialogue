@@ -12,13 +12,13 @@ namespace DialogueFromVideo {
 struct AudioInfo
 {
     uint index;
-    QString lang;
-    QString codec;
-    QString format;
     uint samplerate;
     uint bitdepth;
     uint bitrate;
     bool lossless;
+    QString lang;
+    QString codec;
+    QString format;
 };
 
 struct SubInfo
@@ -33,6 +33,12 @@ class FileInfo : public Messenger
     Q_OBJECT
 public:
     explicit FileInfo(QObject *parent = nullptr);
+
+    FileInfo(FileInfo&) = delete;
+    FileInfo(FileInfo&&) = delete;
+
+    FileInfo& operator= (const FileInfo&) = delete;
+    FileInfo& operator= (const FileInfo&&) = delete;
 
     virtual ~FileInfo();
 

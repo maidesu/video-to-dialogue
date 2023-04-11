@@ -9,6 +9,7 @@ namespace DialogueFromVideo {
 
 FileInfo::FileInfo(QObject *parent)
     : Messenger(parent)
+    , m_path(nullptr)
 {
 
 }
@@ -70,14 +71,14 @@ bool FileInfo::getFileInfoFfmpeg()
     m_subStreams.clear();
     m_audioStreams.clear();
 
-    AVStream* stream;
+    AVStream* stream = nullptr;
     for (uint i = 0; i < formatContext->nb_streams; ++i) {
         stream = formatContext->streams[i];
 
         if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
             SubInfo* si = new SubInfo();
 
-            si->index = stream->id;
+            si->index = stream->index;
             //si->lang = stream->codec->
 
             m_subStreams.append(si);
@@ -85,7 +86,15 @@ bool FileInfo::getFileInfoFfmpeg()
         else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
             AudioInfo* ai = new AudioInfo();
 
-            ai->index = stream->id;
+            //const AVCodecDescriptor* desc = avcodec_descriptor_get(stream->codecpar->codec_id);
+
+            ai->index       = stream->index;
+            //ai->samplerate  = stream->codecpar->sample_rate;
+            //ai->bitdepth    = stream->codecpar->bits_per_coded_sample;
+            //ai->bitrate     = stream->codecpar->bit_rate;
+            //ai->lossless    = desc->props ? static_cast<bool>(desc->props & AV_CODEC_PROP_LOSSLESS) : false;
+
+            //ai->lang        = QString(av_stream_get_language(ai));
 
             m_audioStreams.append(ai);
         }

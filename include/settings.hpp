@@ -14,6 +14,12 @@ class Settings : public Messenger
 public:
     explicit Settings(QObject *parent = nullptr);
 
+    Settings(Settings&) = delete;
+    Settings(Settings&&) = delete;
+
+    Settings& operator= (const Settings&) = delete;
+    Settings& operator= (const Settings&&) = delete;
+
     virtual ~Settings() {};
 
     void loadInitialSettings();
