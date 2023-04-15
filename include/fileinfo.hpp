@@ -54,6 +54,10 @@ private:
     bool getFileInfoFfmpeg();
 
     const char* m_path;
+    int m_selectedSubIndex;
+    int m_selectedSubLayerIndex;
+    int m_selectedAudioIndex;
+
     QList<SubInfo*> m_subStreams;
     QList<AudioInfo*> m_audioStreams;
 

@@ -10,6 +10,9 @@ namespace DialogueFromVideo {
 FileInfo::FileInfo(QObject *parent)
     : Messenger(parent)
     , m_path(nullptr)
+    , m_selectedSubIndex(0)
+    , m_selectedSubLayerIndex(0)
+    , m_selectedAudioIndex(0)
 {
 
 }
@@ -28,6 +31,13 @@ FileInfo::~FileInfo()
 
 void FileInfo::subDescriptionRequestedHandler(const QString& index)
 {
+    emit print(QString("subDescriptionRequestedHandler(%1)").arg(index),
+               "FileInfo",
+               MessageLevel::Debug);
+
+    // Let the default state be 0, since index should be >0
+    m_selectedSubIndex = 0;
+
     int idx = index.toInt();
 
     if (idx < 1)
@@ -35,14 +45,16 @@ void FileInfo::subDescriptionRequestedHandler(const QString& index)
         return;
     }
 
-    emit print(QString("subDescriptionRequestedHandler(%1)").arg(index),
-               "FileInfo",
-               MessageLevel::Debug);
-
     for (const SubInfo* si : m_subStreams)
     {
         if (si->index == idx)
         {
+            m_selectedSubIndex = idx;
+
+            emit print(tr("Selected subtitle stream %1").arg(QString::number(idx)),
+                       "FileInfo",
+                       MessageLevel::Info);
+
             emit subDescriptionReceivedSignal(SubInfo(*si)); // Call to default copy ctor
             return;
         }
@@ -51,6 +63,13 @@ void FileInfo::subDescriptionRequestedHandler(const QString& index)
 
 void FileInfo::audioDescriptionRequestedHandler(const QString& index)
 {
+    emit print(QString("audioDescriptionRequestedHandler(%1)").arg(index),
+               "FileInfo",
+               MessageLevel::Debug);
+
+    // Let the default state be 0, since index should be >0
+    m_selectedAudioIndex = 0;
+
     int idx = index.toInt();
 
     if (idx < 1)
@@ -58,14 +77,16 @@ void FileInfo::audioDescriptionRequestedHandler(const QString& index)
         return;
     }
 
-    emit print(QString("audioDescriptionRequestedHandler(%1)").arg(index),
-               "FileInfo",
-               MessageLevel::Debug);
-
     for (const AudioInfo* ai : m_audioStreams)
     {
         if (ai->index == idx)
         {
+            m_selectedAudioIndex = idx;
+
+            emit print(tr("Selected audio stream %1").arg(QString::number(idx)),
+                       "FileInfo",
+                       MessageLevel::Info);
+
             emit audioDescriptionReceivedSignal(AudioInfo(*ai)); // Call to default copy ctor
             return;
         }
