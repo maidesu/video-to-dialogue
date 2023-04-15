@@ -61,6 +61,23 @@ void FileInfo::subDescriptionRequestedHandler(const QString& index)
     }
 }
 
+void FileInfo::subLayerRequestedHandler(const QString& index)
+{
+    emit print(QString("subLayerRequestedHandler(%1)").arg(index),
+               "FileInfo",
+               MessageLevel::Debug);
+
+    int idx = index.toInt();
+
+    // TODO: A parser can perform checks
+
+    m_selectedSubLayerIndex = idx;
+
+    emit print(tr("Selected subtitle layer %1").arg(QString::number(idx)),
+               "FileInfo",
+               MessageLevel::Info);
+}
+
 void FileInfo::audioDescriptionRequestedHandler(const QString& index)
 {
     emit print(QString("audioDescriptionRequestedHandler(%1)").arg(index),

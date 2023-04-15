@@ -31,6 +31,7 @@ Window::Window(QWidget *parent)
     this->setMinimumSize(700, 500);
 
     m_subComboBox->setDisabled(true);
+    m_subLayerSpinBox->setDisabled(true);
     m_audioComboBox->setDisabled(true);
 
     // Info group box contains
@@ -155,6 +156,11 @@ Window::Window(QWidget *parent)
             this,
             &Window::subDescriptionRequestedSignal);
 
+    connect(m_subLayerSpinBox,
+            &QSpinBox::textChanged,
+            this,
+            &Window::subLayerRequestedSignal);
+
     connect(m_audioComboBox,
             &QComboBox::currentTextChanged,
             this,
@@ -177,6 +183,10 @@ void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStr
 
     for (const AudioInfo* const ai : audioStreams)
         m_audioComboBox->addItem(QString::number(ai->index));
+
+    // Enable layers on file change for now TODO
+    m_subLayerSpinBox->setDisabled(false);
+    emit m_subLayerSpinBox->textChanged(m_subLayerSpinBox->text());
 
     // Disable if combobox content is less than 1
     m_subComboBox->setDisabled(m_subComboBox->count() < 1);

@@ -72,6 +72,8 @@ signals:
 
     void subDescriptionRequestedSignal(const QString& index); // Request sub description copy
 
+    void subLayerRequestedSignal(const QString& index); // Requst layer change
+
     void audioDescriptionRequestedSignal(const QString& index); // Request audio description copy
 };
 

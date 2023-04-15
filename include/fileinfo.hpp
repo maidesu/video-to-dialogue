@@ -47,6 +47,8 @@ public slots:
 
     void subDescriptionRequestedHandler(const QString& index);
 
+    void subLayerRequestedHandler(const QString& index);
+
     void audioDescriptionRequestedHandler(const QString& index);
 
 private:

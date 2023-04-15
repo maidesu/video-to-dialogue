@@ -38,6 +38,12 @@ Application::Application()
                      &m_fileinfo,
                      &FileInfo::subDescriptionRequestedHandler);
 
+    // Window requests sub layer change from FileInfo by index
+    QObject::connect(&m_window,
+                     &Window::subLayerRequestedSignal,
+                     &m_fileinfo,
+                     &FileInfo::subLayerRequestedHandler);
+
     // Window requests audio description from FileInfo by index
     QObject::connect(&m_window,
                      &Window::audioDescriptionRequestedSignal,
