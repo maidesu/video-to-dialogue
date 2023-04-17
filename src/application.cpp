@@ -6,7 +6,6 @@
 namespace DialogueFromVideo {
 
 Application::Application()
-    : m_console(Console::instance())
 {
     // Ask fileinfo to open file from window
     QObject::connect(&m_window,
