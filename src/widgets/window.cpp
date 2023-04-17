@@ -4,6 +4,7 @@
 
 #include <QLabel>
 #include <QSplitter>
+#include <QTabWidget>
 
 namespace DialogueFromVideo {
 
@@ -34,13 +35,13 @@ Window::Window(QWidget *parent)
     m_subLayerSpinBox->setDisabled(true);
     m_audioComboBox->setDisabled(true);
 
-    // Info group box contains
+    // Info group box
     QHBoxLayout* infoLayout = new QHBoxLayout();
     m_infoGroupBox->setLayout(infoLayout);
     infoLayout->addWidget(m_subGroupBox, 3);   // 3/6 space of infoLayout
     infoLayout->addWidget(m_audioGroupBox, 2); // 2/6 space of infoLayout
 
-    // Sub timing group box contains
+    // Sub timing group box
     QHBoxLayout* subSettingsLayout = new QHBoxLayout();
     m_subSettingsGroupBox->setLayout(subSettingsLayout);
 
@@ -88,7 +89,7 @@ Window::Window(QWidget *parent)
 
     subSettingsLayout->addWidget(m_applySettingsButton, 1); // 1/6 space of subSettingsLayout
 
-    // Sub group box contains
+    // Sub group box
     QHBoxLayout* subLayout = new QHBoxLayout();
     m_subGroupBox->setLayout(subLayout);
 
@@ -102,7 +103,7 @@ Window::Window(QWidget *parent)
 
     subLayout->addWidget(m_subDescriptionLabel, 2); // 2/10 space of subLayout
 
-    // Audio group box contains
+    // Audio group box
     QHBoxLayout* audioLayout = new QHBoxLayout();
     m_audioGroupBox->setLayout(audioLayout);
 
@@ -121,12 +122,39 @@ Window::Window(QWidget *parent)
 
     infoLayout->addWidget(buttonWidget, 1); // 1/6 space of infoLayout
 
+    // Tabs
+    QTabWidget* tabWidget = new QTabWidget();
+
+    QWidget* fileContainer = new QWidget();
+    QWidget* subtitleContainer = new QWidget();
+    QWidget* exportContainer = new QWidget();
+    QWidget* settingsContainer = new QWidget();
+
+    QVBoxLayout* fileContainerLayout = new QVBoxLayout();
+    QVBoxLayout* subtitleContainerLayout = new QVBoxLayout();
+    QVBoxLayout* exportContainerLayout = new QVBoxLayout();
+    QVBoxLayout* settingsContainerLayout = new QVBoxLayout();
+
+    fileContainer->setLayout(fileContainerLayout);
+    subtitleContainer->setLayout(subtitleContainerLayout);
+    exportContainer->setLayout(exportContainerLayout);
+    settingsContainer->setLayout(settingsContainerLayout);
+
+    // Tabs: File tab
+    fileContainerLayout->addWidget(m_infoGroupBox);
+    fileContainerLayout->addWidget(m_subSettingsGroupBox);
+
+    // Tabs: Final
+    tabWidget->addTab(fileContainer, tr("File"));
+    tabWidget->addTab(subtitleContainer, tr("Subtitle"));
+    tabWidget->addTab(exportContainer, tr("Export"));
+    tabWidget->addTab(settingsContainer, tr("Settings"));
+
     // Top content container
     QWidget* topContainer = new QWidget();
     QVBoxLayout* topLayout = new QVBoxLayout();
     topContainer->setLayout(topLayout);
-    topLayout->addWidget(m_infoGroupBox);
-    topLayout->addWidget(m_subSettingsGroupBox);
+    topLayout->addWidget(tabWidget);
     topLayout->addWidget(m_progressBar);
 
     m_progressBar->setAlignment(Qt::Alignment::enum_type::AlignHCenter);
