@@ -27,6 +27,9 @@ Window::Window(QWidget *parent)
     , m_openFileButton(new QPushButton(tr("Open file")))
     , m_extractDialogueButton(new QPushButton(tr("Extract dialogue")))
     , m_applySettingsButton(new QPushButton(tr("Apply")))
+    , m_exportSubtitleButton(new QPushButton(tr("Export subtitle")))
+    , m_exportPictureCollectionButton(new QPushButton(tr("Create picture book")))
+    , m_subTextEdit(new QTextEdit())
     , m_progressBar(new QProgressBar())
 {
     this->setMinimumSize(880, 620);
@@ -122,6 +125,18 @@ Window::Window(QWidget *parent)
 
     infoLayout->addWidget(buttonWidget, 1); // 1/6 space of infoLayout
 
+    // Subtitle text edit
+    m_subTextEdit->setReadOnly(true);
+    m_subTextEdit->insertPlainText("<no subtitle loaded>");
+    m_subTextEdit->ensureCursorVisible();
+
+    // Subtitle text edit buttons
+    QWidget* textEditButtonsContainer = new QWidget();
+    QHBoxLayout* textEditButtonsContainerLayout = new QHBoxLayout();
+    textEditButtonsContainer->setLayout(textEditButtonsContainerLayout);
+    textEditButtonsContainerLayout->addWidget(m_exportSubtitleButton);
+    textEditButtonsContainerLayout->addWidget(m_exportPictureCollectionButton);
+
     // Tabs
     QTabWidget* tabWidget = new QTabWidget();
 
@@ -143,6 +158,10 @@ Window::Window(QWidget *parent)
     // Tabs: File tab
     fileContainerLayout->addWidget(m_infoGroupBox);
     fileContainerLayout->addWidget(m_subSettingsGroupBox);
+
+    // Tabs: Subtitle tab
+    subtitleContainerLayout->addWidget(m_subTextEdit);
+    subtitleContainerLayout->addWidget(textEditButtonsContainer);
 
     // Tabs: Final
     tabWidget->addTab(fileContainer, tr("File"));

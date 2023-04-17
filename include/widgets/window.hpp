@@ -59,6 +59,10 @@ private:
     QPushButton* m_openFileButton;
     QPushButton* m_extractDialogueButton;
     QPushButton* m_applySettingsButton;
+    QPushButton* m_exportSubtitleButton;
+    QPushButton* m_exportPictureCollectionButton;
+
+    QTextEdit* m_subTextEdit;
 
     QProgressBar* m_progressBar;
 
