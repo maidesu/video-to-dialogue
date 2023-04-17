@@ -2,6 +2,10 @@
 
 #include "common/messenger.hpp"
 
+extern "C" {
+#include <libavcodec/codec_id.h>
+}
+
 #include <QString>
 #include <QVector>
 #include <QFileDialog>
@@ -16,16 +20,17 @@ struct AudioInfo
     int bitdepth;
     int64_t bitrate;
     bool lossless;
+    AVCodecID codec_id;
+    QString codec_name;
     QString lang;
-    QString codec;
-    QString format;
 };
 
 struct SubInfo
 {
     int index;
+    AVCodecID codec_id;
+    QString codec_name;
     QString lang;
-    QString format;
 };
 
 class FileInfo : public Messenger

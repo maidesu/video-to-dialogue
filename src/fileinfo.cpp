@@ -10,9 +10,9 @@ namespace DialogueFromVideo {
 FileInfo::FileInfo(QObject *parent)
     : Messenger(parent)
     , m_path(nullptr)
-    , m_selectedSubIndex(0)
-    , m_selectedSubLayerIndex(0)
-    , m_selectedAudioIndex(0)
+    , m_selectedSubIndex(-1)
+    , m_selectedSubLayerIndex(-1)
+    , m_selectedAudioIndex(-1)
 {
 
 }
@@ -35,13 +35,16 @@ void FileInfo::subDescriptionRequestedHandler(const QString& index)
                "FileInfo",
                MessageLevel::Debug);
 
-    // Let the default state be 0, since index should be >0
-    m_selectedSubIndex = 0;
+    // Let the default state be -1, since index should be >=0
+    m_selectedSubIndex = -1;
 
     int idx = index.toInt();
 
-    if (idx < 1)
+    if (idx < 0)
     {
+        emit print(tr("No subtitle stream selected"),
+                   "FileInfo",
+                   MessageLevel::Info);
         return;
     }
 
@@ -67,7 +70,18 @@ void FileInfo::subLayerRequestedHandler(const QString& index)
                "FileInfo",
                MessageLevel::Debug);
 
+    // Let the default state be -1, since index should be >=0
+    m_selectedSubLayerIndex = -1;
+
     int idx = index.toInt();
+
+    if (idx < 0)
+    {
+        emit print(tr("No subtitle layer selected"),
+                   "FileInfo",
+                   MessageLevel::Info);
+        return;
+    }
 
     // TODO: A parser can perform checks
 
@@ -84,13 +98,16 @@ void FileInfo::audioDescriptionRequestedHandler(const QString& index)
                "FileInfo",
                MessageLevel::Debug);
 
-    // Let the default state be 0, since index should be >0
-    m_selectedAudioIndex = 0;
+    // Let the default state be -1, since index should be >=0
+    m_selectedAudioIndex = -1;
 
     int idx = index.toInt();
 
-    if (idx < 1)
+    if (idx < 0)
     {
+        emit print(tr("No audio stream selected"),
+                   "FileInfo",
+                   MessageLevel::Info);
         return;
     }
 
@@ -183,12 +200,21 @@ bool FileInfo::getFileInfoFfmpeg()
 
             si->index       = stream->index;
 
-            si->lang        = QString(av_dict_get(stream->metadata, "language", nullptr, 0)
-                                   ? av_dict_get(stream->metadata, "language", nullptr, 0)->value : "N/A");
+            si->codec_id    = stream->codecpar->codec_id;
 
-            si->format      = QString(formatContext->oformat ? formatContext->oformat->name : "N/A");
+            si->codec_name  = QString(avcodec_get_name(si->codec_id)
+                                        ? avcodec_get_name(si->codec_id)
+                                        : "N/A" );
+
+            si->lang        = QString(av_dict_get(stream->metadata, "language", nullptr, 0)
+                                        ? av_dict_get(stream->metadata, "language", nullptr, 0)->value
+                                        : "N/A");
 
             m_subStreams.append(si);
+
+            emit print("Appended sub stream",
+                       "FileInfo",
+                       MessageLevel::Debug);
         }
         else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
             AudioInfo* ai = new AudioInfo();
@@ -207,15 +233,21 @@ bool FileInfo::getFileInfoFfmpeg()
 
             ai->lossless    = desc->props ? static_cast<bool>(desc->props & AV_CODEC_PROP_LOSSLESS) : false;
 
+            ai->codec_id    = stream->codecpar->codec_id;
+
+            ai->codec_name  = QString(avcodec_get_name(ai->codec_id)
+                                        ? avcodec_get_name(ai->codec_id)
+                                        : "N/A" );
+
             ai->lang        = QString(av_dict_get(stream->metadata, "language", nullptr, 0)
-                                        ? av_dict_get(stream->metadata, "language", nullptr, 0)->value : "N/A");
-
-            ai->codec       = QString(avcodec_find_decoder(stream->codecpar->codec_id)
-                                        ? avcodec_find_decoder(stream->codecpar->codec_id)->name : "N/A");
-
-            ai->format      = QString(formatContext->oformat ? formatContext->oformat->name : "N/A");
+                                        ? av_dict_get(stream->metadata, "language", nullptr, 0)->value
+                                        : "N/A");
 
             m_audioStreams.append(ai);
+
+            emit print("Appended audio stream",
+                       "FileInfo",
+                       MessageLevel::Debug);
         }
     }
 

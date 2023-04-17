@@ -28,7 +28,7 @@ Window::Window(QWidget *parent)
     , m_applySettingsButton(new QPushButton(tr("Apply")))
     , m_progressBar(new QProgressBar())
 {
-    this->setMinimumSize(700, 500);
+    this->setMinimumSize(880, 620);
 
     m_subComboBox->setDisabled(true);
     m_subLayerSpinBox->setDisabled(true);
@@ -184,13 +184,26 @@ void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStr
     for (const AudioInfo* const ai : audioStreams)
         m_audioComboBox->addItem(QString::number(ai->index));
 
-    // Enable layers on file change for now TODO
-    m_subLayerSpinBox->setDisabled(false);
-    emit m_subLayerSpinBox->textChanged(m_subLayerSpinBox->text());
-
+    // Disable layers if no subs are present
+    m_subLayerSpinBox->setDisabled(m_subComboBox->count() < 1);
     // Disable if combobox content is less than 1
     m_subComboBox->setDisabled(m_subComboBox->count() < 1);
     m_audioComboBox->setDisabled(m_audioComboBox->count() < 1);
+
+    // Force update
+    m_subLayerSpinBox->setValue(0);
+    if (!m_subLayerSpinBox->isEnabled())
+    {
+        emit m_subLayerSpinBox->textChanged(QString::number(-1));
+    }
+    if (!m_subComboBox->isEnabled())
+    {
+        emit m_subComboBox->currentTextChanged("-1");
+    }
+    if (!m_audioComboBox->isEnabled())
+    {
+        emit m_audioComboBox->currentTextChanged("-1");
+    }
 }
 
 void Window::applySettingsButtonHandler()
@@ -219,11 +232,13 @@ void Window::subDescriptionReceivedHandler(const SubInfo subInfo)
                                  MessageLevel::Debug);
 
     m_subDescriptionLabel->setText(tr("Index: %1\n"
-                                           "Language: %2\n"
-                                           "Format: %3")
+                                      "Language: %2\n"
+                                      "Codec: %3")
                                        .arg(QString::number(subInfo.index),
-                                            subInfo.lang,
-                                            subInfo.format));
+                                            subInfo.lang != "und"
+                                                ? subInfo.lang
+                                                : QString("N/A"),
+                                            subInfo.codec_name));
 }
 
 void Window::audioDescriptionReceivedHandler(const AudioInfo audioInfo)
@@ -233,21 +248,25 @@ void Window::audioDescriptionReceivedHandler(const AudioInfo audioInfo)
                                  MessageLevel::Debug);
 
     m_audioDescriptionLabel->setText(tr("Index: %1\n"
-                                             "Sample rate: %2 Hz\n"
-                                             "Bits per sample: %3\n"
-                                             "Bitrate: %4 kbps\n"
-                                             "Lossless: %5\n"
-                                             "Language: %6\n"
-                                             "Codec: %7\n"
-                                             "Format: %8")
+                                        "Sample rate: %2 Hz\n"
+                                        "Bits per sample: %3\n"
+                                        "Bitrate: %4 kbps\n"
+                                        "Lossless: %5\n"
+                                        "Language: %6\n"
+                                        "Codec: %7\n")
                                          .arg(QString::number(audioInfo.index),
                                               QString::number(audioInfo.samplerate),
-                                              QString::number(audioInfo.bitdepth),
-                                              QString::number(audioInfo.bitrate),
+                                              audioInfo.bitdepth != 0
+                                                ? QString::number(audioInfo.bitdepth)
+                                                : QString("N/A"),
+                                              audioInfo.bitrate != 0
+                                                ? QString::number(audioInfo.bitrate)
+                                                : QString("N/A"),
                                               audioInfo.lossless ? "Yes" : "No",
-                                              audioInfo.lang,
-                                              audioInfo.codec,
-                                              audioInfo.format));
+                                              audioInfo.lang != "und"
+                                                ? audioInfo.lang
+                                                : QString("N/A"),
+                                              audioInfo.codec_name));
 }
 
 } // namespace DialogueFromVideo
