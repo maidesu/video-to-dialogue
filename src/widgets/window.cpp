@@ -238,10 +238,21 @@ void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStr
     m_audioComboBox->setDisabled(m_audioComboBox->count() < 1);
 
     // Force update
-    m_subLayerSpinBox->setValue(0);
     if (!m_subLayerSpinBox->isEnabled())
     {
         emit m_subLayerSpinBox->textChanged(QString::number(-1));
+    }
+    else
+    {
+        if (m_subLayerSpinBox->value() == 0)
+        {
+            emit m_subLayerSpinBox->textChanged(QString::number(0));
+        }
+        else
+        {
+            // setValue only emits textChanged if the value is actually changed
+            m_subLayerSpinBox->setValue(0);
+        }
     }
     if (!m_subComboBox->isEnabled())
     {
