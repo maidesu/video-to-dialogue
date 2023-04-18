@@ -42,10 +42,14 @@ LIBS += \
     -lavutil
 
 TRANSLATIONS += \
-    resource/translations/dialogue_from_video_hu_HU.ts
+    resource/translations/hu_HU.ts \
+    resource/translations/en_US.ts
 
 CONFIG += lrelease
 CONFIG += embed_translations
+
+RESOURCES += \
+    resource/dialogue_from_video.qrc
 
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wstrict-aliasing -pedantic -Werror
 

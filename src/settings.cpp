@@ -1,5 +1,7 @@
 #include "../include/settings.hpp"
 
+#include <QTranslator>
+#include <QApplication>
 #include <QGuiApplication>
 
 namespace DialogueFromVideo {
@@ -10,12 +12,17 @@ Settings::Settings(QObject *parent)
     , m_usPaddingRight(0)
     , m_usOffset(0)
     , m_usMerge(0)
+    , m_darkModeEnabled(false)
+    , m_uiLanguage("en_US")
     , m_settings(new QSettings(QSettings::IniFormat,
                                QSettings::UserScope,
                                QGuiApplication::applicationName().replace(" ", ""),
                                "settings"))
 {
-
+    QTranslator translator;
+    if (translator.load(":/i18n/hu_HU")) {
+        QApplication::installTranslator(&translator);
+    }
 }
 
 void Settings::loadInitialSettings()
@@ -45,6 +52,11 @@ void Settings::loadInitialSettings()
                                m_usPaddingRight,
                                m_usOffset,
                                m_usMerge);
+}
+
+void Settings::foo()
+{
+
 }
 
 void Settings::settingsChangedHandler(int64_t usPaddingLeft,

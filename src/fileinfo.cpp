@@ -133,7 +133,7 @@ bool FileInfo::openFile()
             QFileDialog::getOpenFileName(nullptr,
                                          tr("Open File"),
                                          "",
-                                         tr("Video Files ("
+                                         tr("Video ("
                                             "*.mp4 "
                                             "*.m4a "
                                             "*.m4v "
@@ -148,7 +148,7 @@ bool FileInfo::openFile()
                                             "*.mpeg "
                                             "*.ogv "
                                             "*.m2ts"
-                                            ");;All Files (*)"));
+                                            ");;All formats (*)"));
 
     if (!openPath.isEmpty())
     {
@@ -156,7 +156,7 @@ bool FileInfo::openFile()
         m_path = bytes.constData();
 
         emit print(tr("Selected file: %1").arg(openPath), "FileInfo", MessageLevel::Info);
-        emit print(tr("Selected path: %1").arg(m_path), "FileInfo", MessageLevel::Debug);
+        emit print(QString("Selected path: %1").arg(m_path), "FileInfo", MessageLevel::Debug);
 
         return getFileInfoFfmpeg();
     }

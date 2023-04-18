@@ -24,6 +24,8 @@ public:
 
     void loadInitialSettings();
 
+    void foo();
+
 public slots:
     void settingsChangedHandler(int64_t usPaddingLeft,
                                 int64_t usPaddingRight,
@@ -35,6 +37,9 @@ private:
     int64_t m_usPaddingRight;
     int64_t m_usOffset;
     int64_t m_usMerge;
+
+    bool m_darkModeEnabled;
+    QString m_uiLanguage;
 
     QSettings* m_settings;
 

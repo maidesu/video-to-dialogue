@@ -22,10 +22,10 @@ public:
     void run();
 
 private:
+    Settings m_settings;
+    FileInfo m_fileinfo;
     Messenger m_applicationMessenger;
     Window m_window;
-    FileInfo m_fileinfo;
-    Settings m_settings;
 };
 
 } // namespace DialogueFromVideo

@@ -32,7 +32,7 @@ Window::Window(QWidget *parent)
     , m_subTextEdit(new QTextEdit())
     , m_progressBar(new QProgressBar())
 {
-    this->setMinimumSize(880, 620);
+    this->setMinimumSize(900, 640);
 
     m_subComboBox->setDisabled(true);
     m_subLayerSpinBox->setDisabled(true);
@@ -311,7 +311,7 @@ void Window::audioDescriptionReceivedHandler(const AudioInfo audioInfo)
                                         "Bitrate: %4 kbps\n"
                                         "Lossless: %5\n"
                                         "Language: %6\n"
-                                        "Codec: %7\n")
+                                        "Codec: %7")
                                          .arg(QString::number(audioInfo.index),
                                               QString::number(audioInfo.samplerate),
                                               audioInfo.bitdepth != 0
@@ -320,7 +320,7 @@ void Window::audioDescriptionReceivedHandler(const AudioInfo audioInfo)
                                               audioInfo.bitrate != 0
                                                 ? QString::number(audioInfo.bitrate)
                                                 : QString("N/A"),
-                                              audioInfo.lossless ? "Yes" : "No",
+                                              audioInfo.lossless ? tr("Yes") : tr("No"),
                                               audioInfo.lang != "und"
                                                 ? audioInfo.lang
                                                 : QString("N/A"),

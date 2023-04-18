@@ -64,6 +64,8 @@ Application::Application()
 
 void Application::run()
 {
+    m_settings.foo();
+
     m_window.show();
 
     emit m_applicationMessenger.print(QTranslator::tr("Running %1 - %2 %3 via Qt %4")
