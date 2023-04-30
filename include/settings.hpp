@@ -2,6 +2,7 @@
 
 #include "common/messenger.hpp"
 
+#include <QTranslator>
 #include <QSettings>
 
 #include <cstdint>
@@ -20,17 +21,17 @@ public:
     Settings& operator= (const Settings&) = delete;
     Settings& operator= (const Settings&&) = delete;
 
-    virtual ~Settings() {};
+    virtual ~Settings();
 
     void loadInitialSettings();
-
-    void foo();
 
 public slots:
     void settingsChangedHandler(int64_t usPaddingLeft,
                                 int64_t usPaddingRight,
                                 int64_t usOffset,
                                 int64_t usMerge);
+
+    void languageSettingsChangedHandler(const QString& language);
 
 private:
     int64_t m_usPaddingLeft;
@@ -42,6 +43,7 @@ private:
     QString m_uiLanguage;
 
     QSettings* m_settings;
+    QTranslator* m_translator;
 
 signals:
     void initialSettingsSignal(int64_t usPaddingLeft,

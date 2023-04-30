@@ -1,6 +1,5 @@
 #include "../include/settings.hpp"
 
-#include <QTranslator>
 #include <QApplication>
 #include <QGuiApplication>
 
@@ -19,14 +18,32 @@ Settings::Settings(QObject *parent)
                                QGuiApplication::applicationName().replace(" ", ""),
                                "settings"))
 {
-    QTranslator translator;
-    if (translator.load(":/i18n/hu_HU")) {
-        QApplication::installTranslator(&translator);
+    // Ui settings
+    m_settings->beginGroup("UX");
+    m_uiLanguage = m_settings->value("Language", "en_US").toString();
+    m_settings->endGroup();
+
+    m_translator = new QTranslator();
+
+    if (m_translator->load(":/i18n/" + m_uiLanguage))
+    {
+        QApplication::installTranslator(m_translator);
     }
+    else
+    {
+        assert(false);
+    }
+}
+
+Settings::~Settings()
+{
+    delete m_settings;
+    delete m_translator;
 }
 
 void Settings::loadInitialSettings()
 {
+    // Subtitle timing settings
     emit print(QString("Settings format: %1, Settings path: %2")
                     .arg(QString::number(m_settings->format()),
                          m_settings->fileName()),
@@ -52,11 +69,6 @@ void Settings::loadInitialSettings()
                                m_usPaddingRight,
                                m_usOffset,
                                m_usMerge);
-}
-
-void Settings::foo()
-{
-
 }
 
 void Settings::settingsChangedHandler(int64_t usPaddingLeft,
@@ -85,6 +97,28 @@ void Settings::settingsChangedHandler(int64_t usPaddingLeft,
                          QString::number(m_usMerge / 1000)),
                "Settings",
                MessageLevel::Info);
+}
+
+void Settings::languageSettingsChangedHandler(const QString& language)
+{
+    m_uiLanguage = QString(language);
+
+    m_settings->beginGroup("UX");
+    m_settings->setValue("Language", m_uiLanguage);
+    m_settings->endGroup();
+
+
+
+//    QApplication::removeTranslator(m_translator);
+
+//    if (m_translator->load(":/i18n/" + m_uiLanguage))
+//    {
+//        QApplication::installTranslator(m_translator);
+//    }
+//    else
+//    {
+//        assert(false);
+//    }
 }
 
 } // namespace DialogueFromVideo

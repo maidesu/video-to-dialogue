@@ -15,11 +15,6 @@ int main(int argc, char **argv)
     QGuiApplication::setApplicationDisplayName("V2D");
     QGuiApplication::setApplicationVersion("0.0.1");
 
-//    QTranslator translator;
-//    if (translator.load(":/i18n/hu_HU")) {
-//        QGuiApplication::installTranslator(&translator);
-//    }
-
     Application app;
     app.run();
 

@@ -46,6 +46,7 @@ private:
 
     QComboBox* m_subComboBox;
     QComboBox* m_audioComboBox;
+    QComboBox* m_languageComboBox;
 
     QLabel* m_subDescriptionLabel;
     QLabel* m_audioDescriptionLabel;
@@ -73,6 +74,8 @@ signals:
                              int64_t usPaddingRight,
                              int64_t usOffset,
                              int64_t usMerge);
+
+    void languageSettingsChangedSignal(const QString& language);
 
     void subDescriptionRequestedSignal(const QString& index); // Request sub description copy
 

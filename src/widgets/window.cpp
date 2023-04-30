@@ -3,6 +3,7 @@
 #include "../../include/common/console.hpp"
 
 #include <QLabel>
+#include <QRadioButton>
 #include <QSplitter>
 #include <QTabWidget>
 
@@ -17,6 +18,7 @@ Window::Window(QWidget *parent)
     , m_audioGroupBox(new QGroupBox(tr("Audio")))
     , m_subComboBox(new QComboBox())
     , m_audioComboBox(new QComboBox())
+    , m_languageComboBox(new QComboBox())
     , m_subDescriptionLabel(new QLabel())
     , m_audioDescriptionLabel(new QLabel())
     , m_subLayerSpinBox(new QSpinBox())
@@ -137,6 +139,15 @@ Window::Window(QWidget *parent)
     textEditButtonsContainerLayout->addWidget(m_exportSubtitleButton);
     textEditButtonsContainerLayout->addWidget(m_exportPictureCollectionButton);
 
+    // Languages TODO
+    m_languageComboBox->addItem("English");
+
+    // UI mode TODO
+    QRadioButton* lightUiRadioButton = new QRadioButton(tr("Light"));
+    QRadioButton* darkUiRadioButton = new QRadioButton(tr("Dark"));
+
+    lightUiRadioButton->click();
+
     // Tabs
     QTabWidget* tabWidget = new QTabWidget();
 
@@ -162,6 +173,18 @@ Window::Window(QWidget *parent)
     // Tabs: Subtitle tab
     subtitleContainerLayout->addWidget(m_subTextEdit);
     subtitleContainerLayout->addWidget(textEditButtonsContainer);
+
+    // Tabs: Export tab
+
+    // Tabs: Settings tab
+    settingsContainerLayout->setSpacing(20);
+    settingsContainerLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    settingsContainerLayout->addWidget(new QLabel(tr("Language")));
+    settingsContainerLayout->addWidget(m_languageComboBox);
+    settingsContainerLayout->addWidget(new QLabel(tr("UI mode")));
+    settingsContainerLayout->addWidget(lightUiRadioButton);
+    settingsContainerLayout->addWidget(darkUiRadioButton);
 
     // Tabs: Final
     tabWidget->addTab(fileContainer, tr("File"));
