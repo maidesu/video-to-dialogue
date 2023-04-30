@@ -188,8 +188,14 @@ bool FileInfo::getFileInfoFfmpeg()
     }
 
     // At this point we drop all content from before
-    m_subStreams.clear();
-    m_audioStreams.clear();
+    while (!m_subStreams.isEmpty())
+    {
+        delete m_subStreams.takeLast();
+    }
+    while (!m_audioStreams.isEmpty())
+    {
+        delete m_audioStreams.takeLast();
+    }
 
     AVStream* stream = nullptr;
     for (uint i = 0; i < formatContext->nb_streams; ++i) {
