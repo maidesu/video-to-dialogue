@@ -330,11 +330,18 @@ void Window::initialSettingsHandler(int64_t usPaddingLeft,
 
 void Window::initialLanguageHandler(const QString& language)
 {
+    m_languageComboBox->blockSignals(true);
+
     m_languageComboBox->setCurrentIndex(m_languageComboBox->findData(language));
+
+    m_languageComboBox->blockSignals(false);
 }
 
 void Window::initialColorSchemeHandler(bool darkModeEnabled)
 {
+    m_lightUiRadioButton->blockSignals(true);
+    m_darkUiRadioButton->blockSignals(true);
+
     if (!darkModeEnabled)
     {
         m_lightUiRadioButton->click();
@@ -343,6 +350,9 @@ void Window::initialColorSchemeHandler(bool darkModeEnabled)
     {
         m_darkUiRadioButton->click();
     }
+
+    m_lightUiRadioButton->blockSignals(false);
+    m_darkUiRadioButton->blockSignals(false);
 }
 
 void Window::subDescriptionReceivedHandler(const SubInfo subInfo)

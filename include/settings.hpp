@@ -25,6 +25,8 @@ public:
 
     void loadInitialSettings();
 
+    void showRestartDialog();
+
 public slots:
     void settingsChangedHandler(int64_t usPaddingLeft,
                                 int64_t usPaddingRight,
@@ -36,6 +38,8 @@ public slots:
     void colorSchemeSettingsChangedHandler(bool darkModeEnabled);
 
 private:
+    bool m_restartNotified;
+
     int64_t m_usPaddingLeft;
     int64_t m_usPaddingRight;
     int64_t m_usOffset;

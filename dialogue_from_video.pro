@@ -17,11 +17,13 @@ SOURCES += \
     src/pipe/pipeline.cpp \
     src/pipe/stage.cpp \
     src/settings.cpp \
+    src/widgets/restartmessagebox.cpp \
     src/widgets/window.cpp
 
 HEADERS += \
     include/application.hpp \
     include/common/console.hpp \
+    include/common/exitcode.hpp \
     include/common/messenger.hpp \
     include/common/singleton.hpp \
     include/fileinfo.hpp \
@@ -29,6 +31,7 @@ HEADERS += \
     include/pipe/pipeline.hpp \
     include/pipe/stage.hpp \
     include/settings.hpp \
+    include/widgets/restartmessagebox.hpp \
     include/widgets/window.hpp
 
 INCLUDEPATH += lib/ffmpeg-6.0-full_build-shared/include

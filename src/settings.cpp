@@ -1,13 +1,14 @@
 #include "../include/settings.hpp"
+#include "../include/widgets/restartmessagebox.hpp"
 
 #include <QApplication>
 #include <QGuiApplication>
-#include <QProcess>
 
 namespace DialogueFromVideo {
 
 Settings::Settings(QObject *parent)
     : Messenger(parent)
+    , m_restartNotified(false)
     , m_usPaddingLeft(0)
     , m_usPaddingRight(0)
     , m_usOffset(0)
@@ -78,6 +79,17 @@ void Settings::loadInitialSettings()
     emit initialColorSchemeSignal(m_darkModeEnabled);
 }
 
+void Settings::showRestartDialog()
+{
+    if (!m_restartNotified)
+    {
+        RestartMessageBox* restartMessageBox = new RestartMessageBox();
+        restartMessageBox->exec();
+
+        m_restartNotified = true;
+    }
+}
+
 void Settings::settingsChangedHandler(int64_t usPaddingLeft,
                                       int64_t usPaddingRight,
                                       int64_t usOffset,
@@ -114,9 +126,7 @@ void Settings::languageSettingsChangedHandler(const QString& language)
     m_settings->setValue("Language", m_uiLanguage);
     m_settings->endGroup();
 
-    // TODO Dialogue window restart
-    QApplication::quit();
-    //QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+    showRestartDialog();
 }
 
 void Settings::colorSchemeSettingsChangedHandler(bool darkModeEnabled)
@@ -128,6 +138,7 @@ void Settings::colorSchemeSettingsChangedHandler(bool darkModeEnabled)
     m_settings->endGroup();
 
     // TODO
+    //showRestartDialog();
 }
 
 } // namespace DialogueFromVideo
