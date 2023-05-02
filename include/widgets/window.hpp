@@ -3,6 +3,7 @@
 #include "../fileinfo.hpp"
 
 #include <QLabel>
+#include <QRadioButton>
 #include <QProgressBar>
 #include <QVBoxLayout>
 #include <QGroupBox>
@@ -30,6 +31,10 @@ public slots:
                                 int64_t usOffset,
                                 int64_t usMerge);
 
+    void initialLanguageHandler(const QString& language);
+
+    void initialColorSchemeHandler(bool darkModeEnabled);
+
     void subDescriptionReceivedHandler(const SubInfo subInfo); // Receive selected subtitle description copy
 
     void audioDescriptionReceivedHandler(const AudioInfo audioInfo); // Receive selected audio description copy
@@ -47,6 +52,9 @@ private:
     QComboBox* m_subComboBox;
     QComboBox* m_audioComboBox;
     QComboBox* m_languageComboBox;
+
+    QRadioButton* m_lightUiRadioButton;
+    QRadioButton* m_darkUiRadioButton;
 
     QLabel* m_subDescriptionLabel;
     QLabel* m_audioDescriptionLabel;
@@ -76,6 +84,8 @@ signals:
                              int64_t usMerge);
 
     void languageSettingsChangedSignal(const QString& language);
+
+    void colorSchemeSettingsChangedSignal(bool darkModeEnabled);
 
     void subDescriptionRequestedSignal(const QString& index); // Request sub description copy
 

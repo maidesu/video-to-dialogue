@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QGuiApplication>
+#include <QProcess>
 
 namespace DialogueFromVideo {
 
@@ -18,11 +19,13 @@ Settings::Settings(QObject *parent)
                                QGuiApplication::applicationName().replace(" ", ""),
                                "settings"))
 {
-    // Ui settings
+    // Ui language settings
     m_settings->beginGroup("UX");
     m_uiLanguage = m_settings->value("Language", "en_US").toString();
+    m_settings->setValue("Language", m_uiLanguage); // Write language setting asap
     m_settings->endGroup();
 
+    // Install translator
     m_translator = new QTranslator();
 
     if (m_translator->load(":/i18n/" + m_uiLanguage))
@@ -31,7 +34,7 @@ Settings::Settings(QObject *parent)
     }
     else
     {
-        assert(false);
+        QApplication::quit();
     }
 }
 
@@ -69,6 +72,10 @@ void Settings::loadInitialSettings()
                                m_usPaddingRight,
                                m_usOffset,
                                m_usMerge);
+
+    emit initialLanguageSignal(m_uiLanguage);
+
+    emit initialColorSchemeSignal(m_darkModeEnabled);
 }
 
 void Settings::settingsChangedHandler(int64_t usPaddingLeft,
@@ -107,18 +114,20 @@ void Settings::languageSettingsChangedHandler(const QString& language)
     m_settings->setValue("Language", m_uiLanguage);
     m_settings->endGroup();
 
+    // TODO Dialogue window restart
+    QApplication::quit();
+    //QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
 
+void Settings::colorSchemeSettingsChangedHandler(bool darkModeEnabled)
+{
+    m_darkModeEnabled = darkModeEnabled;
 
-//    QApplication::removeTranslator(m_translator);
+    m_settings->beginGroup("UX");
+    m_settings->setValue("DarkMode", m_darkModeEnabled);
+    m_settings->endGroup();
 
-//    if (m_translator->load(":/i18n/" + m_uiLanguage))
-//    {
-//        QApplication::installTranslator(m_translator);
-//    }
-//    else
-//    {
-//        assert(false);
-//    }
+    // TODO
 }
 
 } // namespace DialogueFromVideo

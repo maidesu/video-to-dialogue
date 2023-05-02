@@ -33,6 +33,8 @@ public slots:
 
     void languageSettingsChangedHandler(const QString& language);
 
+    void colorSchemeSettingsChangedHandler(bool darkModeEnabled);
+
 private:
     int64_t m_usPaddingLeft;
     int64_t m_usPaddingRight;
@@ -50,6 +52,10 @@ signals:
                                int64_t usPaddingRight,
                                int64_t usOffset,
                                int64_t usMerge);
+
+    void initialLanguageSignal(const QString& language);
+
+    void initialColorSchemeSignal(bool darkModeEnabled);
 };
 
 } // namespace DialogueFromVideo

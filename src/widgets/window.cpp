@@ -3,7 +3,6 @@
 #include "../../include/common/console.hpp"
 
 #include <QLabel>
-#include <QRadioButton>
 #include <QSplitter>
 #include <QTabWidget>
 
@@ -19,6 +18,8 @@ Window::Window(QWidget *parent)
     , m_subComboBox(new QComboBox())
     , m_audioComboBox(new QComboBox())
     , m_languageComboBox(new QComboBox())
+    , m_lightUiRadioButton(new QRadioButton(tr("Light")))
+    , m_darkUiRadioButton(new QRadioButton(tr("Dark")))
     , m_subDescriptionLabel(new QLabel())
     , m_audioDescriptionLabel(new QLabel())
     , m_subLayerSpinBox(new QSpinBox())
@@ -139,14 +140,9 @@ Window::Window(QWidget *parent)
     textEditButtonsContainerLayout->addWidget(m_exportSubtitleButton);
     textEditButtonsContainerLayout->addWidget(m_exportPictureCollectionButton);
 
-    // Languages TODO
-    m_languageComboBox->addItem("English");
-
-    // UI mode TODO
-    QRadioButton* lightUiRadioButton = new QRadioButton(tr("Light"));
-    QRadioButton* darkUiRadioButton = new QRadioButton(tr("Dark"));
-
-    lightUiRadioButton->click();
+    // Languages
+    m_languageComboBox->addItem("English", "en_US");
+    m_languageComboBox->addItem("Magyar", "hu_HU");
 
     // Tabs
     QTabWidget* tabWidget = new QTabWidget();
@@ -183,8 +179,8 @@ Window::Window(QWidget *parent)
     settingsContainerLayout->addWidget(new QLabel(tr("Language")));
     settingsContainerLayout->addWidget(m_languageComboBox);
     settingsContainerLayout->addWidget(new QLabel(tr("UI mode")));
-    settingsContainerLayout->addWidget(lightUiRadioButton);
-    settingsContainerLayout->addWidget(darkUiRadioButton);
+    settingsContainerLayout->addWidget(m_lightUiRadioButton);
+    settingsContainerLayout->addWidget(m_darkUiRadioButton);
 
     // Tabs: Final
     tabWidget->addTab(fileContainer, tr("File"));
@@ -235,6 +231,32 @@ Window::Window(QWidget *parent)
             &QComboBox::currentTextChanged,
             this,
             &Window::audioDescriptionRequestedSignal);
+
+    connect(m_languageComboBox,
+            &QComboBox::currentIndexChanged,
+            this,
+            [this](int index)
+            {
+                emit Window::languageSettingsChangedSignal(m_languageComboBox
+                                                                ->itemData(index)
+                                                                .toString());
+            });
+
+    connect(m_lightUiRadioButton,
+            &QRadioButton::clicked,
+            this,
+            [this]()
+            {
+                emit Window::colorSchemeSettingsChangedSignal(false);
+            });
+
+    connect(m_darkUiRadioButton,
+            &QRadioButton::clicked,
+            this,
+            [this]()
+            {
+                emit Window::colorSchemeSettingsChangedSignal(true);
+            });
 }
 
 void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStreams,
@@ -304,6 +326,23 @@ void Window::initialSettingsHandler(int64_t usPaddingLeft,
     m_subPaddingRightSpinBox->setValue(static_cast<int>(usPaddingRight / 1000));
     m_subOffsetSpinBox->setValue(static_cast<int>(usOffset / 1000));
     m_subMergeSpinBox->setValue(static_cast<int>(usMerge / 1000));
+}
+
+void Window::initialLanguageHandler(const QString& language)
+{
+    m_languageComboBox->setCurrentIndex(m_languageComboBox->findData(language));
+}
+
+void Window::initialColorSchemeHandler(bool darkModeEnabled)
+{
+    if (!darkModeEnabled)
+    {
+        m_lightUiRadioButton->click();
+    }
+    else
+    {
+        m_darkUiRadioButton->click();
+    }
 }
 
 void Window::subDescriptionReceivedHandler(const SubInfo subInfo)
