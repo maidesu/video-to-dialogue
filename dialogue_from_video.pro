@@ -31,6 +31,9 @@ HEADERS += \
     include/pipe/pipeline.hpp \
     include/pipe/stage.hpp \
     include/settings.hpp \
+    include/widgets/palettes/colors.hpp \
+    include/widgets/palettes/darkpalette.hpp \
+    include/widgets/palettes/lightpalette.hpp \
     include/widgets/restartmessagebox.hpp \
     include/widgets/window.hpp
 

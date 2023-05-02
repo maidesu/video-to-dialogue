@@ -1,5 +1,8 @@
 #include "../include/settings.hpp"
+
 #include "../include/widgets/restartmessagebox.hpp"
+#include "../include/widgets/palettes/darkpalette.hpp"
+#include "../include/widgets/palettes/lightpalette.hpp"
 
 #include <QApplication>
 #include <QGuiApplication>
@@ -20,6 +23,15 @@ Settings::Settings(QObject *parent)
                                QGuiApplication::applicationName().replace(" ", ""),
                                "settings"))
 {
+    // Ui style
+    QApplication::setStyle("fusion");
+
+    m_settings->beginGroup("UX");
+    m_darkModeEnabled = m_settings->value("DarkMode", "false").toBool();
+    m_settings->endGroup();
+
+    colorSchemeSettingsChangedHandler(m_darkModeEnabled);
+
     // Ui language settings
     m_settings->beginGroup("UX");
     m_uiLanguage = m_settings->value("Language", "en_US").toString();
@@ -137,8 +149,14 @@ void Settings::colorSchemeSettingsChangedHandler(bool darkModeEnabled)
     m_settings->setValue("DarkMode", m_darkModeEnabled);
     m_settings->endGroup();
 
-    // TODO
-    //showRestartDialog();
+    if (!darkModeEnabled)
+    {
+        QApplication::setPalette(DialogueFromVideo::Palettes::createLightPalette());
+    }
+    else
+    {
+        QApplication::setPalette(DialogueFromVideo::Palettes::createDarkPalette());
+    }
 }
 
 } // namespace DialogueFromVideo
