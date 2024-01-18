@@ -18,7 +18,8 @@ SOURCES += \
     src/pipe/stage.cpp \
     src/settings.cpp \
     src/widgets/restartmessagebox.cpp \
-    src/widgets/window.cpp
+    src/widgets/window.cpp \
+    src/file/open.cpp
 
 HEADERS += \
     include/application.hpp \
@@ -35,7 +36,8 @@ HEADERS += \
     include/widgets/palettes/darkpalette.hpp \
     include/widgets/palettes/lightpalette.hpp \
     include/widgets/restartmessagebox.hpp \
-    include/widgets/window.hpp
+    include/widgets/window.hpp \
+    include/file/open.hpp
 
 INCLUDEPATH += lib/ffmpeg-6.0-full_build-shared/include
 

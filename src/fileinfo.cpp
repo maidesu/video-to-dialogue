@@ -13,12 +13,19 @@ FileInfo::FileInfo(QObject *parent)
     , m_selectedSubIndex(-1)
     , m_selectedSubLayerIndex(-1)
     , m_selectedAudioIndex(-1)
+    , m_file(nullptr)
 {
 
 }
 
 FileInfo::~FileInfo()
 {
+    if (m_file != nullptr)
+    {
+        delete m_file;
+        m_file = nullptr;
+    }
+
     for (SubInfo* si : m_subStreams)
     {
         delete si;
@@ -170,36 +177,19 @@ bool FileInfo::openFile()
 
 bool FileInfo::getFileInfoFfmpeg()
 {
-    AVFormatContext* formatContext = NULL;
+    FileInfo::clearStreamInfo();
 
-    int res = avformat_open_input(&formatContext, m_path, NULL, NULL);
-    if (res < 0)
+    if (m_file != nullptr)
     {
-        avformat_close_input(&formatContext);
-        emit print(tr("Failed to open file path!"), "FileInfo", MessageLevel::Error);
-
-        return false;
+        delete m_file;
+        m_file = nullptr;
     }
+    m_file = new File::Open(m_path);
 
-    emit print(tr("Successfully opened file!"), "FileInfo", MessageLevel::Info);
-
-    if (avformat_find_stream_info(formatContext, nullptr) < 0) {
-        emit print(tr("Failed to fill in missing stream information!"), "FileInfo", MessageLevel::Warning);
-    }
-
-    // At this point we drop all content from before
-    while (!m_subStreams.isEmpty())
-    {
-        delete m_subStreams.takeLast();
-    }
-    while (!m_audioStreams.isEmpty())
-    {
-        delete m_audioStreams.takeLast();
-    }
 
     AVStream* stream = nullptr;
-    for (uint i = 0; i < formatContext->nb_streams; ++i) {
-        stream = formatContext->streams[i];
+    for (uint i = 0; i < m_file->getStreamCount(); ++i) {
+        stream = m_file->getStream(i);
 
         if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
             SubInfo* si = new SubInfo();
@@ -257,8 +247,6 @@ bool FileInfo::getFileInfoFfmpeg()
         }
     }
 
-    avformat_close_input(&formatContext);
-
     emit print(tr("Found a total of %1 subtitle and %2 audio streams")
                    .arg(QString::number(m_subStreams.count()),
                         QString::number(m_audioStreams.count())),
@@ -278,6 +266,18 @@ bool FileInfo::getFileInfoFfmpeg()
     emit fileChanged(m_subStreams, m_audioStreams);
 
     return true;
+}
+
+void FileInfo::clearStreamInfo()
+{
+    while (!m_subStreams.isEmpty())
+    {
+        delete m_subStreams.takeLast();
+    }
+    while (!m_audioStreams.isEmpty())
+    {
+        delete m_audioStreams.takeLast();
+    }
 }
 
 } // namespace DialogueFromVideo

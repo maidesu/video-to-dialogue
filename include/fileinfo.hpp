@@ -1,5 +1,6 @@
 #pragma once
 
+#include "file/open.hpp"
 #include "common/messenger.hpp"
 
 extern "C" {
@@ -59,6 +60,7 @@ public slots:
 private:
     bool openFile();
     bool getFileInfoFfmpeg();
+    void clearStreamInfo();
 
     const char* m_path;
     int m_selectedSubIndex;
@@ -67,6 +69,8 @@ private:
 
     QList<SubInfo*> m_subStreams;
     QList<AudioInfo*> m_audioStreams;
+
+    File::Open* m_file;
 
 signals:
     void fileChanged(const QList<DialogueFromVideo::SubInfo*>& subStreams,
