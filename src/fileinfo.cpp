@@ -185,7 +185,7 @@ bool FileInfo::getFileInfoFfmpeg()
         m_file = nullptr;
     }
     m_file = new File::Read(m_path);
-
+    // FileInfo always validates File
 
     AVStream* stream = nullptr;
     for (uint i = 0; i < m_file->getStreamCount(); ++i) {

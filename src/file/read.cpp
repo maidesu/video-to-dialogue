@@ -11,15 +11,15 @@ Read::Read(const char* path)
     if (m_result < 0)
     {
         avformat_close_input(&m_formatContext);
-        emit print(tr("Failed to open file path!"), "File::Open", MessageLevel::Error);
+        emit print(tr("Failed to open file path!"), "File::Read", MessageLevel::Error);
 
         return;
     }
 
-    emit print(tr("Successfully opened file!"), "File::Open", MessageLevel::Info);
+    emit print(tr("Successfully opened file!"), "File::Read", MessageLevel::Info);
 
     if (avformat_find_stream_info(m_formatContext, nullptr) < 0) {
-        emit print(tr("Failed to fill in missing stream information!"), "File::Open", MessageLevel::Warning);
+        emit print(tr("Failed to fill in missing stream information!"), "File::Read", MessageLevel::Warning);
     }
 }
 
