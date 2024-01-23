@@ -25,6 +25,7 @@ Application::Application()
                      &m_window,
                      &Window::initialColorSchemeHandler);
 
+
     // Send settings to Settings
     QObject::connect(&m_window,
                      &Window::applySettingsSignal,
@@ -42,6 +43,7 @@ Application::Application()
                      &Window::colorSchemeSettingsChangedSignal,
                      &m_settings,
                      &Settings::colorSchemeSettingsChangedHandler);
+
 
     // Ask fileinfo to open file from window
     QObject::connect(&m_window,
@@ -66,6 +68,7 @@ Application::Application()
                      &Window::audioDescriptionRequestedSignal,
                      &m_fileinfo,
                      &FileInfo::audioDescriptionRequestedHandler);
+
 
     // Currently only used to fill ComboBoxes with id's
     QObject::connect(&m_fileinfo,
