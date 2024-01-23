@@ -72,7 +72,7 @@ Application::Application()
 
     // Currently only used to fill ComboBoxes with id's
     QObject::connect(&m_fileinfo,
-                     &FileInfo::fileChanged,
+                     &FileInfo::fileChangedSignal,
                      &m_window,
                      &Window::fileChangedHandler);
 
@@ -87,6 +87,20 @@ Application::Application()
                      &FileInfo::audioDescriptionReceivedSignal,
                      &m_window,
                      &Window::audioDescriptionReceivedHandler);
+
+
+    // FileInfo requests Subtitle after validation
+    QObject::connect(&m_fileinfo,
+                     &FileInfo::subtitleRequestedSignal,
+                     &m_subtitle,
+                     &Subtitle::subtitleRequestedHandler);
+
+
+    // Extracted subtitle sent to window
+    QObject::connect(&m_subtitle,
+                     &Subtitle::subtitleExtractedSignal,
+                     &m_window,
+                     &Window::subtitleExtractedHandler);
 }
 
 void Application::run()

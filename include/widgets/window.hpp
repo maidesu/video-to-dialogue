@@ -1,5 +1,6 @@
 #pragma once
 
+#include <subtitle/subtitle.hpp>
 #include <fileinfo.hpp>
 
 #include <QLabel>
@@ -38,6 +39,8 @@ public slots:
     void subDescriptionReceivedHandler(const SubInfo subInfo); // Receive selected subtitle description copy
 
     void audioDescriptionReceivedHandler(const AudioInfo audioInfo); // Receive selected audio description copy
+
+    void subtitleExtractedHandler(const QList<DialogueFromVideo::SubEntry*>& subs);
 
 private:
     Messenger m_windowMessenger;

@@ -7,7 +7,7 @@ extern "C" {
 
 namespace DialogueFromVideo {
 
-FileInfo::FileInfo(QObject *parent)
+FileInfo::FileInfo(QObject* parent)
     : Messenger(parent)
     , m_path(nullptr)
     , m_selectedSubIndex(-1)
@@ -97,6 +97,10 @@ void FileInfo::subLayerRequestedHandler(const QString& index)
     emit print(tr("Selected subtitle layer %1").arg(QString::number(idx)),
                "FileInfo",
                MessageLevel::Info);
+
+    emit subtitleRequestedSignal(m_file,
+                                 m_selectedSubIndex,
+                                 m_selectedSubLayerIndex);
 }
 
 void FileInfo::audioDescriptionRequestedHandler(const QString& index)
@@ -129,6 +133,9 @@ void FileInfo::audioDescriptionRequestedHandler(const QString& index)
                        MessageLevel::Info);
 
             emit audioDescriptionReceivedSignal(AudioInfo(*ai)); // Call to default copy ctor
+            emit subtitleRequestedSignal(m_file,
+                                         m_selectedSubIndex,
+                                         m_selectedSubLayerIndex);
             return;
         }
     }
@@ -263,7 +270,7 @@ bool FileInfo::getFileInfoFfmpeg()
         emit print(tr("This file contains no audio!"), "FileInfo", MessageLevel::Warning);
     }
 
-    emit fileChanged(m_subStreams, m_audioStreams);
+    emit fileChangedSignal(m_subStreams, m_audioStreams);
 
     return true;
 }

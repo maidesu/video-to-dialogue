@@ -1,6 +1,7 @@
 #pragma once
 
 #include <file/read.hpp>
+#include <common/messenger.hpp>
 
 #include <QString>
 #include <QList>
@@ -14,21 +15,24 @@ struct SubEntry
     QString text;
 };
 
-class Subtitle
+class Subtitle : public Messenger
 {
+    Q_OBJECT
 public:
-    explicit Subtitle() = default;
-    ~Subtitle();
+    explicit Subtitle(QObject* parent = nullptr);
+    virtual ~Subtitle();
 
     Subtitle(const Subtitle&) = delete;
     Subtitle& operator= (const Subtitle&) = delete;
 
 public slots:
-    void extractSubtitle(File::Read* file,
-                         int selectedSubIndex,
-                         int selectedSubLayerIndex);
+    void subtitleRequestedHandler(File::Read* file,
+                                  int selectedSubIndex,
+                                  int selectedSubLayerIndex);
 
 private:
+    void clearSubs();
+
     QList<SubEntry*> m_subs;
 
 signals:

@@ -10,7 +10,7 @@ namespace DialogueFromVideo {
 class Application
 {
 public:
-    Application();
+    explicit Application();
 
     ~Application() = default;
 

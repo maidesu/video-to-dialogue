@@ -399,4 +399,26 @@ void Window::audioDescriptionReceivedHandler(const AudioInfo audioInfo)
                                               audioInfo.codec_name));
 }
 
+void Window::subtitleExtractedHandler(const QList<DialogueFromVideo::SubEntry*>& subs)
+{
+    emit m_windowMessenger.print(QString("Subtitle content received"),
+                                 "Window",
+                                 MessageLevel::Debug);
+
+    m_subTextEdit->clear();
+
+    if (subs.isEmpty())
+    {
+        m_subTextEdit->insertPlainText("<no subtitle loaded>");
+    }
+
+    for (SubEntry* sub : subs)
+    {
+        m_subTextEdit->insertPlainText(QString("%1 -> %2\n%3\n")
+                                           .arg(QString::number(sub->start),
+                                                QString::number(sub->end),
+                                                sub->text)); // TODO: 00:00:00.00 format or something
+    }
+}
+
 } // namespace DialogueFromVideo

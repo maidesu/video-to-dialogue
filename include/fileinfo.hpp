@@ -73,12 +73,16 @@ private:
     File::Read* m_file;
 
 signals:
-    void fileChanged(const QList<DialogueFromVideo::SubInfo*>& subStreams,
-                     const QList<DialogueFromVideo::AudioInfo*>& audioStreams);
+    void fileChangedSignal(const QList<DialogueFromVideo::SubInfo*>& subStreams,
+                           const QList<DialogueFromVideo::AudioInfo*>& audioStreams);
 
     void subDescriptionReceivedSignal(const SubInfo subInfo);
 
     void audioDescriptionReceivedSignal(const AudioInfo audioInfo);
+
+    void subtitleRequestedSignal(File::Read* file,
+                                 int selectedSubIndex,
+                                 int selectedSubLayerIndex);
 };
 
 } // namespace DialogueFromVideo
