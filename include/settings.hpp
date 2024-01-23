@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/messenger.hpp"
+#include <common/messenger.hpp>
 
 #include <QTranslator>
 #include <QSettings>

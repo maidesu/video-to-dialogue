@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../common/messenger.hpp"
+#include <common/messenger.hpp>
 
 extern "C" {
 #include <libavformat/avformat.h>
@@ -11,7 +11,6 @@ namespace DialogueFromVideo::File {
 class Open : public Messenger
 {
     Q_OBJECT
-
 public:
     explicit Open(const char* path);
     ~Open();

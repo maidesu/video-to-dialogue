@@ -1,8 +1,8 @@
-#include "../include/settings.hpp"
+#include <settings.hpp>
 
-#include "../include/widgets/restartmessagebox.hpp"
-#include "../include/widgets/palettes/darkpalette.hpp"
-#include "../include/widgets/palettes/lightpalette.hpp"
+#include <widgets/restartmessagebox.hpp>
+#include <widgets/palettes/darkpalette.hpp>
+#include <widgets/palettes/lightpalette.hpp>
 
 #include <QApplication>
 #include <QGuiApplication>

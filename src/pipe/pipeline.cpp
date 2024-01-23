@@ -1,4 +1,4 @@
-#include "../../include/pipe/pipeline.hpp"
+#include <pipe/pipeline.hpp>
 
 namespace DialogueFromVideo {
 

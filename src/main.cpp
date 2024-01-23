@@ -1,5 +1,5 @@
-#include "../include/common/exitcode.hpp"
-#include "../include/application.hpp"
+#include <common/exitcode.hpp>
+#include <application.hpp>
 
 #include <QLocale>
 #include <QTranslator>

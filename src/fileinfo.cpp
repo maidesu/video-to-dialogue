@@ -1,4 +1,4 @@
-#include "../include/fileinfo.hpp"
+#include <fileinfo.hpp>
 
 extern "C" {
 #include <libavcodec/avcodec.h>

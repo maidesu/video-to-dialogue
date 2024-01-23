@@ -1,4 +1,4 @@
-#include "../../include/file/open.hpp"
+#include <file/open.hpp>
 
 namespace DialogueFromVideo::File {
 

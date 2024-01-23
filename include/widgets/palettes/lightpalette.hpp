@@ -1,6 +1,6 @@
 #pragma once
 
-#include "colors.hpp"
+#include <widgets/palettes/colors.hpp>
 
 #include <QPalette>
 

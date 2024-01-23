@@ -1,6 +1,6 @@
-#include "../../include/widgets/restartmessagebox.hpp"
+#include <widgets/restartmessagebox.hpp>
 
-#include "../../include/common/exitcode.hpp"
+#include <common/exitcode.hpp>
 
 #include <QLabel>
 #include <QVBoxLayout>

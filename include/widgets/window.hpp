@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../fileinfo.hpp"
+#include <fileinfo.hpp>
 
 #include <QLabel>
 #include <QRadioButton>

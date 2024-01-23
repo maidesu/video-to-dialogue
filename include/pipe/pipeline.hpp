@@ -1,7 +1,8 @@
 #pragma once
 
-#include "pipe.hpp"
-#include "../common/singleton.hpp"
+#include <pipe/pipe.hpp>
+
+#include <common/singleton.hpp>
 
 namespace DialogueFromVideo {
 

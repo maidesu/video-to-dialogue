@@ -1,8 +1,9 @@
 #pragma once
 
-#include "include/common/messenger.hpp"
+#include <file/open.hpp>
 
 #include <QString>
+#include <QList>
 
 namespace DialogueFromVideo {
 
@@ -13,22 +14,23 @@ struct SubEntry
     QString text;
 };
 
-class Subtitle : public Messenger
+class Subtitle
 {
-    Q_OBJECT
 public:
-    explicit Subtitle(QObject *parent = nullptr);
+    explicit Subtitle() = default;
     ~Subtitle() = default;
 
     Subtitle(const Subtitle&) = delete;
     Subtitle& operator= (const Subtitle&) = delete;
 
-    void extract(const char* path,
-                 int selectedSubIndex,
-                 int selectedSubLayerIndex);
+    bool extractSubtitle();
 
 private:
     QList<SubEntry> m_subs;
+    File::Open* m_file;
+
+signals:
+    void subtitleExtractedSignal(); // TODO signal
 };
 
 } // namespace DialogueFromVideo

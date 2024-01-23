@@ -1,6 +1,6 @@
-#include "../../include/widgets/window.hpp"
+#include <widgets/window.hpp>
 
-#include "../../include/common/console.hpp"
+#include <common/console.hpp>
 
 #include <QLabel>
 #include <QSplitter>

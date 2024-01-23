@@ -41,7 +41,9 @@ HEADERS += \
     include/file/open.hpp \
     include/subtitle/subtitle.hpp
 
-INCLUDEPATH += lib/ffmpeg-6.0-full_build-shared/include
+INCLUDEPATH += \
+    include \
+    lib/ffmpeg-6.0-full_build-shared/include
 
 LIBS += \
     -L"$$PWD/lib/ffmpeg-6.0-full_build-shared/lib"

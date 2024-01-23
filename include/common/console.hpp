@@ -1,6 +1,6 @@
 #pragma once
 
-#include "singleton.hpp"
+#include <common/singleton.hpp>
 
 #include <QString>
 #include <QScrollBar>

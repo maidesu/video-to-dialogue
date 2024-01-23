@@ -1,6 +1,6 @@
 #pragma once
 
-#include "console.hpp"
+#include <common/console.hpp>
 
 #include <QObject>
 
