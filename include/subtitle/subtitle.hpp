@@ -18,19 +18,21 @@ class Subtitle
 {
 public:
     explicit Subtitle() = default;
-    ~Subtitle() = default;
+    ~Subtitle();
 
     Subtitle(const Subtitle&) = delete;
     Subtitle& operator= (const Subtitle&) = delete;
 
-    bool extractSubtitle();
+public slots:
+    void extractSubtitle(File::Read* file,
+                         int selectedSubIndex,
+                         int selectedSubLayerIndex);
 
 private:
-    QList<SubEntry> m_subs;
-    File::Read* m_file;
+    QList<SubEntry*> m_subs;
 
 signals:
-    void subtitleExtractedSignal(); // TODO signal
+    void subtitleExtractedSignal(const QList<DialogueFromVideo::SubEntry*>& subs);
 };
 
 } // namespace DialogueFromVideo

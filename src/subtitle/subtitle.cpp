@@ -2,13 +2,22 @@
 
 namespace DialogueFromVideo {
 
-bool Subtitle::extractSubtitle()
+Subtitle::~Subtitle()
 {
-    //AVStream* subStream = m_file->getStream(m_selectedSubIndex);
+    for (SubEntry* se : m_subs)
+    {
+        delete se;
+    }
+}
 
-    // TODO read sub
+void Subtitle::extractSubtitle(File::Read* file,
+                               int selectedSubIndex,
+                               int selectedSubLayerIndex)
+{
+    AVStream* subStream = file->getStream(selectedSubIndex);
 
-    return true;
+    (void)subStream;
+    (void)selectedSubLayerIndex;
 }
 
 } // namespace DialogueFromVideo
