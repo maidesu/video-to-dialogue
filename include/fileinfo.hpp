@@ -1,6 +1,6 @@
 #pragma once
 
-#include <file/open.hpp>
+#include <file/read.hpp>
 #include <common/messenger.hpp>
 
 extern "C" {
@@ -70,7 +70,7 @@ private:
     QList<SubInfo*> m_subStreams;
     QList<AudioInfo*> m_audioStreams;
 
-    File::Open* m_file;
+    File::Read* m_file;
 
 signals:
     void fileChanged(const QList<DialogueFromVideo::SubInfo*>& subStreams,

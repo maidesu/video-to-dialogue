@@ -8,15 +8,15 @@ extern "C" {
 
 namespace DialogueFromVideo::File {
 
-class Open : public Messenger
+class Read : public Messenger
 {
     Q_OBJECT
 public:
-    explicit Open(const char* path);
-    ~Open();
+    explicit Read(const char* path);
+    ~Read();
 
-    Open(Open&) = delete;
-    Open& operator= (const Open&) = delete;
+    Read(Read&) = delete;
+    Read& operator= (const Read&) = delete;
 
     AVStream* getStream(unsigned int index);
 

@@ -184,7 +184,7 @@ bool FileInfo::getFileInfoFfmpeg()
         delete m_file;
         m_file = nullptr;
     }
-    m_file = new File::Open(m_path);
+    m_file = new File::Read(m_path);
 
 
     AVStream* stream = nullptr;

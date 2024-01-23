@@ -1,8 +1,8 @@
-#include <file/open.hpp>
+#include <file/read.hpp>
 
 namespace DialogueFromVideo::File {
 
-Open::Open(const char* path)
+Read::Read(const char* path)
     : m_formatContext(NULL)
     , m_result(0)
 {
@@ -23,7 +23,7 @@ Open::Open(const char* path)
     }
 }
 
-Open::~Open()
+Read::~Read()
 {
     // >= 0 for no errors occured
     if (m_result >= 0)
@@ -32,7 +32,7 @@ Open::~Open()
     }
 }
 
-AVStream* Open::getStream(unsigned int index)
+AVStream* Read::getStream(unsigned int index)
 {
     if (m_result >= 0 && index < m_formatContext->nb_streams)
     {
@@ -42,7 +42,7 @@ AVStream* Open::getStream(unsigned int index)
     return NULL;
 }
 
-uint Open::getStreamCount()
+uint Read::getStreamCount()
 {
     if (m_result >= 0)
     {

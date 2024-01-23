@@ -1,6 +1,6 @@
 #pragma once
 
-#include <file/open.hpp>
+#include <file/read.hpp>
 
 #include <QString>
 #include <QList>
@@ -27,7 +27,7 @@ public:
 
 private:
     QList<SubEntry> m_subs;
-    File::Open* m_file;
+    File::Read* m_file;
 
 signals:
     void subtitleExtractedSignal(); // TODO signal

@@ -12,6 +12,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 SOURCES += \
     src/application.cpp \
+    src/file/read.cpp \
     src/fileinfo.cpp \
     src/main.cpp \
     src/pipe/pipeline.cpp \
@@ -19,7 +20,6 @@ SOURCES += \
     src/settings.cpp \
     src/widgets/restartmessagebox.cpp \
     src/widgets/window.cpp \
-    src/file/open.cpp \
     src/subtitle/subtitle.cpp
 
 HEADERS += \
@@ -28,6 +28,7 @@ HEADERS += \
     include/common/exitcode.hpp \
     include/common/messenger.hpp \
     include/common/singleton.hpp \
+    include/file/read.hpp \
     include/fileinfo.hpp \
     include/pipe/pipe.hpp \
     include/pipe/pipeline.hpp \
@@ -38,7 +39,6 @@ HEADERS += \
     include/widgets/palettes/lightpalette.hpp \
     include/widgets/restartmessagebox.hpp \
     include/widgets/window.hpp \
-    include/file/open.hpp \
     include/subtitle/subtitle.hpp
 
 INCLUDEPATH += \
