@@ -61,11 +61,16 @@ void FileInfo::subDescriptionRequestedHandler(const QString& index)
         {
             m_selectedSubIndex = idx;
 
-            emit print(tr("Selected subtitle stream %1").arg(QString::number(idx)),
+            emit print(tr("Selected subtitle stream %1").arg(QString::number(m_selectedSubIndex)),
                        "FileInfo",
                        MessageLevel::Info);
 
             emit subDescriptionReceivedSignal(SubInfo(*si)); // Call to default copy ctor
+
+            emit subtitleRequestedSignal(m_file,
+                                         m_selectedSubIndex,
+                                         m_selectedSubLayerIndex);
+
             return;
         }
     }
@@ -94,7 +99,7 @@ void FileInfo::subLayerRequestedHandler(const QString& index)
 
     m_selectedSubLayerIndex = idx;
 
-    emit print(tr("Selected subtitle layer %1").arg(QString::number(idx)),
+    emit print(tr("Selected subtitle layer %1").arg(QString::number(m_selectedSubLayerIndex)),
                "FileInfo",
                MessageLevel::Info);
 
@@ -128,14 +133,19 @@ void FileInfo::audioDescriptionRequestedHandler(const QString& index)
         {
             m_selectedAudioIndex = idx;
 
-            emit print(tr("Selected audio stream %1").arg(QString::number(idx)),
+            emit print(tr("Selected audio stream %1").arg(QString::number(m_selectedAudioIndex)),
                        "FileInfo",
                        MessageLevel::Info);
 
             emit audioDescriptionReceivedSignal(AudioInfo(*ai)); // Call to default copy ctor
-            emit subtitleRequestedSignal(m_file,
-                                         m_selectedSubIndex,
-                                         m_selectedSubLayerIndex);
+
+            if (m_selectedSubIndex >= 0)
+            {
+                emit subtitleRequestedSignal(m_file,
+                                             m_selectedSubIndex,
+                                             m_selectedSubLayerIndex);
+            }
+
             return;
         }
     }
@@ -191,10 +201,9 @@ bool FileInfo::getFileInfoFfmpeg()
         delete m_file;
         m_file = nullptr;
     }
-    m_file = new File::Read(m_path);
-    // FileInfo always validates File
+    m_file = new File::Read(m_path); // FileInfo always validates File
 
-    AVStream* stream = nullptr;
+    AVStream* stream;
     for (uint i = 0; i < m_file->getStreamCount(); ++i) {
         stream = m_file->getStream(i);
 
@@ -277,6 +286,10 @@ bool FileInfo::getFileInfoFfmpeg()
 
 void FileInfo::clearStreamInfo()
 {
+    m_selectedSubIndex = -1;
+    m_selectedSubLayerIndex = -1;
+    m_selectedAudioIndex = -1;
+
     while (!m_subStreams.isEmpty())
     {
         delete m_subStreams.takeLast();
