@@ -4,6 +4,7 @@
 
 extern "C" {
 #include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
 }
 
 namespace DialogueFromVideo::File {
@@ -17,6 +18,9 @@ public:
 
     Read(Read&) = delete;
     Read& operator= (const Read&) = delete;
+
+
+    AVFormatContext* getContext();
 
     AVStream* getStream(unsigned int index);
 

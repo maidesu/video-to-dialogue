@@ -6,7 +6,6 @@ Read::Read(const char* path)
     : m_formatContext(NULL)
     , m_result(0)
 {
-
     m_result = avformat_open_input(&m_formatContext, path, NULL, NULL);
     if (m_result < 0)
     {
@@ -30,6 +29,16 @@ Read::~Read()
     {
         avformat_close_input(&m_formatContext);
     }
+}
+
+AVFormatContext* Read::getContext()
+{
+    if (m_result >= 0)
+    {
+        return m_formatContext;
+    }
+
+    return NULL;
 }
 
 AVStream* Read::getStream(unsigned int index)
