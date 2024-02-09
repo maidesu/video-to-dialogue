@@ -3,6 +3,8 @@
 #include <common/singleton.hpp>
 
 #include <QString>
+#include <QVector>
+#include <QList>
 #include <QScrollBar>
 #include <QTextEdit>
 
@@ -14,6 +16,13 @@ enum class MessageLevel
     Info,
     Warning,
     Error
+};
+
+struct Message
+{
+    QString msg;
+    QString id;
+    MessageLevel level;
 };
 
 class Console : public QObject, public Singleton<Console>
@@ -38,24 +47,7 @@ public:
 public slots:
     void printHandler(const QString &msg,
                       const QString &id,
-                      const DialogueFromVideo::MessageLevel level) const
-    {
-        print(msg, id, level);
-    }
-    void clearHandler() const { clear(); }
-
-private:
-    Console(QObject *parent = nullptr)
-        : QObject(parent)
-        , m_textEdit(new QTextEdit()) // Expects QWidget which we are not
-    {
-        m_textEdit->setReadOnly(true);
-        m_textEdit->setStyleSheet("background-color: black;");
-    }
-
-    void print(const QString &msg,
-               const QString &id,
-               const DialogueFromVideo::MessageLevel level) const
+                      const DialogueFromVideo::MessageLevel level)
     {
 #ifndef QT_DEBUG
         if (level == MessageLevel::Debug)
@@ -63,6 +55,58 @@ private:
             return;
         }
 #endif
+
+        if (level >= m_filterLevel)
+        {
+            printConsole(msg, id, level);
+        }
+
+        m_messageVec.push_back({ QString{msg},
+                                 QString{id},
+                                 MessageLevel{level} });
+    }
+
+    void filterHandler(const DialogueFromVideo::MessageLevel level)
+    {
+        clearConsole();
+
+        m_filterLevel = MessageLevel{level};
+
+        for (const Message& m : m_messageVec)
+        {
+            if (m.level >= m_filterLevel)
+            {
+                printConsole(m);
+            }
+        }
+    }
+
+    void clearHandler()
+    {
+        clearConsole();
+
+        m_messageVec.clear();
+    }
+
+private:
+    Console(QObject *parent = nullptr)
+        : QObject(parent)
+        , m_filterLevel(MessageLevel::Debug)
+        , m_textEdit(new QTextEdit()) // Expects QWidget which we are not
+    {
+        m_textEdit->setReadOnly(true);
+        m_textEdit->setStyleSheet("background-color: black;");
+    }
+
+    void printConsole(const Message& m) const
+    {
+        printConsole(m.msg, m.id, m.level);
+    }
+
+    void printConsole(const QString &msg,
+               const QString &id,
+               const DialogueFromVideo::MessageLevel level) const
+    {
         m_textEdit->moveCursor(QTextCursor::End);
 
         m_textEdit->setTextColor(Qt::white);
@@ -80,9 +124,15 @@ private:
         m_textEdit->ensureCursorVisible();
     }
 
-    void clear() const { m_textEdit->clear(); }
+    void clearConsole() const
+    {
+        m_textEdit->clear();
+    }
 
+
+    MessageLevel m_filterLevel;
     QTextEdit* m_textEdit;
+    QVector<Message> m_messageVec;
 };
 
 } // namespace DialogueFromVideo

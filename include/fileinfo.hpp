@@ -8,7 +8,7 @@ extern "C" {
 }
 
 #include <QString>
-#include <QVector>
+#include <QList>
 #include <QFileDialog>
 #include <QObject>
 

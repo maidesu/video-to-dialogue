@@ -196,13 +196,23 @@ bool FileInfo::getFileInfoFfmpeg()
 {
     FileInfo::clearStreamInfo();
 
+    // Validate File class
     if (m_file != nullptr)
     {
         delete m_file;
         m_file = nullptr;
     }
-    m_file = new File::Read(m_path); // FileInfo always validates File
 
+    m_file = new File::Read(m_path);
+
+    if (m_file->getResult() < 0)
+    {
+        delete m_file;
+        m_file = nullptr;
+        return false;
+    }
+
+    // Get file info
     AVStream* stream;
     for (uint i = 0; i < m_file->getStreamCount(); ++i) {
         stream = m_file->getStream(i);
