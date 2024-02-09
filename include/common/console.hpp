@@ -58,27 +58,28 @@ private:
                const DialogueFromVideo::MessageLevel level) const
     {
 #ifndef QT_DEBUG
-        if (level != MessageLevel::Debug) {
-#endif
-            m_textEdit->moveCursor(QTextCursor::End);
-
-            m_textEdit->setTextColor(Qt::white);
-            m_textEdit->insertPlainText("<");
-
-            m_textEdit->setTextColor(messageLevelColors.at(static_cast<int>(level)));
-            m_textEdit->insertPlainText(messageLevelLabels.at(static_cast<int>(level)));
-
-            m_textEdit->setTextColor(QColor(0xDBA15A));
-            m_textEdit->insertPlainText(QString(" %1").arg(id));
-
-            m_textEdit->setTextColor(Qt::white);
-            m_textEdit->insertPlainText(QString(">: %1\n").arg(msg));
-
-            m_textEdit->ensureCursorVisible();
-#ifndef QT_DEBUG
+        if (level == MessageLevel::Debug)
+        {
+            return;
         }
 #endif
+        m_textEdit->moveCursor(QTextCursor::End);
+
+        m_textEdit->setTextColor(Qt::white);
+        m_textEdit->insertPlainText("<");
+
+        m_textEdit->setTextColor(messageLevelColors.at(static_cast<int>(level)));
+        m_textEdit->insertPlainText(messageLevelLabels.at(static_cast<int>(level)));
+
+        m_textEdit->setTextColor(QColor(0xDBA15A));
+        m_textEdit->insertPlainText(QString(" %1").arg(id));
+
+        m_textEdit->setTextColor(Qt::white);
+        m_textEdit->insertPlainText(QString(">: %1\n").arg(msg));
+
+        m_textEdit->ensureCursorVisible();
     }
+
     void clear() const { m_textEdit->clear(); }
 
     QTextEdit* m_textEdit;
