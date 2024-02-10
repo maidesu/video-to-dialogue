@@ -2,9 +2,10 @@
 
 #include <common/messenger.hpp>
 
-extern "C" {
-#include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
+extern "C"
+{
+    #include <libavformat/avformat.h>
+    #include <libavcodec/avcodec.h>
 }
 
 namespace DialogueFromVideo::File {
@@ -22,9 +23,9 @@ public:
 
     AVFormatContext* getContext();
 
-    AVStream* getStream(unsigned int index);
+    AVStream* getStream(uint index);
 
-    unsigned int getStreamCount();
+    uint getStreamCount();
 
     int getResult() { return m_result; }
 

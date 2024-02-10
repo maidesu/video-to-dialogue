@@ -1,8 +1,9 @@
 #include <fileinfo.hpp>
 
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
+extern "C"
+{
+    #include <libavcodec/avcodec.h>
+    #include <libavformat/avformat.h>
 }
 
 namespace DialogueFromVideo {
@@ -168,8 +169,13 @@ bool FileInfo::openFile()
         QByteArray bytes = openPath.toUtf8();
         m_path = bytes.constData();
 
-        emit print(tr("Selected file: %1").arg(openPath), "FileInfo", MessageLevel::Info);
-        emit print(QString("Selected path: %1").arg(m_path), "FileInfo", MessageLevel::Debug);
+        emit print(tr("Selected file: %1").arg(openPath),
+                   "FileInfo",
+                   MessageLevel::Info);
+
+        emit print(QString("Selected path: %1").arg(m_path),
+                   "FileInfo",
+                   MessageLevel::Debug);
 
         return getFileInfoFfmpeg();
     }
@@ -270,12 +276,16 @@ bool FileInfo::getFileInfoFfmpeg()
 
     if (m_subStreams.count() < 1)
     {
-        emit print(tr("This file contains no subtitles!"), "FileInfo", MessageLevel::Warning);
+        emit print(tr("This file contains no subtitles!"),
+                   "FileInfo",
+                   MessageLevel::Warning);
     }
 
     if (m_audioStreams.count() < 1)
     {
-        emit print(tr("This file contains no audio!"), "FileInfo", MessageLevel::Warning);
+        emit print(tr("This file contains no audio!"),
+                   "FileInfo",
+                   MessageLevel::Warning);
     }
 
     emit fileChangedSignal(m_subStreams, m_audioStreams);

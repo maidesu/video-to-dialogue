@@ -3,8 +3,9 @@
 #include <file/read.hpp>
 #include <common/messenger.hpp>
 
-extern "C" {
-#include <libavcodec/codec_id.h>
+extern "C"
+{
+    #include <libavcodec/codec_id.h>
 }
 
 #include <QString>

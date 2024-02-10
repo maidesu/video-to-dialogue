@@ -263,7 +263,9 @@ Window::Window(QWidget *parent)
 void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStreams,
                                 const QList<DialogueFromVideo::AudioInfo*>& audioStreams)
 {
-    emit m_windowMessenger.print("File changed, updating file info...", "MainWindow", MessageLevel::Debug);
+    emit m_windowMessenger.print("File changed, updating file info...",
+                                 "MainWindow",
+                                 MessageLevel::Debug);
 
     m_subDescriptionLabel->clear();
     m_audioDescriptionLabel->clear();
