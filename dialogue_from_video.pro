@@ -28,6 +28,7 @@ HEADERS += \
     include/common/exitcode.hpp \
     include/common/messenger.hpp \
     include/common/singleton.hpp \
+    include/common/time.hpp \
     include/file/read.hpp \
     include/fileinfo.hpp \
     include/pipe/pipe.hpp \
@@ -43,10 +44,10 @@ HEADERS += \
 
 INCLUDEPATH += \
     include \
-    lib/ffmpeg-6.0-full_build-shared/include
+    lib/ffmpeg-6.1.1-full_build-shared/include
 
 LIBS += \
-    -L"$$PWD/lib/ffmpeg-6.0-full_build-shared/lib"
+    -L"$$PWD/lib/ffmpeg-6.1.1-full_build-shared/lib"
 
 LIBS += \
     -lavformat \

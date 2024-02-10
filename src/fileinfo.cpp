@@ -102,10 +102,6 @@ void FileInfo::subLayerRequestedHandler(const QString& index)
     emit print(tr("Selected subtitle layer %1").arg(QString::number(m_selectedSubLayerIndex)),
                "FileInfo",
                MessageLevel::Info);
-
-    emit subtitleRequestedSignal(m_file,
-                                 m_selectedSubIndex,
-                                 m_selectedSubLayerIndex);
 }
 
 void FileInfo::audioDescriptionRequestedHandler(const QString& index)
@@ -138,13 +134,6 @@ void FileInfo::audioDescriptionRequestedHandler(const QString& index)
                        MessageLevel::Info);
 
             emit audioDescriptionReceivedSignal(AudioInfo(*ai)); // Call to default copy ctor
-
-            if (m_selectedSubIndex >= 0)
-            {
-                emit subtitleRequestedSignal(m_file,
-                                             m_selectedSubIndex,
-                                             m_selectedSubLayerIndex);
-            }
 
             return;
         }

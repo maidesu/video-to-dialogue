@@ -10,8 +10,8 @@ namespace DialogueFromVideo {
 
 struct SubEntry
 {
-    uint32_t start;
-    uint32_t end;
+    int64_t start;
+    int64_t end;
     QString text;
 };
 

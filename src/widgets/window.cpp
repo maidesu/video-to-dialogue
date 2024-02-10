@@ -1,6 +1,7 @@
 #include <widgets/window.hpp>
 
 #include <common/console.hpp>
+#include <common/time.hpp>
 
 #include <QLabel>
 #include <QSplitter>
@@ -410,14 +411,15 @@ void Window::subtitleExtractedHandler(const QList<DialogueFromVideo::SubEntry*>&
     if (subs.isEmpty())
     {
         m_subTextEdit->insertPlainText("<no subtitle loaded>");
+        return;
     }
 
     for (SubEntry* sub : subs)
     {
         m_subTextEdit->insertPlainText(QString("%1 -> %2\n%3\n")
-                                           .arg(QString::number(sub->start),
-                                                QString::number(sub->end),
-                                                sub->text)); // TODO: 00:00:00.00 format or something
+                                           .arg(Time::millisecondsToStringTime(sub->start),
+                                                Time::millisecondsToStringTime(sub->end),
+                                                sub->text));
     }
 }
 
