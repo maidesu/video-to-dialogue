@@ -1,5 +1,7 @@
 #include <file/read.hpp>
 
+#include <QTranslator>
+
 namespace DialogueFromVideo::File {
 
 Read::Read(const char* path)
@@ -10,21 +12,21 @@ Read::Read(const char* path)
     if (m_result < 0)
     {
         avformat_close_input(&m_formatContext);
-        emit print(tr("Failed to open file path!"),
-                   "File::Read",
-                   MessageLevel::Error);
+        emit m_messenger.print(QTranslator::tr("Failed to open file path!"),
+                               "File::Read",
+                               MessageLevel::Error);
 
         return;
     }
 
-    emit print(tr("Successfully opened file!"),
-               "File::Read",
-               MessageLevel::Info);
+    emit m_messenger.print(QTranslator::tr("Successfully opened file!"),
+                           "File::Read",
+                           MessageLevel::Info);
 
     if (avformat_find_stream_info(m_formatContext, nullptr) < 0) {
-        emit print(tr("Failed to fill in missing stream information!"),
-                   "File::Read",
-                   MessageLevel::Warning);
+        emit m_messenger.print(QTranslator::tr("Failed to fill in missing stream information!"),
+                               "File::Read",
+                               MessageLevel::Warning);
     }
 }
 

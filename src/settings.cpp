@@ -10,7 +10,7 @@
 namespace DialogueFromVideo {
 
 Settings::Settings(QObject *parent)
-    : Messenger(parent)
+    : QObject(parent)
     , m_restartNotified(false)
     , m_usPaddingLeft(0)
     , m_usPaddingRight(0)
@@ -60,11 +60,11 @@ Settings::~Settings()
 void Settings::loadInitialSettings()
 {
     // Subtitle timing settings
-    emit print(QString("Settings format: %1, Settings path: %2")
-                    .arg(QString::number(m_settings->format()),
-                         m_settings->fileName()),
-               "Settings",
-               MessageLevel::Debug);
+    emit m_messenger.print(QString("Settings format: %1, Settings path: %2")
+                                .arg(QString::number(m_settings->format()),
+                                     m_settings->fileName()),
+                           "Settings",
+                           MessageLevel::Debug);
 
     m_settings->beginGroup("Subtitle");
     m_usPaddingLeft     = m_settings->value("PaddingLeft", 0).toLongLong();
@@ -73,13 +73,13 @@ void Settings::loadInitialSettings()
     m_usMerge           = m_settings->value("Merge", 2000000).toLongLong(); // 2 seconds
     m_settings->endGroup();
 
-    emit print(tr("Loaded settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
-                    .arg(QString::number(m_usPaddingLeft / 1000),
-                         QString::number(m_usPaddingRight / 1000),
-                         QString::number(m_usOffset / 1000),
-                         QString::number(m_usMerge / 1000)),
-               "Settings",
-               MessageLevel::Info);
+    emit m_messenger.print(tr("Loaded settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
+                                .arg(QString::number(m_usPaddingLeft / 1000),
+                                     QString::number(m_usPaddingRight / 1000),
+                                     QString::number(m_usOffset / 1000),
+                                     QString::number(m_usMerge / 1000)),
+                           "Settings",
+                           MessageLevel::Info);
 
     emit initialSettingsSignal(m_usPaddingLeft,
                                m_usPaddingRight,
@@ -121,13 +121,13 @@ void Settings::settingsChangedHandler(int64_t usPaddingLeft,
 
     //m_settings->sync(); Normally unneeded - refer to docs
 
-    emit print(tr("Updated settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
-                    .arg(QString::number(m_usPaddingLeft / 1000),
-                         QString::number(m_usPaddingRight / 1000),
-                         QString::number(m_usOffset / 1000),
-                         QString::number(m_usMerge / 1000)),
-               "Settings",
-               MessageLevel::Info);
+    emit m_messenger.print(tr("Updated settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
+                                .arg(QString::number(m_usPaddingLeft / 1000),
+                                     QString::number(m_usPaddingRight / 1000),
+                                     QString::number(m_usOffset / 1000),
+                                     QString::number(m_usMerge / 1000)),
+                           "Settings",
+                           MessageLevel::Info);
 }
 
 void Settings::languageSettingsChangedHandler(const QString& language)

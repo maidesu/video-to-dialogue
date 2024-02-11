@@ -35,7 +35,7 @@ struct SubInfo
     QString lang;
 };
 
-class FileInfo : public Messenger
+class FileInfo : public QObject
 {
     Q_OBJECT
 public:
@@ -72,6 +72,8 @@ private:
     QList<AudioInfo*> m_audioStreams;
 
     File::Read* m_file;
+
+    Messenger m_messenger;
 
 signals:
     void fileChangedSignal(const QList<DialogueFromVideo::SubInfo*>& subStreams,

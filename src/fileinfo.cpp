@@ -9,7 +9,7 @@ extern "C"
 namespace DialogueFromVideo {
 
 FileInfo::FileInfo(QObject* parent)
-    : Messenger(parent)
+    : QObject(parent)
     , m_path(nullptr)
     , m_selectedSubIndex(-1)
     , m_selectedSubLayerIndex(-1)
@@ -39,9 +39,9 @@ FileInfo::~FileInfo()
 
 void FileInfo::subDescriptionRequestedHandler(const QString& index)
 {
-    emit print(QString("subDescriptionRequestedHandler(%1)").arg(index),
-               "FileInfo",
-               MessageLevel::Debug);
+    emit m_messenger.print(QString("subDescriptionRequestedHandler(%1)").arg(index),
+                           "FileInfo",
+                           MessageLevel::Debug);
 
     // Let the default state be -1, since index should be >=0
     m_selectedSubIndex = -1;
@@ -50,9 +50,9 @@ void FileInfo::subDescriptionRequestedHandler(const QString& index)
 
     if (idx < 0)
     {
-        emit print(tr("No subtitle stream selected"),
-                   "FileInfo",
-                   MessageLevel::Info);
+        emit m_messenger.print(tr("No subtitle stream selected"),
+                               "FileInfo",
+                               MessageLevel::Info);
         return;
     }
 
@@ -62,9 +62,9 @@ void FileInfo::subDescriptionRequestedHandler(const QString& index)
         {
             m_selectedSubIndex = idx;
 
-            emit print(tr("Selected subtitle stream %1").arg(QString::number(m_selectedSubIndex)),
-                       "FileInfo",
-                       MessageLevel::Info);
+            emit m_messenger.print(tr("Selected subtitle stream %1").arg(QString::number(m_selectedSubIndex)),
+                                   "FileInfo",
+                                   MessageLevel::Info);
 
             emit subDescriptionReceivedSignal(SubInfo(*si)); // Call to default copy ctor
 
@@ -79,9 +79,9 @@ void FileInfo::subDescriptionRequestedHandler(const QString& index)
 
 void FileInfo::subLayerRequestedHandler(const QString& index)
 {
-    emit print(QString("subLayerRequestedHandler(%1)").arg(index),
-               "FileInfo",
-               MessageLevel::Debug);
+    emit m_messenger.print(QString("subLayerRequestedHandler(%1)").arg(index),
+                           "FileInfo",
+                           MessageLevel::Debug);
 
     // Let the default state be -1, since index should be >=0
     m_selectedSubLayerIndex = -1;
@@ -90,9 +90,9 @@ void FileInfo::subLayerRequestedHandler(const QString& index)
 
     if (idx < 0)
     {
-        emit print(tr("No subtitle layer selected"),
-                   "FileInfo",
-                   MessageLevel::Info);
+        emit m_messenger.print(tr("No subtitle layer selected"),
+                               "FileInfo",
+                               MessageLevel::Info);
         return;
     }
 
@@ -100,16 +100,16 @@ void FileInfo::subLayerRequestedHandler(const QString& index)
 
     m_selectedSubLayerIndex = idx;
 
-    emit print(tr("Selected subtitle layer %1").arg(QString::number(m_selectedSubLayerIndex)),
-               "FileInfo",
-               MessageLevel::Info);
+    emit m_messenger.print(tr("Selected subtitle layer %1").arg(QString::number(m_selectedSubLayerIndex)),
+                           "FileInfo",
+                           MessageLevel::Info);
 }
 
 void FileInfo::audioDescriptionRequestedHandler(const QString& index)
 {
-    emit print(QString("audioDescriptionRequestedHandler(%1)").arg(index),
-               "FileInfo",
-               MessageLevel::Debug);
+    emit m_messenger.print(QString("audioDescriptionRequestedHandler(%1)").arg(index),
+                           "FileInfo",
+                           MessageLevel::Debug);
 
     // Let the default state be -1, since index should be >=0
     m_selectedAudioIndex = -1;
@@ -118,9 +118,9 @@ void FileInfo::audioDescriptionRequestedHandler(const QString& index)
 
     if (idx < 0)
     {
-        emit print(tr("No audio stream selected"),
-                   "FileInfo",
-                   MessageLevel::Info);
+        emit m_messenger.print(tr("No audio stream selected"),
+                               "FileInfo",
+                               MessageLevel::Info);
         return;
     }
 
@@ -130,9 +130,9 @@ void FileInfo::audioDescriptionRequestedHandler(const QString& index)
         {
             m_selectedAudioIndex = idx;
 
-            emit print(tr("Selected audio stream %1").arg(QString::number(m_selectedAudioIndex)),
-                       "FileInfo",
-                       MessageLevel::Info);
+            emit m_messenger.print(tr("Selected audio stream %1").arg(QString::number(m_selectedAudioIndex)),
+                                   "FileInfo",
+                                   MessageLevel::Info);
 
             emit audioDescriptionReceivedSignal(AudioInfo(*ai)); // Call to default copy ctor
 
@@ -169,21 +169,21 @@ bool FileInfo::openFile()
         QByteArray bytes = openPath.toUtf8();
         m_path = bytes.constData();
 
-        emit print(tr("Selected file: %1").arg(openPath),
-                   "FileInfo",
-                   MessageLevel::Info);
+        emit m_messenger.print(tr("Selected file: %1").arg(openPath),
+                               "FileInfo",
+                               MessageLevel::Info);
 
-        emit print(QString("Selected path: %1").arg(m_path),
-                   "FileInfo",
-                   MessageLevel::Debug);
+        emit m_messenger.print(QString("Selected path: %1").arg(m_path),
+                               "FileInfo",
+                               MessageLevel::Debug);
 
         return getFileInfoFfmpeg();
     }
     else
     {
-        emit print(tr("Received no file path!"),
-                   "FileInfo",
-                   MessageLevel::Warning);
+        emit m_messenger.print(tr("Received no file path!"),
+                               "FileInfo",
+                               MessageLevel::Warning);
 
         return false;
     }
@@ -231,9 +231,9 @@ bool FileInfo::getFileInfoFfmpeg()
 
             m_subStreams.append(si);
 
-            emit print("Appended sub stream",
-                       "FileInfo",
-                       MessageLevel::Debug);
+            emit m_messenger.print("Appended sub stream",
+                                   "FileInfo",
+                                   MessageLevel::Debug);
         }
         else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
             AudioInfo* ai = new AudioInfo();
@@ -264,30 +264,30 @@ bool FileInfo::getFileInfoFfmpeg()
 
             m_audioStreams.append(ai);
 
-            emit print("Appended audio stream",
-                       "FileInfo",
-                       MessageLevel::Debug);
+            emit m_messenger.print("Appended audio stream",
+                                   "FileInfo",
+                                   MessageLevel::Debug);
         }
     }
 
-    emit print(tr("Found a total of %1 subtitle and %2 audio streams")
-                   .arg(QString::number(m_subStreams.count()),
-                        QString::number(m_audioStreams.count())),
-               "FileInfo",
-               MessageLevel::Info);
+    emit m_messenger.print(tr("Found a total of %1 subtitle and %2 audio streams")
+                                .arg(QString::number(m_subStreams.count()),
+                                QString::number(m_audioStreams.count())),
+                           "FileInfo",
+                           MessageLevel::Info);
 
     if (m_subStreams.count() < 1)
     {
-        emit print(tr("This file contains no subtitles!"),
-                   "FileInfo",
-                   MessageLevel::Warning);
+        emit m_messenger.print(tr("This file contains no subtitles!"),
+                               "FileInfo",
+                               MessageLevel::Warning);
     }
 
     if (m_audioStreams.count() < 1)
     {
-        emit print(tr("This file contains no audio!"),
-                   "FileInfo",
-                   MessageLevel::Warning);
+        emit m_messenger.print(tr("This file contains no audio!"),
+                               "FileInfo",
+                               MessageLevel::Warning);
     }
 
     emit fileChangedSignal(m_subStreams, m_audioStreams);

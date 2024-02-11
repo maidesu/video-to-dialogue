@@ -9,7 +9,7 @@
 
 namespace DialogueFromVideo {
 
-class Settings : public Messenger
+class Settings : public QObject
 {
     Q_OBJECT
 public:
@@ -50,6 +50,8 @@ private:
 
     QSettings* m_settings;
     QTranslator* m_translator;
+
+    Messenger m_messenger;
 
 signals:
     void initialSettingsSignal(int64_t usPaddingLeft,

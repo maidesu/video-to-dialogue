@@ -10,9 +10,8 @@ extern "C"
 
 namespace DialogueFromVideo::File {
 
-class Read : public Messenger
+class Read
 {
-    Q_OBJECT
 public:
     explicit Read(const char* path);
     ~Read();
@@ -32,6 +31,8 @@ public:
 private:
     AVFormatContext* m_formatContext;
     int m_result;
+
+    Messenger m_messenger;
 };
 
 } // namespace DialogueFromVideo::File
