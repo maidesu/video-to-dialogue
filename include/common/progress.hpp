@@ -24,6 +24,11 @@ public:
                          &ProgressBar::progressMaximumHandler);
 
         QObject::connect(this,
+                         &Progress::progressComplete,
+                         &ProgressBar::instance(),
+                         &ProgressBar::progressCompleteHandler);
+
+        QObject::connect(this,
                          &Progress::progressReset,
                          &ProgressBar::instance(),
                          &ProgressBar::progressResetHandler);
@@ -34,6 +39,7 @@ public:
 signals:
     void progressAdd(int val);
     void progressMaximum(int max);
+    void progressComplete();
     void progressReset();
 };
 

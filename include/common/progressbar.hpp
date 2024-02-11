@@ -35,6 +35,15 @@ public slots:
                                MessageLevel::Debug);
     }
 
+    void progressCompleteHandler()
+    {
+        m_progressBar->setValue(m_progressBar->maximum());
+
+        emit m_messenger.print("Bar has been completed",
+                               "ProgressBar",
+                               MessageLevel::Debug);
+    }
+
     void progressResetHandler()
     {
         m_progressBar->reset();
