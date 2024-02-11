@@ -82,6 +82,7 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
 
                     switch (rect->type)
                     {
+                        default:
                         case AVSubtitleType::SUBTITLE_NONE:
                         case AVSubtitleType::SUBTITLE_BITMAP:
                             unsupported_sub = 1;
