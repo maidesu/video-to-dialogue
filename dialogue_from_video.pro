@@ -27,6 +27,8 @@ HEADERS += \
     include/common/console.hpp \
     include/common/exitcode.hpp \
     include/common/messenger.hpp \
+    include/common/progress.hpp \
+    include/common/progressbar.hpp \
     include/common/singleton.hpp \
     include/common/time.hpp \
     include/file/read.hpp \

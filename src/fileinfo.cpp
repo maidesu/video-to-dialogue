@@ -181,7 +181,9 @@ bool FileInfo::openFile()
     }
     else
     {
-        emit print(tr("Received no file path!"), "FileInfo", MessageLevel::Warning);
+        emit print(tr("Received no file path!"),
+                   "FileInfo",
+                   MessageLevel::Warning);
 
         return false;
     }

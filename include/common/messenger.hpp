@@ -27,4 +27,4 @@ signals:
                const DialogueFromVideo::MessageLevel& level = MessageLevel::Info);
 };
 
-}
+} // namespace DialogueFromVideo

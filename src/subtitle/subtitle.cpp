@@ -5,7 +5,7 @@
 namespace DialogueFromVideo {
 
 Subtitle::Subtitle(QObject* parent)
-    : Messenger(parent)
+    : QObject(parent)
 {
 }
 
@@ -33,9 +33,9 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
 
     if (!codec)
     {
-        emit print(tr("Unsupported subtitle codec!"),
-                   "Subtitle",
-                   MessageLevel::Error);
+        emit m_messenger.print(tr("Unsupported subtitle codec!"),
+                               "Subtitle",
+                               MessageLevel::Error);
         return;
     }
 
@@ -47,9 +47,9 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
 
     if (res < 0)
     {
-        emit print(tr("Critical: Failed to create codec context!"),
-                   "Subtitle",
-                   MessageLevel::Error);
+        emit m_messenger.print(tr("Critical: Failed to create codec context!"),
+                               "Subtitle",
+                               MessageLevel::Error);
         return;
     }
 
@@ -62,6 +62,9 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
     int got_sub;
 
     av_seek_frame(s, selectedSubIndex, 0, AVSEEK_FLAG_ANY);
+
+    emit m_progress.progressReset();
+    emit m_progress.progressMaximum(1000000);
 
     while (av_read_frame(s, avpkt) == 0)
     {
@@ -103,6 +106,8 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
             }
         }
 
+        emit m_progress.progressAdd(static_cast<int>(avpkt->duration));
+
         av_packet_unref(avpkt);
     }
 
@@ -112,9 +117,9 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
 
     if (unsupported_sub)
     {
-        emit print(tr("Unsupported subtitles were found!"),
-                   "Subtitle",
-                   MessageLevel::Warning);
+        emit m_messenger.print(tr("Unsupported subtitles were found!"),
+                               "Subtitle",
+                               MessageLevel::Warning);
     }
 
     emit Subtitle::subtitleExtractedSignal(m_subs);

@@ -2,6 +2,7 @@
 
 #include <file/read.hpp>
 #include <common/messenger.hpp>
+#include <common/progress.hpp>
 
 #include <QString>
 #include <QList>
@@ -15,7 +16,7 @@ struct SubEntry
     QString text;
 };
 
-class Subtitle : public Messenger
+class Subtitle : public QObject
 {
     Q_OBJECT
 public:
@@ -34,6 +35,9 @@ private:
     void clearSubs();
 
     QList<SubEntry*> m_subs;
+
+    Messenger m_messenger;
+    Progress m_progress;
 
 signals:
     void subtitleExtractedSignal(const QList<DialogueFromVideo::SubEntry*>& subs);

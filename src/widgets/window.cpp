@@ -2,6 +2,7 @@
 
 #include <common/console.hpp>
 #include <common/time.hpp>
+#include <common/progressbar.hpp>
 
 #include <QLabel>
 #include <QSplitter>
@@ -34,7 +35,6 @@ Window::Window(QWidget *parent)
     , m_exportSubtitleButton(new QPushButton(tr("Export subtitle")))
     , m_exportPictureCollectionButton(new QPushButton(tr("Create picture book")))
     , m_subTextEdit(new QTextEdit())
-    , m_progressBar(new QProgressBar())
 {
     this->setMinimumSize(900, 640);
 
@@ -194,9 +194,9 @@ Window::Window(QWidget *parent)
     QVBoxLayout* topLayout = new QVBoxLayout();
     topContainer->setLayout(topLayout);
     topLayout->addWidget(tabWidget);
-    topLayout->addWidget(m_progressBar);
+    topLayout->addWidget(ProgressBar::instance().progressBar());
 
-    m_progressBar->setAlignment(Qt::Alignment::enum_type::AlignHCenter);
+    ProgressBar::instance().progressBar()->setAlignment(Qt::Alignment::enum_type::AlignHCenter);
 
     // Dynamic splitter
     QSplitter* splitter = new QSplitter();

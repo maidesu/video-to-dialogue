@@ -5,7 +5,6 @@
 
 #include <QLabel>
 #include <QRadioButton>
-#include <QProgressBar>
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QComboBox>
@@ -75,8 +74,6 @@ private:
     QPushButton* m_exportPictureCollectionButton;
 
     QTextEdit* m_subTextEdit;
-
-    QProgressBar* m_progressBar;
 
 signals:
     void openFileSignal();
