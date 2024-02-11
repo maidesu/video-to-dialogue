@@ -402,7 +402,7 @@ void Window::audioDescriptionReceivedHandler(const AudioInfo audioInfo)
                                               audioInfo.codec_name));
 }
 
-void Window::subtitleExtractedHandler(const QList<DialogueFromVideo::SubEntry*>& subs)
+void Window::subtitleExtractedHandler(const QList<SubEntry*>& subs)
 {
     emit m_windowMessenger.print(QString("Subtitle content received"),
                                  "Window",

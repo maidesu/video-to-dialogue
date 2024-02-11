@@ -21,8 +21,8 @@ public:
     explicit Window(QWidget *parent = nullptr);
 
 public slots:
-    void fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStreams,
-                            const QList<DialogueFromVideo::AudioInfo*>& audioStreams);
+    void fileChangedHandler(const QList<SubInfo*>& subStreams,
+                            const QList<AudioInfo*>& audioStreams);
 
     void applySettingsButtonHandler();
 
@@ -39,7 +39,7 @@ public slots:
 
     void audioDescriptionReceivedHandler(const AudioInfo audioInfo); // Receive selected audio description copy
 
-    void subtitleExtractedHandler(const QList<DialogueFromVideo::SubEntry*>& subs);
+    void subtitleExtractedHandler(const QList<SubEntry*>& subs);
 
 private:
     Messenger m_windowMessenger;

@@ -7,6 +7,8 @@
 
 namespace DialogueFromVideo {
 
+constexpr int max_progress_steps = 100; // Suggestion recommended to be used by interacting signals
+
 class ProgressBar : public QObject, public Singleton<ProgressBar>
 {
     Q_OBJECT
@@ -19,11 +21,7 @@ public:
 public slots:
     void progressAddHandler(int val)
     {
-        m_progressBar->setValue(m_progressBar->value() + val);
-
-        emit m_messenger.print(QString("New value is %1").arg(m_progressBar->value()),
-                               "ProgressBar",
-                               MessageLevel::Debug);
+        m_progressBar->setValue(m_progressBar->value() + val); // This is called a bunch, not going to flood Debug messages
     }
 
     void progressMaximumHandler(int max)

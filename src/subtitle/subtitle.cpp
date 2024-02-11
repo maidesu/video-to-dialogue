@@ -53,8 +53,6 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
         return;
     }
 
-    int unsupported_sub = 0;
-
     AVFormatContext* s = file->getContext();
     AVPacket* avpkt = av_packet_alloc();
     AVSubtitle* sub = new AVSubtitle(); /* note : avsubtitle_alloc does not seem to exist
@@ -64,7 +62,16 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
     av_seek_frame(s, selectedSubIndex, 0, AVSEEK_FLAG_ANY);
 
     emit m_progress.progressReset();
-    emit m_progress.progressMaximum(1000000);
+    emit m_progress.progressMaximum(max_progress_steps);
+
+    int unsupported_sub = 0;
+
+    int64_t frame_count = 0;
+
+    constexpr int64_t some_const = 500;
+    constexpr int64_t assumed_fps = 30; // not guaranteed to be provided by library
+    int64_t total_est_frames = s->duration / (1000 * some_const) * assumed_fps;
+    int64_t report_progress_frame = total_est_frames / max_progress_steps; // The number of frames after we update the progress by 1
 
     while (av_read_frame(s, avpkt) == 0)
     {
@@ -107,9 +114,14 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
             }
         }
 
-        emit m_progress.progressAdd(static_cast<int>(avpkt->duration));
+        if (frame_count % report_progress_frame == 0)
+        {
+            emit m_progress.progressAdd(1);
+        }
 
         av_packet_unref(avpkt);
+
+        ++frame_count;
     }
 
     avsubtitle_free(sub);
@@ -122,6 +134,8 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
                                "Subtitle",
                                MessageLevel::Warning);
     }
+
+    emit m_progress.progressComplete();
 
     emit Subtitle::subtitleExtractedSignal(m_subs);
 }

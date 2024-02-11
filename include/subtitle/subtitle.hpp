@@ -40,7 +40,7 @@ private:
     Progress m_progress;
 
 signals:
-    void subtitleExtractedSignal(const QList<DialogueFromVideo::SubEntry*>& subs);
+    void subtitleExtractedSignal(const QList<SubEntry*>& subs);
 };
 
 } // namespace DialogueFromVideo
