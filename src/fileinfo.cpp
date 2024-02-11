@@ -193,6 +193,8 @@ bool FileInfo::getFileInfoFfmpeg()
 {
     FileInfo::clearStreamInfo();
 
+    emit m_progress.progressReset();
+
     // Validate File class
     if (m_file != nullptr)
     {

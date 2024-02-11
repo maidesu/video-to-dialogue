@@ -2,6 +2,7 @@
 
 #include <file/read.hpp>
 #include <common/messenger.hpp>
+#include <common/progress.hpp>
 
 extern "C"
 {
@@ -74,6 +75,7 @@ private:
     File::Read* m_file;
 
     Messenger m_messenger;
+    Progress m_progress;
 
 signals:
     void fileChangedSignal(const QList<DialogueFromVideo::SubInfo*>& subStreams,
