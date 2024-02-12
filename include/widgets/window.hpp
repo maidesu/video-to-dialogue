@@ -54,6 +54,7 @@ private:
     QComboBox* m_subComboBox;
     QComboBox* m_audioComboBox;
     QComboBox* m_languageComboBox;
+    QComboBox* m_consoleLevelComboBox;
 
     QRadioButton* m_lightUiRadioButton;
     QRadioButton* m_darkUiRadioButton;
@@ -70,6 +71,7 @@ private:
     QPushButton* m_openFileButton;
     QPushButton* m_extractDialogueButton;
     QPushButton* m_applySettingsButton;
+    QPushButton* m_consoleClearButton;
     QPushButton* m_exportSubtitleButton;
     QPushButton* m_exportPictureCollectionButton;
 
@@ -94,6 +96,8 @@ signals:
     void audioDescriptionRequestedSignal(const QString& index); // Request audio description copy
 
     void subtitleClearSignal();
+
+    void consoleFilterSignal(const MessageLevel level);
 };
 
 } // namespace DialogueFromVideo

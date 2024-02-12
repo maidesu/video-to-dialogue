@@ -20,6 +20,7 @@ Window::Window(QWidget *parent)
     , m_subComboBox(new QComboBox())
     , m_audioComboBox(new QComboBox())
     , m_languageComboBox(new QComboBox())
+    , m_consoleLevelComboBox(new QComboBox())
     , m_lightUiRadioButton(new QRadioButton(tr("Light")))
     , m_darkUiRadioButton(new QRadioButton(tr("Dark")))
     , m_subDescriptionLabel(new QLabel())
@@ -32,11 +33,12 @@ Window::Window(QWidget *parent)
     , m_openFileButton(new QPushButton(tr("Open file")))
     , m_extractDialogueButton(new QPushButton(tr("Extract dialogue")))
     , m_applySettingsButton(new QPushButton(tr("Apply")))
+    , m_consoleClearButton(new QPushButton(tr("Clear")))
     , m_exportSubtitleButton(new QPushButton(tr("Export subtitle")))
     , m_exportPictureCollectionButton(new QPushButton(tr("Create picture book")))
     , m_subTextEdit(new QTextEdit())
 {
-    this->setMinimumSize(900, 640);
+    this->setMinimumSize(900, 720);
 
     m_subComboBox->setDisabled(true);
     m_subLayerSpinBox->setDisabled(true);
@@ -145,6 +147,31 @@ Window::Window(QWidget *parent)
     m_languageComboBox->addItem("English", "en_US");
     m_languageComboBox->addItem("Magyar", "hu_HU");
 
+    // Console levels
+    qsizetype i = 0;
+#ifndef QT_DEBUG
+    i = 1;
+#endif
+    for (; i < Console::instance().messageLevelLabels.size(); ++i)
+    {
+        m_consoleLevelComboBox->addItem(Console::instance().messageLevelLabels.at(i),
+                                        QVariant::fromValue(static_cast<MessageLevel>(i)));
+#ifndef QT_DEBUG
+        m_consoleLevelComboBox->setItemData(i-1,
+#else
+        m_consoleLevelComboBox->setItemData(i,
+#endif
+                                            QBrush(Console::instance().messageLevelColors.at(i)),
+                                            Qt::ForegroundRole);
+    }
+
+    QPalette firstElementPalette = QPalette();
+    firstElementPalette.setColor(QPalette::ButtonText,
+                                  Console::instance().messageLevelColors.at(
+                                      static_cast<qsizetype>( m_consoleLevelComboBox->itemData(0).value<MessageLevel>() )
+                                      ));
+    m_consoleLevelComboBox->setPalette(firstElementPalette);
+
     // Tabs
     QTabWidget* tabWidget = new QTabWidget();
 
@@ -198,11 +225,44 @@ Window::Window(QWidget *parent)
 
     ProgressBar::instance().progressBar()->setAlignment(Qt::Alignment::enum_type::AlignHCenter);
 
+
+    // Console options palette
+    QPalette consoleOptsPalette = QPalette();
+    consoleOptsPalette.setColor(QPalette::ButtonText, Qt::white);
+    consoleOptsPalette.setColor(QPalette::Button, Qt::black);
+    consoleOptsPalette.setColor(QPalette::Window, Qt::black);
+
+    // Console options container
+    QWidget* consoleOptsContainer = new QWidget();
+    consoleOptsContainer->setAutoFillBackground(true);
+    consoleOptsContainer->setPalette(consoleOptsPalette);
+    QHBoxLayout* consoleOptsLayout = new QHBoxLayout();
+    consoleOptsLayout->addStretch();
+    consoleOptsLayout->setAlignment(Qt::AlignRight);
+    consoleOptsContainer->setLayout(consoleOptsLayout);
+    consoleOptsLayout->addWidget(m_consoleLevelComboBox);
+    m_consoleClearButton->setMaximumWidth(60);
+    consoleOptsLayout->addWidget(m_consoleClearButton);
+
+    // Horizontal line for console
+    QFrame* hLine = new QFrame();
+    hLine->setFrameShape(QFrame::HLine);
+    hLine->setFrameShadow(QFrame::Raised);
+
+    // Bottom container
+    QWidget* bottomContainer = new QWidget();
+    QVBoxLayout* bottomLayout = new QVBoxLayout();
+    bottomLayout->setSpacing(0);
+    bottomContainer->setLayout(bottomLayout);
+    bottomLayout->addWidget(Console::instance().textEdit());
+    bottomLayout->addWidget(hLine);
+    bottomLayout->addWidget(consoleOptsContainer);
+
     // Dynamic splitter
     QSplitter* splitter = new QSplitter();
     splitter->setOrientation(Qt::Vertical);
     splitter->addWidget(topContainer);
-    splitter->addWidget(Console::instance().textEdit());
+    splitter->addWidget(bottomContainer);
 
     // Main layout
     m_layout->addWidget(splitter);
@@ -217,6 +277,11 @@ Window::Window(QWidget *parent)
             &QPushButton::pressed,
             this,
             &Window::applySettingsButtonHandler);
+
+    connect(m_consoleClearButton,
+            &QPushButton::pressed,
+            &Console::instance(),
+            &Console::clearHandler);
 
     connect(m_subComboBox,
             &QComboBox::currentTextChanged,
@@ -241,6 +306,26 @@ Window::Window(QWidget *parent)
                 emit Window::languageSettingsChangedSignal(m_languageComboBox
                                                                 ->itemData(index)
                                                                 .toString());
+            });
+
+    connect(this,
+            &Window::consoleFilterSignal,
+            &Console::instance(),
+            &Console::filterHandler);
+
+    connect(m_consoleLevelComboBox,
+            &QComboBox::currentIndexChanged,
+            this,
+            [this]()
+            {
+                QPalette activeElementPalette = QPalette();
+                activeElementPalette.setColor(QPalette::ButtonText,
+                                              Console::instance().messageLevelColors.at(
+                                                  static_cast<qsizetype>( m_consoleLevelComboBox->currentData().value<MessageLevel>() )
+                                              ));
+                m_consoleLevelComboBox->setPalette(activeElementPalette);
+
+                emit consoleFilterSignal(m_consoleLevelComboBox->currentData().value<MessageLevel>());
             });
 
     connect(m_lightUiRadioButton,
