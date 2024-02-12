@@ -267,6 +267,10 @@ void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStr
                                  "MainWindow",
                                  MessageLevel::Debug);
 
+    m_subTextEdit->clear();
+    m_subTextEdit->insertPlainText("<no subtitle loaded>");
+    emit subtitleClearSignal();
+
     m_subDescriptionLabel->clear();
     m_audioDescriptionLabel->clear();
 

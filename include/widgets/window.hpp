@@ -92,6 +92,8 @@ signals:
     void subLayerRequestedSignal(const QString& index); // Requst layer change
 
     void audioDescriptionRequestedSignal(const QString& index); // Request audio description copy
+
+    void subtitleClearSignal();
 };
 
 } // namespace DialogueFromVideo

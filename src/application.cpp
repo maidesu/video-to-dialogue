@@ -69,6 +69,12 @@ Application::Application()
                      &m_fileinfo,
                      &FileInfo::audioDescriptionRequestedHandler);
 
+    // Window wants to clear subs on a filechange
+    QObject::connect(&m_window,
+                     &Window::subtitleClearSignal,
+                     &m_subtitle,
+                     &Subtitle::subtitleClearHandler);
+
 
     // Currently only used to fill ComboBoxes with id's
     QObject::connect(&m_fileinfo,

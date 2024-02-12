@@ -31,6 +31,8 @@ public slots:
                                   int selectedSubIndex,
                                   int selectedSubLayerIndex);
 
+    void subtitleClearHandler() { clearSubs(); } // To be used when "empty" file
+
 private:
     void clearSubs();
 
