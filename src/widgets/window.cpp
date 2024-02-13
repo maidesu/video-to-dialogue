@@ -286,12 +286,12 @@ Window::Window(QWidget *parent)
     connect(m_exportSubtitleButton,
             &QPushButton::pressed,
             this,
-            &Window::exportSubtitleSignal);
+            [this](){ emit Window::exportSubtitleSignal(static_cast<const QTextEdit*>(m_subTextEdit)); } );
 
     connect(m_exportPictureCollectionButton,
             &QPushButton::pressed,
             this,
-            &Window::exportPictureCollectionSignal);
+            [this](){ emit Window::exportPictureCollectionSignal(static_cast<const QTextEdit*>(m_subTextEdit)); } );
 
     connect(m_subComboBox,
             &QComboBox::currentTextChanged,

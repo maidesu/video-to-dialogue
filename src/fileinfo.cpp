@@ -189,7 +189,7 @@ bool FileInfo::openFile()
     }
 }
 
-bool FileInfo::saveFile(SaveMode mode)
+bool FileInfo::saveFile(SaveMode mode, const QTextEdit* textEdit)
 {
     QString savePath;
 
@@ -198,13 +198,35 @@ bool FileInfo::saveFile(SaveMode mode)
         default:
         case SaveMode::None:
             return false;
+            break;
 
         case SaveMode::Plaintext:
-            savePath = QFileDialog::getSaveFileName(nullptr, tr("Save File"));
+            savePath = QFileDialog::getSaveFileName(nullptr,
+                                                    tr("Export Subtitle"),
+                                                    "",
+                                                    tr("Text ("
+                                                       "*.txt"
+                                                       ");;All formats (*)"));
+
+            {
+                QFile file_out(savePath);
+
+                if (!file_out.open(QIODevice::WriteOnly | QIODevice::Text))
+                {
+                    return false;
+                }
+
+                QTextStream stream_out(&file_out);
+                stream_out << textEdit->toPlainText();
+
+                file_out.close();
+            }
+
             break;
 
         case SaveMode::Slides:
-            savePath = QFileDialog::getSaveFileName(nullptr, tr("Save File"));
+            savePath = QFileDialog::getSaveFileName(nullptr,
+                                                    tr("Export Picture Collection"));
             break;
 
         case SaveMode::Audio:

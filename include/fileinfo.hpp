@@ -61,11 +61,11 @@ public:
 public slots:
     void openFileHandler() { openFile(); }
 
-    void exportSubtitleHandler() { saveFile(SaveMode::Plaintext); }
+    void exportSubtitleHandler(const QTextEdit* textEdit) { saveFile(SaveMode::Plaintext, textEdit); }
 
-    void exportPictureCollectionHandler() { saveFile(SaveMode::Slides); }
+    void exportPictureCollectionHandler(const QTextEdit* textEdit) { saveFile(SaveMode::Slides, textEdit); }
 
-    void exportDialogueHandler() { saveFile(SaveMode::Audio); }
+    void exportDialogueHandler() { saveFile(SaveMode::Audio, nullptr); }
 
     void subDescriptionRequestedHandler(const QString& index);
 
@@ -75,7 +75,7 @@ public slots:
 
 private:
     bool openFile();
-    bool saveFile(SaveMode mode);
+    bool saveFile(SaveMode mode, const QTextEdit* textEdit);
     bool getFileInfoFfmpeg();
     void clearStreamInfo();
 

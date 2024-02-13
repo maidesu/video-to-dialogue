@@ -95,9 +95,9 @@ signals:
 
     void audioDescriptionRequestedSignal(const QString& index); // Request audio description copy
 
-    void exportSubtitleSignal();
+    void exportSubtitleSignal(const QTextEdit* textEdit);
 
-    void exportPictureCollectionSignal();
+    void exportPictureCollectionSignal(const QTextEdit* textEdit);
 
     void exportDialogueSignal();
 
