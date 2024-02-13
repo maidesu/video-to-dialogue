@@ -283,6 +283,16 @@ Window::Window(QWidget *parent)
             &Console::instance(),
             &Console::clearHandler);
 
+    connect(m_exportSubtitleButton,
+            &QPushButton::pressed,
+            this,
+            &Window::exportSubtitleSignal);
+
+    connect(m_exportPictureCollectionButton,
+            &QPushButton::pressed,
+            this,
+            &Window::exportPictureCollectionSignal);
+
     connect(m_subComboBox,
             &QComboBox::currentTextChanged,
             this,

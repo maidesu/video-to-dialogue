@@ -95,6 +95,12 @@ signals:
 
     void audioDescriptionRequestedSignal(const QString& index); // Request audio description copy
 
+    void exportSubtitleSignal();
+
+    void exportPictureCollectionSignal();
+
+    void exportDialogueSignal();
+
     void subtitleClearSignal();
 
     void consoleFilterSignal(const MessageLevel level);

@@ -177,7 +177,7 @@ bool FileInfo::openFile()
                                "FileInfo",
                                MessageLevel::Debug);
 
-        return getFileInfoFfmpeg();
+        return getFileInfoFfmpeg(); // note: m_path is invalid after this point
     }
     else
     {
@@ -187,6 +187,32 @@ bool FileInfo::openFile()
 
         return false;
     }
+}
+
+bool FileInfo::saveFile(SaveMode mode)
+{
+    QString savePath;
+
+    switch (mode)
+    {
+        default:
+        case SaveMode::None:
+            return false;
+
+        case SaveMode::Plaintext:
+            savePath = QFileDialog::getSaveFileName(nullptr, tr("Save File"));
+            break;
+
+        case SaveMode::Slides:
+            savePath = QFileDialog::getSaveFileName(nullptr, tr("Save File"));
+            break;
+
+        case SaveMode::Audio:
+            throw std::logic_error("Not implemented"); // TODO
+            break;
+    }
+
+    return true;
 }
 
 bool FileInfo::getFileInfoFfmpeg()

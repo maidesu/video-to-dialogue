@@ -69,6 +69,24 @@ Application::Application()
                      &m_fileinfo,
                      &FileInfo::audioDescriptionRequestedHandler);
 
+    // Window asks FileInfo for a subtitle export
+    QObject::connect(&m_window,
+                     &Window::exportSubtitleSignal,
+                     &m_fileinfo,
+                     &FileInfo::exportSubtitleHandler);
+
+    // Window ask FileInfo for a picture collection export
+    QObject::connect(&m_window,
+                     &Window::exportPictureCollectionSignal,
+                     &m_fileinfo,
+                     &FileInfo::exportPictureCollectionHandler);
+
+    // Window ask FileInfo for a dialogue export
+    QObject::connect(&m_window,
+                     &Window::exportDialogueSignal,
+                     &m_fileinfo,
+                     &FileInfo::exportDialogueHandler);
+
     // Window wants to clear subs on a filechange
     QObject::connect(&m_window,
                      &Window::subtitleClearSignal,

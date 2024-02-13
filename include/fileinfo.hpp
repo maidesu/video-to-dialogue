@@ -16,6 +16,14 @@ extern "C"
 
 namespace DialogueFromVideo {
 
+enum class SaveMode
+{
+    None,
+    Plaintext,
+    Slides,
+    Audio
+};
+
 struct AudioInfo
 {
     int index;
@@ -53,6 +61,12 @@ public:
 public slots:
     void openFileHandler() { openFile(); }
 
+    void exportSubtitleHandler() { saveFile(SaveMode::Plaintext); }
+
+    void exportPictureCollectionHandler() { saveFile(SaveMode::Slides); }
+
+    void exportDialogueHandler() { saveFile(SaveMode::Audio); }
+
     void subDescriptionRequestedHandler(const QString& index);
 
     void subLayerRequestedHandler(const QString& index);
@@ -61,6 +75,7 @@ public slots:
 
 private:
     bool openFile();
+    bool saveFile(SaveMode mode);
     bool getFileInfoFfmpeg();
     void clearStreamInfo();
 
