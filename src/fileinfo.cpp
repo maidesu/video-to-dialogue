@@ -208,11 +208,24 @@ bool FileInfo::saveFile(SaveMode mode, const QTextEdit* textEdit)
                                                        "*.txt"
                                                        ");;All formats (*)"));
 
+            if (savePath.isEmpty())
+            {
+                emit m_messenger.print(tr("Received no file path!"),
+                                       "FileInfo",
+                                       MessageLevel::Warning);
+
+                return false;
+            }
+
             {
                 QFile file_out(savePath);
 
-                if (!file_out.open(QIODevice::WriteOnly | QIODevice::Text))
+                if (!file_out.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
                 {
+                    emit m_messenger.print(tr("Failed to save at specified location!"),
+                                           "FileInfo",
+                                           MessageLevel::Error);
+
                     return false;
                 }
 
@@ -221,6 +234,10 @@ bool FileInfo::saveFile(SaveMode mode, const QTextEdit* textEdit)
 
                 file_out.close();
             }
+
+            emit m_messenger.print(tr("Saved subtitles to file: %1").arg(savePath),
+                                   "FileInfo",
+                                   MessageLevel::Info);
 
             break;
 
