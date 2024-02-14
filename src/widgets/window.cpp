@@ -17,10 +17,16 @@ Window::Window(QWidget *parent)
     , m_subSettingsGroupBox(new QGroupBox(tr("Subtitle timing")))
     , m_subGroupBox(new QGroupBox(tr("Subtitle")))
     , m_audioGroupBox(new QGroupBox(tr("Audio")))
+    , m_exportRemuxGroupBox(new QGroupBox(tr("Remux selection")))
+    , m_exportDialogueGroupBox(new QGroupBox(tr("Dialogue")))
     , m_subComboBox(new QComboBox())
     , m_audioComboBox(new QComboBox())
     , m_languageComboBox(new QComboBox())
     , m_consoleLevelComboBox(new QComboBox())
+    , m_exportContainerComboBox(new QComboBox())
+    , m_exportOptionsComboBox(new QComboBox())
+    , m_exportLossyRadioButton(new QRadioButton(tr("Lossy")))
+    , m_exportLosslessRadioButton(new QRadioButton(tr("Lossless")))
     , m_lightUiRadioButton(new QRadioButton(tr("Light")))
     , m_darkUiRadioButton(new QRadioButton(tr("Dark")))
     , m_subDescriptionLabel(new QLabel())
@@ -36,7 +42,12 @@ Window::Window(QWidget *parent)
     , m_consoleClearButton(new QPushButton(tr("Clear")))
     , m_exportSubtitleButton(new QPushButton(tr("Export subtitle")))
     , m_exportPictureCollectionButton(new QPushButton(tr("Create picture book")))
+    , m_exportVideoRemuxButton(new QPushButton(tr("Video")))
+    , m_exportAudioRemuxButton(new QPushButton(tr("Audio")))
+    , m_exportSubtitleRemuxButton(new QPushButton(tr("Subtitle")))
+    , m_exportDialogueButton(new QPushButton(tr("Export Dialogue")))
     , m_subTextEdit(new QTextEdit())
+    , m_waveFormWidget(new QWidget())
 {
     this->setMinimumSize(900, 720);
 
@@ -172,6 +183,44 @@ Window::Window(QWidget *parent)
                                       ));
     m_consoleLevelComboBox->setPalette(firstElementPalette);
 
+
+    // Export Remux selection
+    QHBoxLayout* exportRemuxLayout = new QHBoxLayout();
+    m_exportRemuxGroupBox->setLayout(exportRemuxLayout);
+    exportRemuxLayout->addWidget(m_exportVideoRemuxButton);
+    exportRemuxLayout->addWidget(m_exportAudioRemuxButton);
+    exportRemuxLayout->addWidget(m_exportSubtitleRemuxButton);
+
+    // Export Dialogue
+    QHBoxLayout* exportDialogueLayout = new QHBoxLayout();
+    m_exportDialogueGroupBox->setLayout(exportDialogueLayout);
+
+    QWidget* exportDialogueRadioButtonContainer = new QWidget();
+    QVBoxLayout* exportDialogueRadioButtonLayout = new QVBoxLayout();
+    exportDialogueRadioButtonContainer->setLayout(exportDialogueRadioButtonLayout);
+    exportDialogueRadioButtonLayout->addWidget(m_exportLossyRadioButton);
+    exportDialogueRadioButtonLayout->addWidget(m_exportLosslessRadioButton);
+
+    QWidget* exportDialogueComboBoxContainer = new QWidget();
+    QVBoxLayout* exportDialogueComboBoxLayout = new QVBoxLayout();
+    exportDialogueComboBoxContainer->setLayout(exportDialogueComboBoxLayout);
+    exportDialogueComboBoxLayout->addWidget(m_exportContainerComboBox);
+    exportDialogueComboBoxLayout->addWidget(m_exportOptionsComboBox);
+
+    exportDialogueLayout->addWidget(exportDialogueRadioButtonContainer);
+    exportDialogueLayout->addWidget(exportDialogueComboBoxContainer);
+    exportDialogueLayout->addWidget(m_exportDialogueButton);
+
+    // Export methods container
+    QWidget* exportMethodsContainer = new QWidget();
+    QHBoxLayout* exportMethodsLayout = new QHBoxLayout();
+
+    exportMethodsContainer->setLayout(exportMethodsLayout);
+
+    exportMethodsLayout->addWidget(m_exportRemuxGroupBox);
+    exportMethodsLayout->addWidget(m_exportDialogueGroupBox);
+
+
     // Tabs
     QTabWidget* tabWidget = new QTabWidget();
 
@@ -199,6 +248,8 @@ Window::Window(QWidget *parent)
     subtitleContainerLayout->addWidget(textEditButtonsContainer);
 
     // Tabs: Export tab
+    exportContainerLayout->addWidget(m_waveFormWidget);
+    exportContainerLayout->addWidget(exportMethodsContainer);
 
     // Tabs: Settings tab
     settingsContainerLayout->setSpacing(20);

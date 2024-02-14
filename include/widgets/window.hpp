@@ -50,12 +50,18 @@ private:
     QGroupBox* m_subSettingsGroupBox;
     QGroupBox* m_subGroupBox;
     QGroupBox* m_audioGroupBox;
+    QGroupBox* m_exportRemuxGroupBox;
+    QGroupBox* m_exportDialogueGroupBox;
 
     QComboBox* m_subComboBox;
     QComboBox* m_audioComboBox;
     QComboBox* m_languageComboBox;
     QComboBox* m_consoleLevelComboBox;
+    QComboBox* m_exportContainerComboBox;
+    QComboBox* m_exportOptionsComboBox;
 
+    QRadioButton* m_exportLossyRadioButton;
+    QRadioButton* m_exportLosslessRadioButton;
     QRadioButton* m_lightUiRadioButton;
     QRadioButton* m_darkUiRadioButton;
 
@@ -74,8 +80,14 @@ private:
     QPushButton* m_consoleClearButton;
     QPushButton* m_exportSubtitleButton;
     QPushButton* m_exportPictureCollectionButton;
+    QPushButton* m_exportVideoRemuxButton;
+    QPushButton* m_exportAudioRemuxButton;
+    QPushButton* m_exportSubtitleRemuxButton;
+    QPushButton* m_exportDialogueButton;
 
     QTextEdit* m_subTextEdit;
+
+    QWidget* m_waveFormWidget;
 
 signals:
     void openFileSignal();
