@@ -13,6 +13,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 SOURCES += \
     src/application.cpp \
     src/file/read.cpp \
+    src/file/write.cpp \
     src/fileinfo.cpp \
     src/main.cpp \
     src/pipe/pipeline.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     include/common/singleton.hpp \
     include/common/time.hpp \
     include/file/read.hpp \
+    include/file/write.hpp \
     include/fileinfo.hpp \
     include/pipe/pipe.hpp \
     include/pipe/pipeline.hpp \

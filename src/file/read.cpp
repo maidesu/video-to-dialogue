@@ -23,7 +23,8 @@ Read::Read(const char* path)
                            "File::Read",
                            MessageLevel::Info);
 
-    if (avformat_find_stream_info(m_formatContext, nullptr) < 0) {
+    if (avformat_find_stream_info(m_formatContext, nullptr) < 0)
+    {
         emit m_messenger.print(QTranslator::tr("Failed to fill in missing stream information!"),
                                "File::Read",
                                MessageLevel::Warning);
