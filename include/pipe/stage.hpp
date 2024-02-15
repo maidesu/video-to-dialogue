@@ -7,7 +7,7 @@
 namespace DialogueFromVideo {
 
 template <class T, class U>
-class Stage : public IPipe<T, U>, public Singleton<Stage<T, U>>
+class Stage : public IPipe<T, U>
 {
 public:
     Stage();

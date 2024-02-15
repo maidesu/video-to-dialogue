@@ -99,9 +99,15 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
                             plain = rect->text;
                             break;
 
-                        case AVSubtitleType::SUBTITLE_ASS:                      // Seemingly every text-based decoder now outputs an ASS format anyways
-                            plain = rect->ass;                                  // Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-                            for (uint j = 0; j < 8; *plain++ == ',' ? j++ : j); // plain text is located after the 8th comma (Layer is not present)
+                        /*
+                         * Seemingly every text-based decoder now outputs an ASS format anyways
+                         * Decoder returned format:  Index, Layer, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+                         * ASS specification format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+                         * Plain text is located after the 8th comma
+                         */
+                        case AVSubtitleType::SUBTITLE_ASS:
+                            plain = rect->ass;
+                            for (uint j = 0; j < 8; *plain++ == ',' ? j++ : j);
                             break;
                     }
 
