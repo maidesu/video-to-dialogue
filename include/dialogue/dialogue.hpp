@@ -1,18 +1,13 @@
 #pragma once
 
 #include <file/read.hpp>
+#include <common/subtitlestructs.hpp>
 #include <common/messenger.hpp>
 #include <common/progress.hpp>
 
 #include <QList>
 
 namespace DialogueFromVideo {
-
-struct Interval
-{
-    int64_t start;
-    int64_t end;
-};
 
 class Dialogue : public QObject
 {
@@ -24,10 +19,14 @@ public:
     Dialogue(const Dialogue&) = delete;
     Dialogue& operator= (const Dialogue&) = delete;
 
+    void processSubs(const QList<SubEntry*>& subs);
+
 public slots:
 
 
 private:
+    void cleanUp();
+
     QList<Interval> m_dialogue; // Timestamps to be used for extraction
     QList<Interval> m_subtitle; // All lists including m_subtitle are offset
     QList<Interval> m_padding;

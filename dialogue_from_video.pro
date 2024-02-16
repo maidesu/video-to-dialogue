@@ -33,6 +33,7 @@ HEADERS += \
     include/common/progress.hpp \
     include/common/progressbar.hpp \
     include/common/singleton.hpp \
+    include/common/subtitlestructs.hpp \
     include/common/time.hpp \
     include/dialogue/dialogue.hpp \
     include/file/read.hpp \

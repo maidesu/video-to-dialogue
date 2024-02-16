@@ -1,6 +1,7 @@
 #pragma once
 
 #include <file/read.hpp>
+#include <common/subtitlestructs.hpp>
 #include <common/messenger.hpp>
 #include <common/progress.hpp>
 
@@ -8,13 +9,6 @@
 #include <QList>
 
 namespace DialogueFromVideo {
-
-struct SubEntry
-{
-    int64_t start;
-    int64_t end;
-    QString text;
-};
 
 class Subtitle : public QObject
 {

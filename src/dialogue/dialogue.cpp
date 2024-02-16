@@ -7,6 +7,19 @@ Dialogue::Dialogue(QObject* parent)
 {
 }
 
+void Dialogue::processSubs(const QList<SubEntry *>& subs)
+{
+    (void)subs;
+}
+
+void Dialogue::cleanUp()
+{
+    m_dialogue.clear();
+    m_subtitle.clear();
+    m_padding.clear();
+    m_gap.clear();
+}
+
 Dialogue::~Dialogue()
 {
 }
