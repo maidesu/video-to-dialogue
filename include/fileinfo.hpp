@@ -21,7 +21,16 @@ enum class SaveMode
     None,
     Plaintext,
     Slides,
-    Audio
+    Extract,
+    Remux
+};
+
+enum class FileMode
+{
+    None,
+    Video,
+    Audio,
+    Subtitle
 };
 
 struct AudioInfo
@@ -61,11 +70,24 @@ public:
 public slots:
     void openFileHandler() { openFile(); }
 
-    void exportSubtitleHandler(const QTextEdit* textEdit) { saveFile(SaveMode::Plaintext, textEdit); }
+    void exportSubtitleHandler(const QTextEdit* textEdit) { saveFile(SaveMode::Plaintext,
+                                                                     FileMode::None,
+                                                                     textEdit); }
 
-    void exportPictureCollectionHandler(const QTextEdit* textEdit) { saveFile(SaveMode::Slides, textEdit); }
+    void exportPictureCollectionHandler(const QTextEdit* textEdit) { saveFile(SaveMode::Slides,
+                                                                              FileMode::None,
+                                                                              textEdit); }
 
-    void exportDialogueHandler() { saveFile(SaveMode::Audio, nullptr); }
+    void exportDialogueHandler() { saveFile(SaveMode::Extract); }
+
+    void exportVideoRemuxHandler() { saveFile(SaveMode::Remux,
+                                              FileMode::Video); }
+
+    void exportAudioRemuxHandler() { saveFile(SaveMode::Remux,
+                                              FileMode::Audio); }
+
+    void exportSubtitleRemuxHandler() { saveFile(SaveMode::Remux,
+                                                 FileMode::Subtitle); }
 
     void subDescriptionRequestedHandler(const QString& index);
 
@@ -75,14 +97,17 @@ public slots:
 
 private:
     bool openFile();
-    bool saveFile(SaveMode mode, const QTextEdit* textEdit);
+    bool saveFile(SaveMode saveMode = SaveMode::None,
+                  FileMode fileMode = FileMode::None,
+                  const QTextEdit* textEdit = nullptr);
     bool getFileInfoFfmpeg();
     void clearStreamInfo();
 
     const char* m_path;
+    int m_selectedVideoIndex;
+    int m_selectedAudioIndex;
     int m_selectedSubIndex;
     int m_selectedSubLayerIndex;
-    int m_selectedAudioIndex;
 
     QList<SubInfo*> m_subStreams;
     QList<AudioInfo*> m_audioStreams;

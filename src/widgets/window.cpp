@@ -337,12 +337,38 @@ Window::Window(QWidget *parent)
     connect(m_exportSubtitleButton,
             &QPushButton::pressed,
             this,
-            [this](){ emit Window::exportSubtitleSignal(static_cast<const QTextEdit*>(m_subTextEdit)); } );
+            [this](){
+                emit Window::exportSubtitleSignal(static_cast<const QTextEdit*>(m_subTextEdit));
+            });
 
-    connect(m_exportPictureCollectionButton,
+    // TODO: Implement Picture Collection
+    //connect(m_exportPictureCollectionButton,
+    //        &QPushButton::pressed,
+    //        this,
+    //        [this](){
+    //            emit Window::exportPictureCollectionSignal(static_cast<const QTextEdit*>(m_subTextEdit));
+    //        });
+
+    // TODO: Implement Dialogue export
+    //connect(m_exportDialogueButton,
+    //        &QPushButton::pressed,
+    //        this,
+    //        &Window::exportDialogueSignal);
+
+    connect(m_exportVideoRemuxButton,
             &QPushButton::pressed,
             this,
-            [this](){ emit Window::exportPictureCollectionSignal(static_cast<const QTextEdit*>(m_subTextEdit)); } );
+            &Window::exportVideoRemuxSignal);
+
+    connect(m_exportAudioRemuxButton,
+            &QPushButton::pressed,
+            this,
+            &Window::exportAudioRemuxSignal);
+
+    connect(m_exportSubtitleRemuxButton,
+            &QPushButton::pressed,
+            this,
+            &Window::exportSubtitleRemuxSignal);
 
     connect(m_subComboBox,
             &QComboBox::currentTextChanged,

@@ -8,10 +8,9 @@ Write::Write(const char* path)
     : m_formatContext(NULL)
     , m_result(0)
 {
-    m_result = avformat_alloc_output_context2(&m_formatContext, NULL, NULL, path);
-    if (m_result < 0)
+    if (0 > (m_result = avformat_alloc_output_context2(&m_formatContext, NULL, NULL, path)) )
     {
-        emit m_messenger.print(QTranslator::tr("Failed to save at specified path!"),
+        emit m_messenger.print(QTranslator::tr("Could not open output file at specified path!"),
                                "File::Write",
                                MessageLevel::Error);
 
@@ -24,6 +23,11 @@ Write::~Write()
     // >= 0 for no errors occured
     if (m_result >= 0)
     {
+        if (m_formatContext && !(m_formatContext->flags & AVFMT_NOFILE))
+        {
+            avio_closep(&m_formatContext->pb);
+        }
+
         avformat_free_context(m_formatContext);
     }
 }
@@ -36,27 +40,6 @@ AVFormatContext* Write::getContext()
     }
 
     return NULL;
-}
-
-int Write::writeToFile()
-{
-    int res;
-
-    if (0 != (res = av_write_trailer(m_formatContext)))
-    {
-        emit m_messenger.print(QTranslator::tr("Failed to write file!"),
-                               "File::Write",
-                               MessageLevel::Error);
-    }
-    else
-    {
-        emit m_messenger.print(QTranslator::tr("Successfully written to path: %1").arg(
-                                   QString(m_formatContext->url)),
-                               "File::Write",
-                               MessageLevel::Info);
-    }
-
-    return res;
 }
 
 } // namespace DialogueFromVideo::File

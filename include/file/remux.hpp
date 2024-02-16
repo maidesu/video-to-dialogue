@@ -10,22 +10,20 @@ extern "C"
 
 namespace DialogueFromVideo::File {
 
-class Write
+class Remux
 {
 public:
-    explicit Write(const char* path);
-    ~Write();
+    explicit Remux(AVFormatContext* in, AVFormatContext* out, int target);
+    ~Remux();
 
-    Write(Write&) = delete;
-    Write& operator= (const Write&) = delete;
-
-
-    AVFormatContext* getContext();
+    Remux(Remux&) = delete;
+    Remux& operator= (const Remux&) = delete;
 
     int getResult() { return m_result; }
 
 private:
-    AVFormatContext* m_formatContext;
+    AVFormatContext* m_inFormatContext;
+    AVFormatContext* m_outFormatContext;
     int m_result;
 
     Messenger m_messenger;

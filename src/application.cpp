@@ -87,6 +87,24 @@ Application::Application()
                      &m_fileinfo,
                      &FileInfo::exportDialogueHandler);
 
+    // Video remux
+    QObject::connect(&m_window,
+                     &Window::exportVideoRemuxSignal,
+                     &m_fileinfo,
+                     &FileInfo::exportVideoRemuxHandler);
+
+    // Audio remux
+    QObject::connect(&m_window,
+                     &Window::exportAudioRemuxSignal,
+                     &m_fileinfo,
+                     &FileInfo::exportAudioRemuxHandler);
+
+    // Subtitle remux
+    QObject::connect(&m_window,
+                     &Window::exportSubtitleRemuxSignal,
+                     &m_fileinfo,
+                     &FileInfo::exportSubtitleRemuxHandler);
+
     // Window wants to clear subs on a filechange
     QObject::connect(&m_window,
                      &Window::subtitleClearSignal,

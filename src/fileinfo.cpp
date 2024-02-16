@@ -1,5 +1,8 @@
 #include <fileinfo.hpp>
 
+#include <file/write.hpp>
+#include <file/remux.hpp>
+
 extern "C"
 {
     #include <libavcodec/avcodec.h>
@@ -11,9 +14,10 @@ namespace DialogueFromVideo {
 FileInfo::FileInfo(QObject* parent)
     : QObject(parent)
     , m_path(nullptr)
+    , m_selectedVideoIndex(-1)
+    , m_selectedAudioIndex(-1)
     , m_selectedSubIndex(-1)
     , m_selectedSubLayerIndex(-1)
-    , m_selectedAudioIndex(-1)
     , m_file(nullptr)
 {
 
@@ -189,11 +193,13 @@ bool FileInfo::openFile()
     }
 }
 
-bool FileInfo::saveFile(SaveMode mode, const QTextEdit* textEdit)
+bool FileInfo::saveFile(SaveMode saveMode,
+                        FileMode fileMode,
+                        const QTextEdit* textEdit)
 {
     QString savePath;
 
-    switch (mode)
+    switch (saveMode)
     {
         default:
         case SaveMode::None:
@@ -246,8 +252,62 @@ bool FileInfo::saveFile(SaveMode mode, const QTextEdit* textEdit)
                                                     tr("Export Picture Collection"));
             break;
 
-        case SaveMode::Audio:
+        case SaveMode::Extract:
             throw std::logic_error("Not implemented"); // TODO
+            break;
+
+        case SaveMode::Remux:
+            int selectedStream;
+
+            switch (fileMode)
+            {
+                default:
+                case FileMode::None:
+                    return false;
+
+                case FileMode::Video: // Containers may support many videos, will remux the first
+                    selectedStream = m_selectedVideoIndex;
+                    break;
+
+                case FileMode::Audio:
+                    selectedStream = m_selectedAudioIndex;
+                    break;
+
+                case FileMode::Subtitle:
+                    selectedStream = m_selectedSubIndex;
+                    break;
+            }
+
+            savePath = QFileDialog::getSaveFileName(nullptr,
+                                                    tr("Export File"),
+                                                    "",
+                                                    tr("All formats (*)"));
+
+            if (savePath.isEmpty())
+            {
+                emit m_messenger.print(tr("Received no file path!"),
+                                       "FileInfo",
+                                       MessageLevel::Warning);
+
+                return false;
+            }
+
+            File::Write write(savePath.toUtf8().constData());
+
+            if (write.getResult() < 0)
+            {
+                return false;
+            }
+
+            File::Remux remux(m_file->getContext(),
+                              write.getContext(),
+                              selectedStream);
+
+            if (remux.getResult() < 0)
+            {
+                return false;
+            }
+
             break;
     }
 
@@ -278,62 +338,84 @@ bool FileInfo::getFileInfoFfmpeg()
 
     // Get file info
     AVStream* stream;
-    for (uint i = 0; i < m_file->getStreamCount(); ++i) {
+    for (uint i = 0; i < m_file->getStreamCount(); ++i)
+    {
         stream = m_file->getStream(i);
 
-        if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
-            SubInfo* si = new SubInfo();
+        switch (stream->codecpar->codec_type)
+        {
+            default:
+            case AVMEDIA_TYPE_UNKNOWN:
+            case AVMEDIA_TYPE_DATA:
+            case AVMEDIA_TYPE_ATTACHMENT:
+            case AVMEDIA_TYPE_NB:
+                break;
 
-            si->index       = stream->index;
+            case AVMEDIA_TYPE_VIDEO:
+                m_selectedVideoIndex = i;
+                break;
 
-            si->codec_id    = stream->codecpar->codec_id;
+            case AVMEDIA_TYPE_AUDIO:
+            {
+                AudioInfo* ai = new AudioInfo();
 
-            si->codec_name  = QString(avcodec_get_name(si->codec_id)
-                                        ? avcodec_get_name(si->codec_id)
-                                        : "N/A" );
+                const AVCodecDescriptor* desc = avcodec_descriptor_get(stream->codecpar->codec_id);
 
-            si->lang        = QString(av_dict_get(stream->metadata, "language", nullptr, 0)
-                                        ? av_dict_get(stream->metadata, "language", nullptr, 0)->value
-                                        : "N/A");
+                ai->index       = stream->index;
 
-            m_subStreams.append(si);
+                ai->samplerate  = stream->codecpar->sample_rate;
 
-            emit m_messenger.print("Appended sub stream",
-                                   "FileInfo",
-                                   MessageLevel::Debug);
-        }
-        else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
-            AudioInfo* ai = new AudioInfo();
+                ai->bitdepth    = stream->codecpar->bits_per_coded_sample == 0
+                                   ? stream->codecpar->bits_per_raw_sample == 0 : stream->codecpar->bits_per_coded_sample
+                                         ? av_get_bits_per_sample(stream->codecpar->codec_id) : stream->codecpar->bits_per_raw_sample;
 
-            const AVCodecDescriptor* desc = avcodec_descriptor_get(stream->codecpar->codec_id);
+                ai->bitrate     = stream->codecpar->bit_rate / 1000;
 
-            ai->index       = stream->index;
+                ai->lossless    = desc->props ? static_cast<bool>(desc->props & AV_CODEC_PROP_LOSSLESS) : false;
 
-            ai->samplerate  = stream->codecpar->sample_rate;
+                ai->codec_id    = stream->codecpar->codec_id;
 
-            ai->bitdepth    = stream->codecpar->bits_per_coded_sample == 0
-                                ? stream->codecpar->bits_per_raw_sample == 0 : stream->codecpar->bits_per_coded_sample
-                                    ? av_get_bits_per_sample(stream->codecpar->codec_id) : stream->codecpar->bits_per_raw_sample;
+                ai->codec_name  = QString(avcodec_get_name(ai->codec_id)
+                                             ? avcodec_get_name(ai->codec_id)
+                                             : "N/A" );
 
-            ai->bitrate     = stream->codecpar->bit_rate / 1000;
+                ai->lang        = QString(av_dict_get(stream->metadata, "language", nullptr, 0)
+                                       ? av_dict_get(stream->metadata, "language", nullptr, 0)->value
+                                       : "N/A");
 
-            ai->lossless    = desc->props ? static_cast<bool>(desc->props & AV_CODEC_PROP_LOSSLESS) : false;
+                m_audioStreams.append(ai);
 
-            ai->codec_id    = stream->codecpar->codec_id;
+                emit m_messenger.print("Appended audio stream",
+                                       "FileInfo",
+                                       MessageLevel::Debug);
+            }
 
-            ai->codec_name  = QString(avcodec_get_name(ai->codec_id)
-                                        ? avcodec_get_name(ai->codec_id)
-                                        : "N/A" );
+                break;
 
-            ai->lang        = QString(av_dict_get(stream->metadata, "language", nullptr, 0)
-                                        ? av_dict_get(stream->metadata, "language", nullptr, 0)->value
-                                        : "N/A");
+            case AVMEDIA_TYPE_SUBTITLE:
+            {
+                SubInfo* si = new SubInfo();
 
-            m_audioStreams.append(ai);
+                si->index       = stream->index;
 
-            emit m_messenger.print("Appended audio stream",
-                                   "FileInfo",
-                                   MessageLevel::Debug);
+                si->codec_id    = stream->codecpar->codec_id;
+
+                si->codec_name  = QString(avcodec_get_name(si->codec_id)
+                                             ? avcodec_get_name(si->codec_id)
+                                             : "N/A" );
+
+                si->lang        = QString(av_dict_get(stream->metadata, "language", nullptr, 0)
+                                       ? av_dict_get(stream->metadata, "language", nullptr, 0)->value
+                                       : "N/A");
+
+                m_subStreams.append(si);
+
+                emit m_messenger.print("Appended sub stream",
+                                       "FileInfo",
+                                       MessageLevel::Debug);
+            }
+
+                break;
         }
     }
 
@@ -364,9 +446,10 @@ bool FileInfo::getFileInfoFfmpeg()
 
 void FileInfo::clearStreamInfo()
 {
+    m_selectedVideoIndex = -1;
+    m_selectedAudioIndex = -1;
     m_selectedSubIndex = -1;
     m_selectedSubLayerIndex = -1;
-    m_selectedAudioIndex = -1;
 
     while (!m_subStreams.isEmpty())
     {

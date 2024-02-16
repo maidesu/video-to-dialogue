@@ -113,6 +113,12 @@ signals:
 
     void exportDialogueSignal();
 
+    void exportVideoRemuxSignal();
+
+    void exportAudioRemuxSignal();
+
+    void exportSubtitleRemuxSignal();
+
     void subtitleClearSignal();
 
     void consoleFilterSignal(const MessageLevel level);

@@ -29,9 +29,9 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
     // https://www.ffmpeg.org/doxygen/6.0/group__lavc__decoding.html
 
     // Retrive decoder
-    const AVCodec* codec = avcodec_find_decoder(file->getStream(selectedSubIndex)->codecpar->codec_id);
+    const AVCodec* decoder = avcodec_find_decoder(file->getStream(selectedSubIndex)->codecpar->codec_id);
 
-    if (!codec)
+    if (!decoder)
     {
         emit m_messenger.print(tr("Unsupported subtitle codec!"),
                                "Subtitle",
@@ -40,10 +40,10 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
     }
 
 
-    AVCodecContext* avctx = avcodec_alloc_context3(codec); // must be freed with avcodec_free_context
+    AVCodecContext* avctx = avcodec_alloc_context3(decoder); // must be freed with avcodec_free_context
 
     // The AVCodecContext MUST have been opened with avcodec_open2() before packets may be fed to the decoder.
-    int res = avcodec_open2(avctx, codec, NULL);
+    int res = avcodec_open2(avctx, decoder, NULL);
 
     if (res < 0)
     {
