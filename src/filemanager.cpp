@@ -41,6 +41,48 @@ FileManager::~FileManager()
     }
 }
 
+void FileManager::openFileHandler()
+{
+    openFile();
+}
+
+void FileManager::exportSubtitleHandler(const QTextEdit *textEdit)
+{
+    saveFile(SaveMode::Plaintext,
+             FileMode::None,
+             textEdit);
+}
+
+void FileManager::exportPictureCollectionHandler(const QTextEdit *textEdit)
+{
+    saveFile(SaveMode::Slides,
+             FileMode::None,
+             textEdit);
+}
+
+void FileManager::exportDialogueHandler()
+{
+    saveFile(SaveMode::Extract);
+}
+
+void FileManager::exportVideoRemuxHandler()
+{
+    saveFile(SaveMode::Remux,
+             FileMode::Video);
+}
+
+void FileManager::exportAudioRemuxHandler()
+{
+    saveFile(SaveMode::Remux,
+             FileMode::Audio);
+}
+
+void FileManager::exportSubtitleRemuxHandler()
+{
+    saveFile(SaveMode::Remux,
+             FileMode::Subtitle);
+}
+
 void FileManager::subDescriptionRequestedHandler(const QString& index)
 {
     emit m_messenger.print(QString("subDescriptionRequestedHandler(%1)").arg(index),

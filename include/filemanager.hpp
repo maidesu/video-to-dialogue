@@ -68,26 +68,19 @@ public:
     virtual ~FileManager();
 
 public slots:
-    void openFileHandler() { openFile(); }
+    void openFileHandler();
 
-    void exportSubtitleHandler(const QTextEdit* textEdit) { saveFile(SaveMode::Plaintext,
-                                                                     FileMode::None,
-                                                                     textEdit); }
+    void exportSubtitleHandler(const QTextEdit* textEdit);
 
-    void exportPictureCollectionHandler(const QTextEdit* textEdit) { saveFile(SaveMode::Slides,
-                                                                              FileMode::None,
-                                                                              textEdit); }
+    void exportPictureCollectionHandler(const QTextEdit* textEdit);
 
-    void exportDialogueHandler() { saveFile(SaveMode::Extract); }
+    void exportDialogueHandler();
 
-    void exportVideoRemuxHandler() { saveFile(SaveMode::Remux,
-                                              FileMode::Video); }
+    void exportVideoRemuxHandler();
 
-    void exportAudioRemuxHandler() { saveFile(SaveMode::Remux,
-                                              FileMode::Audio); }
+    void exportAudioRemuxHandler();
 
-    void exportSubtitleRemuxHandler() { saveFile(SaveMode::Remux,
-                                                 FileMode::Subtitle); }
+    void exportSubtitleRemuxHandler();
 
     void subDescriptionRequestedHandler(const QString& index);
 
