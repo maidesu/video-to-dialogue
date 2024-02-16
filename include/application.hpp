@@ -1,6 +1,6 @@
 #pragma once
 
-#include <fileinfo.hpp>
+#include <filemanager.hpp>
 #include <settings.hpp>
 #include <subtitle/subtitle.hpp>
 #include <widgets/window.hpp>
@@ -24,7 +24,7 @@ public:
 
 private:
     Settings m_settings;
-    FileInfo m_fileinfo;
+    FileManager m_fileManager;
     Subtitle m_subtitle;
     Messenger m_applicationMessenger;
     Window m_window;

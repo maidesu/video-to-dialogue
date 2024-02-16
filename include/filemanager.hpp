@@ -53,19 +53,19 @@ struct SubInfo
     QString lang;
 };
 
-class FileInfo : public QObject
+class FileManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit FileInfo(QObject *parent = nullptr);
+    explicit FileManager(QObject *parent = nullptr);
 
-    FileInfo(FileInfo&) = delete;
-    FileInfo(FileInfo&&) = delete;
+    FileManager(FileManager&) = delete;
+    FileManager(FileManager&&) = delete;
 
-    FileInfo& operator= (const FileInfo&) = delete;
-    FileInfo& operator= (const FileInfo&&) = delete;
+    FileManager& operator= (const FileManager&) = delete;
+    FileManager& operator= (const FileManager&&) = delete;
 
-    virtual ~FileInfo();
+    virtual ~FileManager();
 
 public slots:
     void openFileHandler() { openFile(); }
@@ -100,7 +100,7 @@ private:
     bool saveFile(SaveMode saveMode = SaveMode::None,
                   FileMode fileMode = FileMode::None,
                   const QTextEdit* textEdit = nullptr);
-    bool getFileInfoFfmpeg();
+    bool getFileInfo();
     void clearStreamInfo();
 
     const char* m_path;

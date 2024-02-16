@@ -1,7 +1,7 @@
 #pragma once
 
 #include <subtitle/subtitle.hpp>
-#include <fileinfo.hpp>
+#include <filemanager.hpp>
 
 #include <QLabel>
 #include <QRadioButton>

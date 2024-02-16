@@ -45,65 +45,65 @@ Application::Application()
                      &Settings::colorSchemeSettingsChangedHandler);
 
 
-    // Ask fileinfo to open file from window
+    // Ask FileManager to open file from window
     QObject::connect(&m_window,
                      &Window::openFileSignal,
-                     &m_fileinfo,
-                     &FileInfo::openFileHandler);
+                     &m_fileManager,
+                     &FileManager::openFileHandler);
 
-    // Window requests sub description from FileInfo by index
+    // Window requests sub description from FileManager by index
     QObject::connect(&m_window,
                      &Window::subDescriptionRequestedSignal,
-                     &m_fileinfo,
-                     &FileInfo::subDescriptionRequestedHandler);
+                     &m_fileManager,
+                     &FileManager::subDescriptionRequestedHandler);
 
-    // Window requests sub layer change from FileInfo by index
+    // Window requests sub layer change from FileManager by index
     QObject::connect(&m_window,
                      &Window::subLayerRequestedSignal,
-                     &m_fileinfo,
-                     &FileInfo::subLayerRequestedHandler);
+                     &m_fileManager,
+                     &FileManager::subLayerRequestedHandler);
 
-    // Window requests audio description from FileInfo by index
+    // Window requests audio description from FileManager by index
     QObject::connect(&m_window,
                      &Window::audioDescriptionRequestedSignal,
-                     &m_fileinfo,
-                     &FileInfo::audioDescriptionRequestedHandler);
+                     &m_fileManager,
+                     &FileManager::audioDescriptionRequestedHandler);
 
-    // Window asks FileInfo for a subtitle export
+    // Window asks FileManager for a subtitle export
     QObject::connect(&m_window,
                      &Window::exportSubtitleSignal,
-                     &m_fileinfo,
-                     &FileInfo::exportSubtitleHandler);
+                     &m_fileManager,
+                     &FileManager::exportSubtitleHandler);
 
-    // Window ask FileInfo for a picture collection export
+    // Window ask FileManager for a picture collection export
     QObject::connect(&m_window,
                      &Window::exportPictureCollectionSignal,
-                     &m_fileinfo,
-                     &FileInfo::exportPictureCollectionHandler);
+                     &m_fileManager,
+                     &FileManager::exportPictureCollectionHandler);
 
-    // Window ask FileInfo for a dialogue export
+    // Window ask FileManager for a dialogue export
     QObject::connect(&m_window,
                      &Window::exportDialogueSignal,
-                     &m_fileinfo,
-                     &FileInfo::exportDialogueHandler);
+                     &m_fileManager,
+                     &FileManager::exportDialogueHandler);
 
     // Video remux
     QObject::connect(&m_window,
                      &Window::exportVideoRemuxSignal,
-                     &m_fileinfo,
-                     &FileInfo::exportVideoRemuxHandler);
+                     &m_fileManager,
+                     &FileManager::exportVideoRemuxHandler);
 
     // Audio remux
     QObject::connect(&m_window,
                      &Window::exportAudioRemuxSignal,
-                     &m_fileinfo,
-                     &FileInfo::exportAudioRemuxHandler);
+                     &m_fileManager,
+                     &FileManager::exportAudioRemuxHandler);
 
     // Subtitle remux
     QObject::connect(&m_window,
                      &Window::exportSubtitleRemuxSignal,
-                     &m_fileinfo,
-                     &FileInfo::exportSubtitleRemuxHandler);
+                     &m_fileManager,
+                     &FileManager::exportSubtitleRemuxHandler);
 
     // Window wants to clear subs on a filechange
     QObject::connect(&m_window,
@@ -113,27 +113,27 @@ Application::Application()
 
 
     // Currently only used to fill ComboBoxes with id's
-    QObject::connect(&m_fileinfo,
-                     &FileInfo::fileChangedSignal,
+    QObject::connect(&m_fileManager,
+                     &FileManager::fileChangedSignal,
                      &m_window,
                      &Window::fileChangedHandler);
 
     // Send chosen sub stream info to window
-    QObject::connect(&m_fileinfo,
-                     &FileInfo::subDescriptionReceivedSignal,
+    QObject::connect(&m_fileManager,
+                     &FileManager::subDescriptionReceivedSignal,
                      &m_window,
                      &Window::subDescriptionReceivedHandler);
 
     // Send chosen audio stream info to window
-    QObject::connect(&m_fileinfo,
-                     &FileInfo::audioDescriptionReceivedSignal,
+    QObject::connect(&m_fileManager,
+                     &FileManager::audioDescriptionReceivedSignal,
                      &m_window,
                      &Window::audioDescriptionReceivedHandler);
 
 
-    // FileInfo requests Subtitle after validation
-    QObject::connect(&m_fileinfo,
-                     &FileInfo::subtitleRequestedSignal,
+    // FileManager requests Subtitle after validation
+    QObject::connect(&m_fileManager,
+                     &FileManager::subtitleRequestedSignal,
                      &m_subtitle,
                      &Subtitle::subtitleRequestedHandler);
 

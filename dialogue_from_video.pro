@@ -15,7 +15,7 @@ SOURCES += \
     src/file/read.cpp \
     src/file/remux.cpp \
     src/file/write.cpp \
-    src/fileinfo.cpp \
+    src/filemanager.cpp \
     src/main.cpp \
     src/pipe/pipeline.cpp \
     src/pipe/stage.cpp \
@@ -36,7 +36,7 @@ HEADERS += \
     include/file/read.hpp \
     include/file/remux.hpp \
     include/file/write.hpp \
-    include/fileinfo.hpp \
+    include/filemanager.hpp \
     include/pipe/pipe.hpp \
     include/pipe/pipeline.hpp \
     include/pipe/stage.hpp \
