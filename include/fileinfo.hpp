@@ -118,8 +118,9 @@ private:
     Progress m_progress;
 
 signals:
-    void fileChangedSignal(const QList<DialogueFromVideo::SubInfo*>& subStreams,
-                           const QList<DialogueFromVideo::AudioInfo*>& audioStreams);
+    void fileChangedSignal(int videoStream,
+                           const QList<DialogueFromVideo::AudioInfo*>& audioStreams,
+                           const QList<DialogueFromVideo::SubInfo*>& subStreams);
 
     void subDescriptionReceivedSignal(const SubInfo subInfo);
 

@@ -21,8 +21,9 @@ public:
     explicit Window(QWidget *parent = nullptr);
 
 public slots:
-    void fileChangedHandler(const QList<SubInfo*>& subStreams,
-                            const QList<AudioInfo*>& audioStreams);
+    void fileChangedHandler(int videoStream,
+                            const QList<AudioInfo*>& audioStreams,
+                            const QList<SubInfo*>& subStreams);
 
     void applySettingsButtonHandler();
 

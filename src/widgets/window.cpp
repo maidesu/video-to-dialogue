@@ -55,6 +55,10 @@ Window::Window(QWidget *parent)
     m_subLayerSpinBox->setDisabled(true);
     m_audioComboBox->setDisabled(true);
 
+    m_exportVideoRemuxButton->setDisabled(true);
+    m_exportAudioRemuxButton->setDisabled(true);
+    m_exportSubtitleRemuxButton->setDisabled(true);
+
     // Info group box
     QHBoxLayout* infoLayout = new QHBoxLayout();
     m_infoGroupBox->setLayout(infoLayout);
@@ -432,8 +436,9 @@ Window::Window(QWidget *parent)
             });
 }
 
-void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStreams,
-                                const QList<DialogueFromVideo::AudioInfo*>& audioStreams)
+void Window::fileChangedHandler(int videoStream,
+                                const QList<DialogueFromVideo::AudioInfo*>& audioStreams,
+                                const QList<DialogueFromVideo::SubInfo*>& subStreams)
 {
     emit m_windowMessenger.print("File changed, updating file info...",
                                  "MainWindow",
@@ -460,6 +465,10 @@ void Window::fileChangedHandler(const QList<DialogueFromVideo::SubInfo*>& subStr
     // Disable if combobox content is less than 1
     m_subComboBox->setDisabled(m_subComboBox->count() < 1);
     m_audioComboBox->setDisabled(m_audioComboBox->count() < 1);
+
+    m_exportVideoRemuxButton->setDisabled(videoStream == 0);
+    m_exportAudioRemuxButton->setDisabled(m_audioComboBox->count() < 1);
+    m_exportSubtitleRemuxButton->setDisabled(m_subComboBox->count() < 1);
 
     // Force update
     if (!m_subLayerSpinBox->isEnabled())

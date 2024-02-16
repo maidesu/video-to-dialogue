@@ -439,7 +439,9 @@ bool FileInfo::getFileInfoFfmpeg()
                                MessageLevel::Warning);
     }
 
-    emit fileChangedSignal(m_subStreams, m_audioStreams);
+    emit fileChangedSignal(m_selectedVideoIndex == -1 ? 0 : 1,
+                           m_audioStreams,
+                           m_subStreams);
 
     return true;
 }
