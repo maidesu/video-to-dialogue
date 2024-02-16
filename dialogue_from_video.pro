@@ -12,6 +12,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 SOURCES += \
     src/application.cpp \
+    src/dialogue/dialogue.cpp \
     src/file/read.cpp \
     src/file/remux.cpp \
     src/file/write.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     include/common/progressbar.hpp \
     include/common/singleton.hpp \
     include/common/time.hpp \
+    include/dialogue/dialogue.hpp \
     include/file/read.hpp \
     include/file/remux.hpp \
     include/file/write.hpp \
