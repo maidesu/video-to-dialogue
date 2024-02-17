@@ -112,6 +112,8 @@ signals:
 
     void exportPictureCollectionSignal(const QTextEdit* textEdit);
 
+    void extractDialogueSignal();
+
     void exportDialogueSignal();
 
     void exportVideoRemuxSignal();

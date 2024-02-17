@@ -353,7 +353,12 @@ Window::Window(QWidget *parent)
     //            emit Window::exportPictureCollectionSignal(static_cast<const QTextEdit*>(m_subTextEdit));
     //        });
 
-    // TODO: Implement Dialogue export
+    connect(m_extractDialogueButton,
+            &QPushButton::pressed,
+            this,
+            &Window::extractDialogueSignal);
+
+    // TODO: Implement Dialogue ffmpeg export
     //connect(m_exportDialogueButton,
     //        &QPushButton::pressed,
     //        this,
