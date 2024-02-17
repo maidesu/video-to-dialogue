@@ -12,6 +12,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 SOURCES += \
     src/application.cpp \
+    src/audio/audio.cpp \
     src/dialogue/dialogue.cpp \
     src/file/read.cpp \
     src/file/remux.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     include/application.hpp \
+    include/audio/audio.hpp \
     include/common/console.hpp \
     include/common/exitcode.hpp \
     include/common/messenger.hpp \

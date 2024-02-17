@@ -122,6 +122,9 @@ signals:
     void subtitleRequestedSignal(File::Read* file,
                                  int selectedSubIndex,
                                  int selectedSubLayerIndex);
+
+    void waveFormRequestedSignal(File::Read* file,
+                                 int selectedAudioIndex);
 };
 
 } // namespace DialogueFromVideo

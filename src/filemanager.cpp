@@ -182,6 +182,9 @@ void FileManager::audioDescriptionRequestedHandler(const QString& index)
 
             emit audioDescriptionReceivedSignal(AudioInfo(*ai)); // Call to default copy ctor
 
+            emit waveFormRequestedSignal(m_file,
+                                         m_selectedAudioIndex);
+
             return;
         }
     }
