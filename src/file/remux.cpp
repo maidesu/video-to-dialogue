@@ -74,7 +74,7 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
         av_packet_unref(avpkt);
     }
 
-    av_packet_unref(avpkt);
+    av_packet_free(&avpkt);
 
     // Write trailer
     if (0 != (m_result = av_write_trailer(out)) )

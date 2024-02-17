@@ -131,7 +131,7 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
     }
 
     avsubtitle_free(&sub);
-    av_packet_unref(avpkt);
+    av_packet_free(&avpkt);
     avcodec_free_context(&avctx); // expects AVCodecContext** for some reason even though alloc returns AVCodecContext*
 
     if (unsupported_sub)
