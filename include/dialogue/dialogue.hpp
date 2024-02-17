@@ -19,7 +19,11 @@ public:
     Dialogue(const Dialogue&) = delete;
     Dialogue& operator= (const Dialogue&) = delete;
 
-    void processSubs(const QList<SubEntry*>& subs);
+    void processSubs(const QList<SubEntry*>& subs,
+                     int64_t left,
+                     int64_t right,
+                     int64_t offset,
+                     int64_t minGap);
 
 public slots:
 
@@ -28,7 +32,7 @@ private:
     void cleanUp();
 
     QList<Interval> m_dialogue; // Timestamps to be used for extraction
-    QList<Interval> m_subtitle; // All lists including m_subtitle are offset
+    QList<Interval> m_subtitle; // All lists including this are offset
     QList<Interval> m_padding;
     QList<Interval> m_gap;
 
