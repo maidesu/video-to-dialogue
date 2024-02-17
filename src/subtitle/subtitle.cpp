@@ -55,8 +55,8 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
 
     AVFormatContext* s = file->getContext();
     AVPacket* avpkt = av_packet_alloc();
-    AVSubtitle* sub = new AVSubtitle(); /* note : avsubtitle_alloc does not seem to exist
-                                         * note2: undefined or null WILL crash */
+    AVSubtitle sub;
+
     int got_sub;
 
     av_seek_frame(s, selectedSubIndex, 0, AVSEEK_FLAG_ANY);
@@ -77,13 +77,13 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
     {
         if (avpkt->stream_index == selectedSubIndex)
         {
-            avcodec_decode_subtitle2(avctx, sub, &got_sub, avpkt);
+            avcodec_decode_subtitle2(avctx, &sub, &got_sub, avpkt);
 
             if (got_sub)
             {
-                for (uint i = 0; i < sub->num_rects; ++i)
+                for (uint i = 0; i < sub.num_rects; ++i)
                 {
-                    AVSubtitleRect* rect = sub->rects[i];
+                    AVSubtitleRect* rect = sub.rects[i];
 
                     const char* plain;
 
@@ -116,7 +116,7 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
                                                  QString{ plain } });
                 }
 
-                avsubtitle_free(sub);
+                avsubtitle_free(&sub);
             }
         }
 
@@ -130,7 +130,7 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
         ++frame_count;
     }
 
-    avsubtitle_free(sub);
+    avsubtitle_free(&sub);
     av_packet_unref(avpkt);
     avcodec_free_context(&avctx); // expects AVCodecContext** for some reason even though alloc returns AVCodecContext*
 
