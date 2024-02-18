@@ -59,8 +59,8 @@ void Audio::waveformRequestedHandler(File::Read* file,
             {
                 if (avfrm->ch_layout.nb_channels > 0)
                 {
-                    double value;
-                    memcpy(&value, &avfrm->data[0][i], sizeof(double)); // Grab first channel
+                    // Grab first channel
+                    double value = *reinterpret_cast<double*>(&avfrm->data[0][i]);
                     m_samples.append(value);
                 }
             }
@@ -71,7 +71,8 @@ void Audio::waveformRequestedHandler(File::Read* file,
             {
                 if (avfrm->ch_layout.nb_channels > 0)
                 {
-                    float value = *((float*)(&avfrm->data[0][i])); // Grab first channel
+                    // Grab first channel
+                    float value = *reinterpret_cast<float*>(&avfrm->data[0][i]);
                     m_samples.append(value);
                 }
             }
