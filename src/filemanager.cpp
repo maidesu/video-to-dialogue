@@ -3,6 +3,8 @@
 #include <file/write.hpp>
 #include <file/remux.hpp>
 
+#include <cstring>
+
 extern "C"
 {
     #include <libavcodec/avcodec.h>
@@ -303,6 +305,8 @@ bool FileManager::saveFile(SaveMode saveMode,
 
         case SaveMode::Remux:
             int selectedStream;
+            char formattedExtensions[256] = {0};
+            char* format_write = formattedExtensions;
 
             switch (fileMode)
             {
@@ -312,21 +316,83 @@ bool FileManager::saveFile(SaveMode saveMode,
 
                 case FileMode::Video: // Containers may support many videos, will remux the first
                     selectedStream = m_selectedVideoIndex;
+                    strcpy(formattedExtensions, "Video");
                     break;
 
                 case FileMode::Audio:
                     selectedStream = m_selectedAudioIndex;
+                    strcpy(formattedExtensions, "Audio");
                     break;
 
                 case FileMode::Subtitle:
                     selectedStream = m_selectedSubIndex;
+                    strcpy(formattedExtensions, "Subtitle");
                     break;
             }
+
+            const char* short_name = avcodec_get_name(m_file->getStream(selectedStream)->codecpar->codec_id);
+
+            const AVOutputFormat* outFormat = av_guess_format(short_name,
+                                                              nullptr,
+                                                              nullptr);
+
+
+            while (*format_write++ != '\0');
+            --format_write; // Move to right after the text
+
+            *format_write++ = ' ';
+            *format_write++ = '(';
+
+            if (outFormat)
+            {
+                *format_write++ = '*';
+                *format_write++ = '.';
+
+                const char* exts = outFormat->extensions;
+
+                for (;;)
+                {
+                    if (*exts == '\0')
+                    {
+                        break;
+                    }
+
+                    if (*exts == ',')
+                    {
+                        *format_write++ = ' ';
+                        *format_write++ = '*';
+                        *format_write++ = '.';
+                    }
+                    else
+                    {
+                        *format_write++ = *exts;
+                    }
+
+                    ++exts;
+                }
+
+                emit m_messenger.print(QString("Found extensions: %1").arg(outFormat->extensions),
+                                       "FileManager",
+                                       MessageLevel::Debug);
+            }
+            else
+            {
+                *format_write++ = '*';
+
+                emit m_messenger.print(tr("Did not find corresponding extensions!"),
+                                       "FileManager",
+                                       MessageLevel::Warning);
+            }
+
+            *format_write++ = ')';
+            *format_write++ = ';';
+            *format_write++ = ';';
+            *format_write   = '\0';
 
             savePath = QFileDialog::getSaveFileName(nullptr,
                                                     tr("Export File"),
                                                     "",
-                                                    tr("All formats (*)"));
+                                                    tr("%1All formats (*)").arg(formattedExtensions));
 
             if (savePath.isEmpty())
             {
