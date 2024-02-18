@@ -23,6 +23,7 @@ SOURCES += \
     src/pipe/stage.cpp \
     src/settings.cpp \
     src/widgets/restartmessagebox.cpp \
+    src/widgets/waveformwidget.cpp \
     src/widgets/window.cpp \
     src/subtitle/subtitle.cpp
 
@@ -50,6 +51,7 @@ HEADERS += \
     include/widgets/palettes/darkpalette.hpp \
     include/widgets/palettes/lightpalette.hpp \
     include/widgets/restartmessagebox.hpp \
+    include/widgets/waveformwidget.hpp \
     include/widgets/window.hpp \
     include/subtitle/subtitle.hpp
 

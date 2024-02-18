@@ -1,5 +1,6 @@
 #pragma once
 
+#include <widgets/waveformwidget.hpp>
 #include <subtitle/subtitle.hpp>
 #include <filemanager.hpp>
 
@@ -88,7 +89,7 @@ private:
 
     QTextEdit* m_subTextEdit;
 
-    QWidget* m_waveFormWidget;
+    WaveformWidget* m_waveformWidget;
 
 signals:
     void openFileSignal();

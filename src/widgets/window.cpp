@@ -47,7 +47,7 @@ Window::Window(QWidget *parent)
     , m_exportSubtitleRemuxButton(new QPushButton(tr("Subtitle")))
     , m_exportDialogueButton(new QPushButton(tr("Export Dialogue")))
     , m_subTextEdit(new QTextEdit())
-    , m_waveFormWidget(new QWidget())
+    , m_waveformWidget(new WaveformWidget())
 {
     this->setMinimumSize(900, 720);
 
@@ -252,7 +252,7 @@ Window::Window(QWidget *parent)
     subtitleContainerLayout->addWidget(textEditButtonsContainer);
 
     // Tabs: Export tab
-    exportContainerLayout->addWidget(m_waveFormWidget);
+    exportContainerLayout->addWidget(m_waveformWidget);
     exportContainerLayout->addWidget(exportMethodsContainer);
 
     // Tabs: Settings tab
