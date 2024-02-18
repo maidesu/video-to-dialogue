@@ -1,18 +1,21 @@
 #pragma once
 
-#include <QWidget>
+#include <QLineSeries>
+#include <QChart>
 
 namespace DialogueFromVideo {
 
-class WaveformWidget : public QWidget
+class WaveformWidget : public QChart
 {
     Q_OBJECT
 public:
-    explicit WaveformWidget(QWidget *parent = nullptr);
+    explicit WaveformWidget();
 
 public slots:
 
 private:
+    int m_sampleRate;
+    QLineSeries* m_series;
 
 signals:
 

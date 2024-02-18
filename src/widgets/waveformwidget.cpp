@@ -2,8 +2,8 @@
 
 namespace DialogueFromVideo {
 
-WaveformWidget::WaveformWidget(QWidget *parent)
-    : QWidget(parent)
+WaveformWidget::WaveformWidget()
+    : QChart()
 {
 }
 

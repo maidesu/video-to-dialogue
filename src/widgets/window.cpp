@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QSplitter>
 #include <QTabWidget>
+#include <QChartView>
 
 namespace DialogueFromVideo {
 
@@ -252,7 +253,8 @@ Window::Window(QWidget *parent)
     subtitleContainerLayout->addWidget(textEditButtonsContainer);
 
     // Tabs: Export tab
-    exportContainerLayout->addWidget(m_waveformWidget);
+    QChartView* chartView = new QChartView(m_waveformWidget);
+    exportContainerLayout->addWidget(chartView);
     exportContainerLayout->addWidget(exportMethodsContainer);
 
     // Tabs: Settings tab
@@ -430,6 +432,7 @@ Window::Window(QWidget *parent)
             [this]()
             {
                 emit Window::colorSchemeSettingsChangedSignal(false);
+                m_waveformWidget->setTheme(QChart::ChartThemeLight);
             });
 
     connect(m_darkUiRadioButton,
@@ -438,6 +441,7 @@ Window::Window(QWidget *parent)
             [this]()
             {
                 emit Window::colorSchemeSettingsChangedSignal(true);
+                m_waveformWidget->setTheme(QChart::ChartThemeDark);
             });
 }
 
@@ -538,10 +542,12 @@ void Window::initialColorSchemeHandler(bool darkModeEnabled)
     if (!darkModeEnabled)
     {
         m_lightUiRadioButton->click();
+        m_waveformWidget->setTheme(QChart::ChartThemeLight);
     }
     else
     {
         m_darkUiRadioButton->click();
+        m_waveformWidget->setTheme(QChart::ChartThemeDark);
     }
 
     m_lightUiRadioButton->blockSignals(false);
