@@ -2,7 +2,9 @@
 
 #include <filemanager.hpp>
 #include <settings.hpp>
+#include <audio/audio.hpp>
 #include <subtitle/subtitle.hpp>
+#include <dialogue/dialogue.hpp>
 #include <widgets/window.hpp>
 
 namespace DialogueFromVideo {
@@ -23,11 +25,22 @@ public:
     void run();
 
 private:
+    // Persistence
     Settings m_settings;
-    FileManager m_fileManager;
+
+    // Model
+    Audio m_audio;
     Subtitle m_subtitle;
-    Messenger m_applicationMessenger;
+    Dialogue m_dialogue;
+
+    // ViewModel
+    FileManager m_fileManager;
+
+    // View
     Window m_window;
+
+
+    Messenger m_applicationMessenger;
 };
 
 } // namespace DialogueFromVideo
