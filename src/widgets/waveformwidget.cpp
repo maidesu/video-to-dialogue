@@ -31,29 +31,18 @@ WaveformWidget::WaveformWidget()
     this->legend()->hide();
 }
 
-void WaveformWidget::fill(const QVector<double>& samples)/*,
-                          int sampleRate),
-                          QList<Interval>& dialogue,
-                          QList<Interval>& subtitle,
-                          QList<Interval>& padding,
-                          QList<Interval>& gap)*/
+void WaveformWidget::plotWaveform(const QVector<double>& samples)
 {
-    //(void)sampleRate;
-    //(void)dialogue;
-    //(void)subtitle;
-    //(void)padding;
-    //(void)gap;
-
-    constexpr int target = 100000; // Const for how many samples to pick out
+    constexpr int target = 100000; // Total samples picked
 
     if (samples.size() < target)
     {
         return;
     }
 
-    int divisor = samples.size() / target;
-
     m_buff.reserve(target);
+
+    int divisor = samples.size() / target;
 
     for (int j = 1, i = 0; i < samples.size(); ++i)
     {
@@ -79,6 +68,19 @@ void WaveformWidget::fill(const QVector<double>& samples)/*,
     m_yaxis->setRange(-max, max); // Relative y scale
 
     m_series->replace(m_buff);
+}
+
+void drawIntervals(const QList<Interval>& dialogue,
+                   const QList<Interval>& subtitle,
+                   const QList<Interval>& padding,
+                   const QList<Interval>& gap,
+                   int sampleRate)
+{
+    (void)dialogue;
+    (void)subtitle;
+    (void)padding;
+    (void)gap;
+    (void)sampleRate;
 }
 
 void WaveformWidget::reset()

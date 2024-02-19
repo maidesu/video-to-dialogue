@@ -625,7 +625,7 @@ void Window::subtitleExtractedHandler(const QList<SubEntry*>& subs)
 void Window::waveformReadyHandler(const QVector<double>& samples)
 {
     m_waveformWidget->reset();
-    m_waveformWidget->fill(samples);
+    m_waveformWidget->plotWaveform(samples);
 }
 
 } // namespace DialogueFromVideo

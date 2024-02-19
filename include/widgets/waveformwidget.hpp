@@ -16,12 +16,13 @@ public:
 
     virtual ~WaveformWidget();
 
-    void fill(const QVector<double>& samples);/*,
-              int sampleRate,
-              QList<Interval>& dialogue,
-              QList<Interval>& subtitle,
-              QList<Interval>& padding,
-              QList<Interval>& gap);*/
+    void plotWaveform(const QVector<double>& samples);
+
+    void drawIntervals(const QList<Interval>& dialogue,
+                       const QList<Interval>& subtitle,
+                       const QList<Interval>& padding,
+                       const QList<Interval>& gap,
+                       int sampleRate);
 
     void reset();
 
