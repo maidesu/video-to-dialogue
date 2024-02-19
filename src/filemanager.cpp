@@ -121,10 +121,6 @@ void FileManager::subDescriptionRequestedHandler(const QString& index)
 
             emit subDescriptionReceivedSignal(SubInfo(*si)); // Call to default copy ctor
 
-            emit subtitleRequestedSignal(m_file,
-                                         m_selectedSubIndex,
-                                         m_selectedSubLayerIndex);
-
             return;
         }
     }
@@ -199,12 +195,29 @@ void FileManager::audioDescriptionRequestedHandler(const QString& index)
 
             emit audioDescriptionReceivedSignal(AudioInfo(*ai)); // Call to default copy ctor
 
-            emit waveFormRequestedSignal(m_file,
-                                         m_selectedAudioIndex);
-
             return;
         }
     }
+}
+
+void FileManager::processFileHandler()
+{
+    if (-1 != m_selectedSubIndex)
+    {
+        emit subtitleRequestedSignal(m_file,
+                                     m_selectedSubIndex,
+                                     m_selectedSubLayerIndex);
+    }
+
+    if (-1 != m_selectedAudioIndex)
+    {
+        emit waveFormRequestedSignal(m_file,
+                                     m_selectedAudioIndex);
+    }
+
+    emit m_messenger.print(tr("Processed file."),
+                           "FileManager",
+                           MessageLevel::Info);
 }
 
 bool FileManager::openFile()

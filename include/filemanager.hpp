@@ -88,6 +88,8 @@ public slots:
 
     void audioDescriptionRequestedHandler(const QString& index);
 
+    void processFileHandler();
+
 private:
     bool openFile();
     bool saveFile(SaveMode saveMode = SaveMode::None,

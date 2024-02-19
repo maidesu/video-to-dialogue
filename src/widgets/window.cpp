@@ -38,7 +38,7 @@ Window::Window(QWidget *parent)
     , m_subOffsetSpinBox(new QSpinBox())
     , m_subMergeSpinBox(new QSpinBox())
     , m_openFileButton(new QPushButton(tr("Open file")))
-    , m_extractDialogueButton(new QPushButton(tr("Extract dialogue")))
+    , m_processFileButton(new QPushButton(tr("Process")))
     , m_applySettingsButton(new QPushButton(tr("Apply")))
     , m_consoleClearButton(new QPushButton(tr("Clear")))
     , m_exportSubtitleButton(new QPushButton(tr("Export subtitle")))
@@ -55,6 +55,8 @@ Window::Window(QWidget *parent)
     m_subComboBox->setDisabled(true);
     m_subLayerSpinBox->setDisabled(true);
     m_audioComboBox->setDisabled(true);
+
+    m_processFileButton->setDisabled(true);
 
     m_exportVideoRemuxButton->setDisabled(true);
     m_exportAudioRemuxButton->setDisabled(true);
@@ -143,7 +145,7 @@ Window::Window(QWidget *parent)
     QVBoxLayout* buttonLayout = new QVBoxLayout();
     buttonWidget->setLayout(buttonLayout);
     buttonLayout->addWidget(m_openFileButton);
-    buttonLayout->addWidget(m_extractDialogueButton);
+    buttonLayout->addWidget(m_processFileButton);
 
     infoLayout->addWidget(buttonWidget, 1); // 1/6 space of infoLayout
 
@@ -331,6 +333,11 @@ Window::Window(QWidget *parent)
             this,
             &Window::openFileSignal);
 
+    connect(m_processFileButton,
+            &QPushButton::pressed,
+            this,
+            &Window::processFileSignal);
+
     connect(m_applySettingsButton,
             &QPushButton::pressed,
             this,
@@ -355,11 +362,6 @@ Window::Window(QWidget *parent)
     //        [this](){
     //            emit Window::exportPictureCollectionSignal(static_cast<const QTextEdit*>(m_subTextEdit));
     //        });
-
-    connect(m_extractDialogueButton,
-            &QPushButton::pressed,
-            this,
-            &Window::extractDialogueSignal);
 
     // TODO: Implement Dialogue ffmpeg export
     //connect(m_exportDialogueButton,
@@ -481,6 +483,8 @@ void Window::fileChangedHandler(int videoStream,
     // Disable if combobox content is less than 1
     m_subComboBox->setDisabled(m_subComboBox->count() < 1);
     m_audioComboBox->setDisabled(m_audioComboBox->count() < 1);
+
+    m_processFileButton->setDisabled(false);
 
     m_exportVideoRemuxButton->setDisabled(videoStream == 0);
     m_exportAudioRemuxButton->setDisabled(m_audioComboBox->count() < 1);

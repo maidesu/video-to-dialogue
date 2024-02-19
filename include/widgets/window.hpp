@@ -79,7 +79,7 @@ private:
     QSpinBox* m_subMergeSpinBox;
 
     QPushButton* m_openFileButton;
-    QPushButton* m_extractDialogueButton;
+    QPushButton* m_processFileButton;
     QPushButton* m_applySettingsButton;
     QPushButton* m_consoleClearButton;
     QPushButton* m_exportSubtitleButton;
@@ -111,11 +111,11 @@ signals:
 
     void audioDescriptionRequestedSignal(const QString& index); // Request audio description copy
 
+    void processFileSignal();
+
     void exportSubtitleSignal(const QTextEdit* textEdit);
 
     void exportPictureCollectionSignal(const QTextEdit* textEdit);
-
-    void extractDialogueSignal();
 
     void exportDialogueSignal();
 

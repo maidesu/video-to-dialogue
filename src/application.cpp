@@ -69,6 +69,12 @@ Application::Application()
                      &m_fileManager,
                      &FileManager::audioDescriptionRequestedHandler);
 
+    // Window requests file processing from FileManager
+    QObject::connect(&m_window,
+                     &Window::processFileSignal,
+                     &m_fileManager,
+                     &FileManager::processFileHandler);
+
     // Window asks FileManager for a subtitle export
     QObject::connect(&m_window,
                      &Window::exportSubtitleSignal,
