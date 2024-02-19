@@ -143,6 +143,20 @@ Application::Application()
                      &Subtitle::subtitleExtractedSignal,
                      &m_window,
                      &Window::subtitleExtractedHandler);
+
+
+    // Request waveform extraction after selected track
+    QObject::connect(&m_fileManager,
+                     &FileManager::waveFormRequestedSignal,
+                     &m_audio,
+                     &Audio::waveformRequestedHandler);
+
+    // Extracted waveform sent to window
+    QObject::connect(&m_audio,
+                     &Audio::waveformReadySignal,
+                     &m_window,
+                     &Window::waveformReadyHandler);
+
 }
 
 void Application::run()

@@ -43,6 +43,8 @@ public slots:
 
     void subtitleExtractedHandler(const QList<SubEntry*>& subs);
 
+    void waveformReadyHandler(const QVector<double>& samples);
+
 private:
     Messenger m_windowMessenger;
 

@@ -31,7 +31,7 @@ private:
     Progress m_progress;
 
 signals:
-
+    void waveformReadySignal(const QVector<double>& samples);
 };
 
 } // namespace DialogueFromVideo

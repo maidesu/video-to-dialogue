@@ -254,6 +254,7 @@ Window::Window(QWidget *parent)
 
     // Tabs: Export tab
     QChartView* chartView = new QChartView(m_waveformWidget);
+    chartView->setRenderHint(QPainter::Antialiasing);
     exportContainerLayout->addWidget(chartView);
     exportContainerLayout->addWidget(exportMethodsContainer);
 
@@ -619,6 +620,12 @@ void Window::subtitleExtractedHandler(const QList<SubEntry*>& subs)
                                                 Time::millisecondsToStringTime(sub->end),
                                                 sub->text));
     }
+}
+
+void Window::waveformReadyHandler(const QVector<double>& samples)
+{
+    m_waveformWidget->reset();
+    m_waveformWidget->fill(samples);
 }
 
 } // namespace DialogueFromVideo
