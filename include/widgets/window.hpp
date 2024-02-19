@@ -45,6 +45,11 @@ public slots:
 
     void waveformReadyHandler(const QVector<double>& samples);
 
+    void readyDialogueHandler(const QList<Interval>& dialogue,
+                              const QList<Interval>& subtitle,
+                              const QList<Interval>& padding,
+                              const QList<Interval>& gap);
+
 private:
     Messenger m_windowMessenger;
 
@@ -112,6 +117,12 @@ signals:
     void audioDescriptionRequestedSignal(const QString& index); // Request audio description copy
 
     void processFileSignal();
+
+    void processDialogueSignal(const QList<SubEntry*>& subs,
+                               int64_t left,
+                               int64_t right,
+                               int64_t offset,
+                               int64_t minGap);
 
     void exportSubtitleSignal(const QTextEdit* textEdit);
 

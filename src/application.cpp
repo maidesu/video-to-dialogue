@@ -163,6 +163,19 @@ Application::Application()
                      &m_window,
                      &Window::waveformReadyHandler);
 
+
+    // Window asks for intervals
+    QObject::connect(&m_window,
+                     &Window::processDialogueSignal,
+                     &m_dialogue,
+                     &Dialogue::processDialogueHandler);
+
+    // Dialogue sends intervals to Window
+    QObject::connect(&m_dialogue,
+                     &Dialogue::readyDialogueSignal,
+                     &m_window,
+                     &Window::readyDialogueHandler);
+
 }
 
 void Application::run()

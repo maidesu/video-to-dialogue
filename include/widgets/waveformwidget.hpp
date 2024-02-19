@@ -26,7 +26,10 @@ public:
 
     void reset();
 
-public slots:
+    const QList<QColor> m_intervalColors { Qt::green,
+                                           Qt::magenta,
+                                           Qt::cyan,
+                                           Qt::blue };
 
 private:
     int m_sampleRate;
@@ -34,8 +37,6 @@ private:
     QLineSeries* m_series;
     QValueAxis* m_xaxis;
     QValueAxis* m_yaxis;
-
-signals:
 
 };
 

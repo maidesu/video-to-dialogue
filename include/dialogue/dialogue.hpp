@@ -19,17 +19,23 @@ public:
     Dialogue(const Dialogue&) = delete;
     Dialogue& operator= (const Dialogue&) = delete;
 
-    void processSubs(const QList<SubEntry*>& subs,
-                     int64_t left,
-                     int64_t right,
-                     int64_t offset,
-                     int64_t minGap);
-
 public slots:
+    void processDialogueHandler(const QList<SubEntry*>& subs,
+                                int64_t left,
+                                int64_t right,
+                                int64_t offset,
+                                int64_t minGap);
 
+    void clearDialogueHandler();
 
 private:
-    void cleanUp();
+    void processDialogue(const QList<SubEntry*>& subs,
+                         int64_t left,
+                         int64_t right,
+                         int64_t offset,
+                         int64_t minGap);
+
+    void clearDialogue();
 
     QList<Interval> m_dialogue; // Timestamps to be used for extraction
     QList<Interval> m_subtitle; // All lists including this are offset
@@ -40,6 +46,10 @@ private:
     Progress m_progress;
 
 signals:
+    void readyDialogueSignal(const QList<Interval>& dialogue,
+                             const QList<Interval>& subtitle,
+                             const QList<Interval>& padding,
+                             const QList<Interval>& gap);
 
 };
 

@@ -7,11 +7,25 @@ Dialogue::Dialogue(QObject* parent)
 {
 }
 
-void Dialogue::processSubs(const QList<SubEntry*>& subs,
-                           int64_t left,
-                           int64_t right,
-                           int64_t offset,
-                           int64_t minGap) // minimum required for a separation
+void Dialogue::processDialogueHandler(const QList<SubEntry*>& subs,
+                                      int64_t left,
+                                      int64_t right,
+                                      int64_t offset,
+                                      int64_t minGap)
+{
+    processDialogue(subs, left, right, offset, minGap);
+}
+
+void Dialogue::clearDialogueHandler()
+{
+    clearDialogue();
+}
+
+void Dialogue::processDialogue(const QList<SubEntry*>& subs,
+                               int64_t left,
+                               int64_t right,
+                               int64_t offset,
+                               int64_t minGap) // minimum required for a separation
 {
     /*
      * We won't validate whether the results are
@@ -19,7 +33,7 @@ void Dialogue::processSubs(const QList<SubEntry*>& subs,
      * That task is reserved for the exporting party.
      */
 
-    cleanUp();
+    clearDialogue();
 
     if (subs.empty())
     {
@@ -97,13 +111,19 @@ void Dialogue::processSubs(const QList<SubEntry*>& subs,
     {
         m_dialogue.append({ start, end });
     }
+
+
+    emit readyDialogueSignal(m_dialogue,
+                             m_subtitle,
+                             m_padding,
+                             m_gap);
 }
 
 Dialogue::~Dialogue()
 {
 }
 
-void Dialogue::cleanUp()
+void Dialogue::clearDialogue()
 {
     m_dialogue.clear();
     m_subtitle.clear();

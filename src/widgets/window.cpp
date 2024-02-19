@@ -630,11 +630,29 @@ void Window::subtitleExtractedHandler(const QList<SubEntry*>& subs)
                                                 Time::millisecondsToStringTime(sub->end),
                                                 sub->text));
     }
+
+    emit processDialogueSignal(subs,
+                               static_cast<int64_t>(m_subPaddingLeftSpinBox->value() * 1000),
+                               static_cast<int64_t>(m_subPaddingRightSpinBox->value() * 1000),
+                               static_cast<int64_t>(m_subOffsetSpinBox->value() * 1000),
+                               static_cast<int64_t>(m_subMergeSpinBox->value() * 1000));
 }
 
 void Window::waveformReadyHandler(const QVector<double>& samples)
 {
     m_waveformWidget->plotWaveform(samples);
+}
+
+void Window::readyDialogueHandler(const QList<Interval>& dialogue,
+                                  const QList<Interval>& subtitle,
+                                  const QList<Interval>& padding,
+                                  const QList<Interval>& gap)
+{
+    m_waveformWidget->drawIntervals(dialogue,
+                                    subtitle,
+                                    padding,
+                                    gap,
+                                    48000);
 }
 
 } // namespace DialogueFromVideo

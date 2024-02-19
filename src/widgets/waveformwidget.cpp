@@ -70,17 +70,19 @@ void WaveformWidget::plotWaveform(const QVector<double>& samples)
     m_series->replace(m_buff);
 }
 
-void drawIntervals(const QList<Interval>& dialogue,
-                   const QList<Interval>& subtitle,
-                   const QList<Interval>& padding,
-                   const QList<Interval>& gap,
-                   int sampleRate)
+void WaveformWidget::drawIntervals(const QList<Interval>& dialogue,
+                                   const QList<Interval>& subtitle,
+                                   const QList<Interval>& padding,
+                                   const QList<Interval>& gap,
+                                   int sampleRate)
 {
     (void)dialogue;
     (void)subtitle;
     (void)padding;
     (void)gap;
     (void)sampleRate;
+
+
 }
 
 void WaveformWidget::reset()
