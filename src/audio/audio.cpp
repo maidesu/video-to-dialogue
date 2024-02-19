@@ -16,7 +16,9 @@ void Audio::waveformRequestedHandler(File::Read* file,
 {
     clearWaveform();
 
-    const AVCodec* decoder = avcodec_find_decoder(file->getStream(selectedAudioIndex)->codecpar->codec_id);
+    const AVStream* stream = file->getStream(selectedAudioIndex);
+
+    const AVCodec* decoder = avcodec_find_decoder(stream->codecpar->codec_id);
 
     if (!decoder)
     {
@@ -46,6 +48,15 @@ void Audio::waveformRequestedHandler(File::Read* file,
 
     av_seek_frame(s, selectedAudioIndex, 0, AVSEEK_FLAG_ANY);
 
+    // Progress begin
+    emit m_progress.progressReset();
+    emit m_progress.progressMaximum(max_progress_steps);
+
+    int64_t frame_count = 0;
+    int64_t total_est_frames = s->duration / (1000*1000) * 30;
+    int64_t report_progress_frame = total_est_frames / max_progress_steps;
+    // Progress end
+
     while (av_read_frame(s, avpkt) == 0)
     {
         if (avpkt->stream_index != selectedAudioIndex)
@@ -54,7 +65,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
             continue;
         }
 
-        if (0 != (res = avcodec_send_packet(avctx, avpkt)))
+        if (0 != avcodec_send_packet(avctx, avpkt))
         {
             //char buff[256];
             //av_strerror(res, buff, 256);
@@ -62,7 +73,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
             continue;
         }
 
-        if (0 != (res = avcodec_receive_frame(avctx, avfrm)))
+        if (0 != avcodec_receive_frame(avctx, avfrm))
         {
             //char buff[256];
             //av_strerror(res, buff, 256);
@@ -72,44 +83,91 @@ void Audio::waveformRequestedHandler(File::Read* file,
 
         AVSampleFormat sample_fmt = av_get_packed_sample_fmt(avctx->sample_fmt);
 
-        if (sample_fmt == AV_SAMPLE_FMT_DBL)
+        switch (sample_fmt)
         {
-            for (int i = 0; i < avfrm->linesize[0]; i += sizeof(double))
-            {
-                if (avfrm->ch_layout.nb_channels > 0)
+            case AV_SAMPLE_FMT_DBL:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(double))
                 {
-                    // Grab first channel
-                    double value = *reinterpret_cast<double*>(&avfrm->data[0][i]);
-                    m_samples.append(value);
+                    if (avfrm->ch_layout.nb_channels > 0)
+                    {
+                        // Grab first channel
+                        double value = *reinterpret_cast<double*>(&avfrm->data[0][i]);
+                        m_samples.append(value);
+                    }
                 }
-            }
-        }
-        else if (sample_fmt == AV_SAMPLE_FMT_FLT)
-        {
-            for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
-            {
-                if (avfrm->ch_layout.nb_channels > 0)
+                break;
+
+            case AV_SAMPLE_FMT_FLT:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
                 {
-                    // Grab first channel
-                    float value = *reinterpret_cast<float*>(&avfrm->data[0][i]);
-                    m_samples.append(value);
+                    if (avfrm->ch_layout.nb_channels > 0)
+                    {
+                        float value = *reinterpret_cast<float*>(&avfrm->data[0][i]);
+                        m_samples.append(value);
+                    }
                 }
-            }
-        }
-        else
-        {
-            emit m_messenger.print(tr("Sample format support not implemented!"),
-                                   "Audio",
-                                   MessageLevel::Error);
-            break;
+                break;
+
+            case AV_SAMPLE_FMT_U8:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
+                {
+                    if (avfrm->ch_layout.nb_channels > 0)
+                    {
+                        double value = *reinterpret_cast<uint8_t*>(&avfrm->data[0][i]) / static_cast<double>(UINT8_MAX);
+                        m_samples.append(value);
+                    }
+                }
+                break;
+
+            case AV_SAMPLE_FMT_S16:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
+                {
+                    if (avfrm->ch_layout.nb_channels > 0)
+                    {
+                        double value = *reinterpret_cast<int16_t*>(&avfrm->data[0][i]) / static_cast<double>(INT16_MAX);
+                        m_samples.append(value);
+                    }
+                }
+                break;
+
+            case AV_SAMPLE_FMT_S32:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
+                {
+                    if (avfrm->ch_layout.nb_channels > 0)
+                    {
+                        double value = *reinterpret_cast<int32_t*>(&avfrm->data[0][i]) / static_cast<double>(INT32_MAX);
+                        m_samples.append(value);
+                    }
+                }
+                break;
+
+            default:
+                emit m_messenger.print(tr("Sample format support not implemented!"),
+                                       "Audio",
+                                       MessageLevel::Error);
+                return;
         }
 
         av_packet_unref(avpkt);
+
+        // Progress begin
+        if (frame_count % report_progress_frame == 0)
+        {
+            emit m_progress.progressAdd(1);
+        }
+
+        ++frame_count;
+        // Progress end
+
     }
 
     av_frame_free(&avfrm);
     av_packet_free(&avpkt);
     avcodec_free_context(&avctx);
+
+    // Progress begin
+    emit m_progress.progressComplete();
+    // Progress end
 
     emit waveformReadySignal(m_samples);
 }

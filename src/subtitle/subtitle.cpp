@@ -125,9 +125,9 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
             emit m_progress.progressAdd(1);
         }
 
-        av_packet_unref(avpkt);
-
         ++frame_count;
+
+        av_packet_unref(avpkt);
     }
 
     avsubtitle_free(&sub);
