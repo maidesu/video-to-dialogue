@@ -87,12 +87,17 @@ void FileManager::exportSubtitleRemuxHandler()
 
 void FileManager::subDescriptionRequestedHandler(const QString& index)
 {
+    // Let the default state be -1, since index should be >=0
+    m_selectedSubIndex = -1;
+
+    if (index.isEmpty())
+    {
+        return;
+    }
+
     emit m_messenger.print(QString("subDescriptionRequestedHandler(%1)").arg(index),
                            "FileManager",
                            MessageLevel::Debug);
-
-    // Let the default state be -1, since index should be >=0
-    m_selectedSubIndex = -1;
 
     int idx = index.toInt();
 
@@ -127,12 +132,17 @@ void FileManager::subDescriptionRequestedHandler(const QString& index)
 
 void FileManager::subLayerRequestedHandler(const QString& index)
 {
+    // Let the default state be -1, since index should be >=0
+    m_selectedSubLayerIndex = -1;
+
+    if (index.isEmpty())
+    {
+        return;
+    }
+
     emit m_messenger.print(QString("subLayerRequestedHandler(%1)").arg(index),
                            "FileManager",
                            MessageLevel::Debug);
-
-    // Let the default state be -1, since index should be >=0
-    m_selectedSubLayerIndex = -1;
 
     int idx = index.toInt();
 
@@ -155,12 +165,17 @@ void FileManager::subLayerRequestedHandler(const QString& index)
 
 void FileManager::audioDescriptionRequestedHandler(const QString& index)
 {
+    // Let the default state be -1, since index should be >=0
+    m_selectedAudioIndex = -1;
+
+    if (index.isEmpty())
+    {
+        return;
+    }
+
     emit m_messenger.print(QString("audioDescriptionRequestedHandler(%1)").arg(index),
                            "FileManager",
                            MessageLevel::Debug);
-
-    // Let the default state be -1, since index should be >=0
-    m_selectedAudioIndex = -1;
 
     int idx = index.toInt();
 
