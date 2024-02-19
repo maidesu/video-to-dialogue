@@ -115,9 +115,9 @@ void FileManager::subDescriptionRequestedHandler(const QString& index)
         {
             m_selectedSubIndex = idx;
 
-            emit m_messenger.print(tr("Selected subtitle stream %1").arg(QString::number(m_selectedSubIndex)),
+            emit m_messenger.print(QString("Selected subtitle stream %1").arg(QString::number(m_selectedSubIndex)),
                                    "FileManager",
-                                   MessageLevel::Info);
+                                   MessageLevel::Debug);
 
             emit subDescriptionReceivedSignal(SubInfo(*si)); // Call to default copy ctor
 
@@ -154,9 +154,9 @@ void FileManager::subLayerRequestedHandler(const QString& index)
 
     m_selectedSubLayerIndex = idx;
 
-    emit m_messenger.print(tr("Selected subtitle layer %1").arg(QString::number(m_selectedSubLayerIndex)),
+    emit m_messenger.print(QString("Selected subtitle layer %1").arg(QString::number(m_selectedSubLayerIndex)),
                            "FileManager",
-                           MessageLevel::Info);
+                           MessageLevel::Debug);
 }
 
 void FileManager::audioDescriptionRequestedHandler(const QString& index)
@@ -189,9 +189,9 @@ void FileManager::audioDescriptionRequestedHandler(const QString& index)
         {
             m_selectedAudioIndex = idx;
 
-            emit m_messenger.print(tr("Selected audio stream %1").arg(QString::number(m_selectedAudioIndex)),
+            emit m_messenger.print(QString("Selected audio stream %1").arg(QString::number(m_selectedAudioIndex)),
                                    "FileManager",
-                                   MessageLevel::Info);
+                                   MessageLevel::Debug);
 
             emit audioDescriptionReceivedSignal(AudioInfo(*ai)); // Call to default copy ctor
 
@@ -215,7 +215,7 @@ void FileManager::processFileHandler()
                                      m_selectedAudioIndex);
     }
 
-    emit m_messenger.print(tr("Processed file."),
+    emit m_messenger.print(tr("Processed file"),
                            "FileManager",
                            MessageLevel::Info);
 }
