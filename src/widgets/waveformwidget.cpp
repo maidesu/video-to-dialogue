@@ -14,10 +14,14 @@ WaveformWidget::WaveformWidget()
     this->addSeries(m_series);
 
     m_xaxis->setTitleText("Samples");
-    //m_xaxis->setLabelsVisible(false);
+    //m_xaxis->setTickType(QValueAxis::TickType::TicksFixed);
+    m_xaxis->setTickCount(2);
+    m_xaxis->setLabelFormat("%n"); // prinf nothing printed
 
     m_yaxis->setTitleText("Level");
-    //m_yaxis->setLabelsVisible(false);
+    //m_yaxis->setTickType(QValueAxis::TickType::TicksFixed);
+    m_yaxis->setTickCount(2);
+    m_yaxis->setLabelFormat("%n");
 
     this->addAxis(m_xaxis, Qt::AlignBottom);
     m_series->attachAxis(m_xaxis);
@@ -51,7 +55,7 @@ void WaveformWidget::fill(const QVector<double>& samples)/*,
 
     m_buff.reserve(target);
 
-    for (int j = 0, i = 0; i < samples.size(); ++i)
+    for (int j = 1, i = 0; i < samples.size(); ++i)
     {
         if (i % divisor == 0)
         {
@@ -71,7 +75,7 @@ void WaveformWidget::fill(const QVector<double>& samples)/*,
         }
     }
 
-    m_xaxis->setRange(0, target-1);
+    m_xaxis->setRange(1, target);
     m_yaxis->setRange(-max, max); // Relative y scale
 
     m_series->replace(m_buff);
