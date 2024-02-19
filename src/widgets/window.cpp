@@ -454,13 +454,19 @@ void Window::fileChangedHandler(int videoStream,
                                  "MainWindow",
                                  MessageLevel::Debug);
 
+    // Clear subtitles
     m_subTextEdit->clear();
     m_subTextEdit->insertPlainText("<no subtitle loaded>");
     emit subtitleClearSignal();
 
+    // Clear audio widget
+    m_waveformWidget->reset();
+
+    // Clear stream information
     m_subDescriptionLabel->clear();
     m_audioDescriptionLabel->clear();
 
+    // Clear stream selection
     m_subComboBox->clear();
     m_audioComboBox->clear();
 
@@ -624,7 +630,6 @@ void Window::subtitleExtractedHandler(const QList<SubEntry*>& subs)
 
 void Window::waveformReadyHandler(const QVector<double>& samples)
 {
-    m_waveformWidget->reset();
     m_waveformWidget->plotWaveform(samples);
 }
 
