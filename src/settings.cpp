@@ -159,4 +159,15 @@ void Settings::colorSchemeSettingsChangedHandler(bool darkModeEnabled)
     }
 }
 
+void Settings::settingsRequestedHandler(int64_t& left,
+                                        int64_t& right,
+                                        int64_t& offset,
+                                        int64_t& merge)
+{
+    left = m_usPaddingLeft;
+    right = m_usPaddingRight;
+    offset = m_usOffset;
+    merge = m_usMerge;
+}
+
 } // namespace DialogueFromVideo

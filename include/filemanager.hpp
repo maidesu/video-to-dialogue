@@ -88,6 +88,8 @@ public slots:
 
     void audioDescriptionRequestedHandler(const QString& index);
 
+    void sampleRateRequestedHandler(int& sampleRate);
+
     void processFileHandler();
 
 private:

@@ -200,6 +200,20 @@ void FileManager::audioDescriptionRequestedHandler(const QString& index)
     }
 }
 
+void FileManager::sampleRateRequestedHandler(int& sampleRate)
+{
+    const AVStream* stream = m_file->getStream(m_selectedAudioIndex);
+
+    if (stream->codecpar->sample_rate > 1)
+    {
+        sampleRate = stream->codecpar->sample_rate;
+    }
+    else
+    {
+        sampleRate = 48000;
+    }
+}
+
 void FileManager::processFileHandler()
 {
     if (-1 != m_selectedSubIndex)

@@ -37,6 +37,11 @@ public slots:
 
     void colorSchemeSettingsChangedHandler(bool darkModeEnabled);
 
+    void settingsRequestedHandler(int64_t& left,
+                                  int64_t& right,
+                                  int64_t& offset,
+                                  int64_t& merge);
+
 private:
     bool m_restartNotified;
 

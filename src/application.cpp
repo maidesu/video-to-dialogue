@@ -44,6 +44,12 @@ Application::Application()
                      &m_settings,
                      &Settings::colorSchemeSettingsChangedHandler);
 
+    // Retrieve settings
+    QObject::connect(&m_window,
+                     &Window::settingsRequestedSignal,
+                     &m_settings,
+                     &Settings::settingsRequestedHandler);
+
 
     // Ask FileManager to open file from window
     QObject::connect(&m_window,
@@ -68,6 +74,12 @@ Application::Application()
                      &Window::audioDescriptionRequestedSignal,
                      &m_fileManager,
                      &FileManager::audioDescriptionRequestedHandler);
+
+    // Window requests sampleRate of current audio
+    QObject::connect(&m_window,
+                     &Window::sampleRateRequestedSignal,
+                     &m_fileManager,
+                     &FileManager::sampleRateRequestedHandler);
 
     // Window requests file processing from FileManager
     QObject::connect(&m_window,

@@ -631,11 +631,15 @@ void Window::subtitleExtractedHandler(const QList<SubEntry*>& subs)
                                                 sub->text));
     }
 
+
+    int64_t left = 0, right = 0, offset = 0, merge = 0;
+    emit settingsRequestedSignal(left, right, offset, merge);
+
     emit processDialogueSignal(subs,
-                               static_cast<int64_t>(m_subPaddingLeftSpinBox->value() * 1000),
-                               static_cast<int64_t>(m_subPaddingRightSpinBox->value() * 1000),
-                               static_cast<int64_t>(m_subOffsetSpinBox->value() * 1000),
-                               static_cast<int64_t>(m_subMergeSpinBox->value() * 1000));
+                               left,
+                               right,
+                               offset,
+                               merge);
 }
 
 void Window::waveformReadyHandler(const QVector<double>& samples)
@@ -648,11 +652,14 @@ void Window::readyDialogueHandler(const QList<Interval>& dialogue,
                                   const QList<Interval>& padding,
                                   const QList<Interval>& gap)
 {
+    int sampleRate = 0;
+    emit sampleRateRequestedSignal(sampleRate);
+
     m_waveformWidget->drawIntervals(dialogue,
                                     subtitle,
                                     padding,
                                     gap,
-                                    48000);
+                                    sampleRate);
 }
 
 } // namespace DialogueFromVideo

@@ -110,11 +110,18 @@ signals:
 
     void colorSchemeSettingsChangedSignal(bool darkModeEnabled);
 
+    void settingsRequestedSignal(int64_t& left,
+                                 int64_t& right,
+                                 int64_t& offset,
+                                 int64_t& merge);
+
     void subDescriptionRequestedSignal(const QString& index); // Request sub description copy
 
     void subLayerRequestedSignal(const QString& index); // Requst layer change
 
     void audioDescriptionRequestedSignal(const QString& index); // Request audio description copy
+
+    void sampleRateRequestedSignal(int& sampleRate);
 
     void processFileSignal();
 
