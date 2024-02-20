@@ -129,6 +129,18 @@ Application::Application()
                      &m_subtitle,
                      &Subtitle::subtitleClearHandler);
 
+    // Clear audio on filechange
+    QObject::connect(&m_window,
+                     &Window::audioClearSignal,
+                     &m_audio,
+                     &Audio::waveformClearHandler);
+
+    // Clear dialogue on filechange
+    QObject::connect(&m_window,
+                     &Window::dialogueClearSignal,
+                     &m_dialogue,
+                     &Dialogue::clearDialogueHandler);
+
 
     // Currently only used to fill ComboBoxes with id's
     QObject::connect(&m_fileManager,
@@ -187,7 +199,6 @@ Application::Application()
                      &Dialogue::readyDialogueSignal,
                      &m_window,
                      &Window::readyDialogueHandler);
-
 }
 
 void Application::run()

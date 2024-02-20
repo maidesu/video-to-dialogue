@@ -143,6 +143,10 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
 
     emit m_progress.progressComplete();
 
+    emit m_messenger.print(tr("Processed subtitle"),
+                           "Subtitle",
+                           MessageLevel::Info);
+
     emit Subtitle::subtitleExtractedSignal(m_subs);
 }
 

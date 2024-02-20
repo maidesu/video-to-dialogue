@@ -145,6 +145,10 @@ signals:
 
     void subtitleClearSignal();
 
+    void audioClearSignal();
+
+    void dialogueClearSignal();
+
     void consoleFilterSignal(const MessageLevel level);
 };
 

@@ -14,6 +14,15 @@ void Dialogue::processDialogueHandler(const QList<SubEntry*>& subs,
                                       int64_t minGap)
 {
     processDialogue(subs, left, right, offset, minGap);
+
+    emit m_messenger.print(tr("Extracted dialogue"),
+                           "Dialogue",
+                           MessageLevel::Info);
+
+    emit readyDialogueSignal(m_dialogue,
+                             m_subtitle,
+                             m_padding,
+                             m_gap);
 }
 
 void Dialogue::clearDialogueHandler()
@@ -111,12 +120,6 @@ void Dialogue::processDialogue(const QList<SubEntry*>& subs,
     {
         m_dialogue.append({ start, end });
     }
-
-
-    emit readyDialogueSignal(m_dialogue,
-                             m_subtitle,
-                             m_padding,
-                             m_gap);
 }
 
 Dialogue::~Dialogue()

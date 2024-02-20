@@ -169,6 +169,10 @@ void Audio::waveformRequestedHandler(File::Read* file,
     emit m_progress.progressComplete();
     // Progress end
 
+    emit m_messenger.print(tr("Processed audio"),
+                           "Audio",
+                           MessageLevel::Info);
+
     emit waveformReadySignal(m_samples);
 }
 
@@ -180,6 +184,8 @@ void Audio::waveformClearHandler()
 void Audio::clearWaveform()
 {
     m_samples.clear();
+
+    m_samples.squeeze();
 }
 
 } // namespace DialogueFromVideo

@@ -456,6 +456,9 @@ void Window::fileChangedHandler(int videoStream,
                                  "MainWindow",
                                  MessageLevel::Debug);
 
+    // Clear dialogue
+    emit dialogueClearSignal();
+
     // Clear subtitles
     m_subTextEdit->clear();
     m_subTextEdit->insertPlainText("<no subtitle loaded>");
@@ -463,6 +466,9 @@ void Window::fileChangedHandler(int videoStream,
 
     // Clear audio widget
     m_waveformWidget->reset();
+
+    // Clear audio
+    emit audioClearSignal();
 
     // Clear stream information
     m_subDescriptionLabel->clear();
