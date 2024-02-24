@@ -650,6 +650,11 @@ void Window::subtitleExtractedHandler(const QList<SubEntry*>& subs)
 
 void Window::waveformReadyHandler(const QVector<double>& samples)
 {
+    int sampleRate = 0;
+    emit sampleRateRequestedSignal(sampleRate);
+
+    m_waveformWidget->initialize(samples.size(), sampleRate);
+
     m_waveformWidget->plotWaveform(samples);
 }
 
@@ -658,14 +663,10 @@ void Window::readyDialogueHandler(const QList<Interval>& dialogue,
                                   const QList<Interval>& padding,
                                   const QList<Interval>& gap)
 {
-    int sampleRate = 0;
-    emit sampleRateRequestedSignal(sampleRate);
-
     m_waveformWidget->drawIntervals(dialogue,
                                     subtitle,
                                     padding,
-                                    gap,
-                                    sampleRate);
+                                    gap);
 }
 
 } // namespace DialogueFromVideo

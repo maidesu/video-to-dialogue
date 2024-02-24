@@ -216,6 +216,12 @@ void FileManager::sampleRateRequestedHandler(int& sampleRate)
 
 void FileManager::processFileHandler()
 {
+    if (-1 != m_selectedAudioIndex)
+    {
+        emit waveFormRequestedSignal(m_file,
+                                     m_selectedAudioIndex);
+    }
+
     if (-1 != m_selectedSubIndex)
     {
         emit subtitleRequestedSignal(m_file,
@@ -223,11 +229,7 @@ void FileManager::processFileHandler()
                                      m_selectedSubLayerIndex);
     }
 
-    if (-1 != m_selectedAudioIndex)
-    {
-        emit waveFormRequestedSignal(m_file,
-                                     m_selectedAudioIndex);
-    }
+    // TODO if both success -> calls extract dialogue and draws boxes
 
     emit m_messenger.print(tr("Processed file"),
                            "FileManager",
