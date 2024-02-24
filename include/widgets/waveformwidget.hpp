@@ -31,9 +31,9 @@ public:
 
     const int m_target = 100000; // Total samples picked
 
-    const QList<QColor> m_intervalColors { QColor(51, 204, 51, 128),
+    const QList<QColor> m_intervalColors { QColor(42, 255, 42, 128),
                                            QColor(102, 153, 153, 64),
-                                           QColor(255, 173, 51, 96),
+                                           QColor(255, 222, 32, 96),
                                            QColor(238, 0, 238, 64) };
 
 private:

@@ -74,10 +74,10 @@ void Settings::loadInitialSettings()
     m_settings->endGroup();
 
     emit m_messenger.print(tr("Loaded settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
-                                .arg(QString::number(m_usPaddingLeft / 1000),
-                                     QString::number(m_usPaddingRight / 1000),
-                                     QString::number(m_usOffset / 1000),
-                                     QString::number(m_usMerge / 1000)),
+                                .arg(QString::number(m_usPaddingLeft),
+                                     QString::number(m_usPaddingRight),
+                                     QString::number(m_usOffset),
+                                     QString::number(m_usMerge)),
                            "Settings",
                            MessageLevel::Info);
 
@@ -122,10 +122,10 @@ void Settings::settingsChangedHandler(int64_t usPaddingLeft,
     //m_settings->sync(); Normally unneeded - refer to docs
 
     emit m_messenger.print(tr("Updated settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
-                                .arg(QString::number(m_usPaddingLeft / 1000),
-                                     QString::number(m_usPaddingRight / 1000),
-                                     QString::number(m_usOffset / 1000),
-                                     QString::number(m_usMerge / 1000)),
+                                .arg(QString::number(m_usPaddingLeft),
+                                     QString::number(m_usPaddingRight),
+                                     QString::number(m_usOffset),
+                                     QString::number(m_usMerge)),
                            "Settings",
                            MessageLevel::Info);
 }

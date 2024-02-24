@@ -70,6 +70,7 @@ void Dialogue::processDialogue(const QList<SubEntry*>& subs,
         int64_t next_end = next_sub->end + offset + right;
 
         m_subtitle.append({ next_sub->start + offset, next_sub->end + offset });
+
         m_padding.append({ next_start, next_sub->start + offset });
         m_padding.append({ next_sub->end + offset, next_end });
 

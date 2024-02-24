@@ -525,10 +525,10 @@ void Window::fileChangedHandler(int videoStream,
 
 void Window::applySettingsButtonHandler()
 {
-    emit applySettingsSignal(static_cast<int64_t>(m_subPaddingLeftSpinBox->value() * 1000),
-                             static_cast<int64_t>(m_subPaddingRightSpinBox->value() * 1000),
-                             static_cast<int64_t>(m_subOffsetSpinBox->value() * 1000),
-                             static_cast<int64_t>(m_subMergeSpinBox->value() * 1000));
+    emit applySettingsSignal(static_cast<int64_t>(m_subPaddingLeftSpinBox->value()),
+                             static_cast<int64_t>(m_subPaddingRightSpinBox->value()),
+                             static_cast<int64_t>(m_subOffsetSpinBox->value()),
+                             static_cast<int64_t>(m_subMergeSpinBox->value()));
 }
 
 void Window::initialSettingsHandler(int64_t usPaddingLeft,
@@ -536,10 +536,10 @@ void Window::initialSettingsHandler(int64_t usPaddingLeft,
                                     int64_t usOffset,
                                     int64_t usMerge)
 {
-    m_subPaddingLeftSpinBox->setValue(static_cast<int>(usPaddingLeft / 1000));
-    m_subPaddingRightSpinBox->setValue(static_cast<int>(usPaddingRight / 1000));
-    m_subOffsetSpinBox->setValue(static_cast<int>(usOffset / 1000));
-    m_subMergeSpinBox->setValue(static_cast<int>(usMerge / 1000));
+    m_subPaddingLeftSpinBox->setValue(static_cast<int>(usPaddingLeft));
+    m_subPaddingRightSpinBox->setValue(static_cast<int>(usPaddingRight));
+    m_subOffsetSpinBox->setValue(static_cast<int>(usOffset));
+    m_subMergeSpinBox->setValue(static_cast<int>(usMerge));
 }
 
 void Window::initialLanguageHandler(const QString& language)
