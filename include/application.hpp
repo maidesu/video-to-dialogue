@@ -25,18 +25,14 @@ public:
     void run();
 
 private:
-    // Persistence
     Settings m_settings;
 
-    // Model
     Audio m_audio;
     Subtitle m_subtitle;
     Dialogue m_dialogue;
 
-    // ViewModel
     FileManager m_fileManager;
 
-    // View
     Window m_window;
 
 
