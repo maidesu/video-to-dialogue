@@ -13,7 +13,8 @@ namespace DialogueFromVideo::File {
 class Write
 {
 public:
-    explicit Write(const char* path);
+    explicit Write(const char* path,
+                   const AVOutputFormat* oformat = NULL);
     ~Write();
 
     Write(Write&) = delete;
@@ -26,6 +27,7 @@ public:
 
 private:
     AVFormatContext* m_formatContext;
+    const AVOutputFormat* m_oformat;
     int m_result;
 
     Messenger m_messenger;

@@ -376,8 +376,10 @@ bool FileManager::saveFile(SaveMode saveMode,
 
             const char* short_name = avcodec_get_name(m_file->getStream(selectedStream)->codecpar->codec_id);
 
+            emit m_messenger.print(short_name, "FileManager", MessageLevel::Debug);
+
             const AVOutputFormat* outFormat = av_guess_format(short_name,
-                                                              nullptr,
+                                                              m_file->getContext()->url,
                                                               nullptr);
 
 
@@ -447,7 +449,7 @@ bool FileManager::saveFile(SaveMode saveMode,
                 return false;
             }
 
-            File::Write write(savePath.toUtf8().constData());
+            File::Write write(savePath.toUtf8().constData(), outFormat);
 
             if (write.getResult() < 0)
             {

@@ -4,11 +4,13 @@
 
 namespace DialogueFromVideo::File {
 
-Write::Write(const char* path)
+Write::Write(const char* path,
+             const AVOutputFormat* oformat)
     : m_formatContext(NULL)
+    , m_oformat(oformat)
     , m_result(0)
 {
-    if (0 > (m_result = avformat_alloc_output_context2(&m_formatContext, NULL, NULL, path)) )
+    if (0 > (m_result = avformat_alloc_output_context2(&m_formatContext, m_oformat, NULL, path)) )
     {
         emit m_messenger.print(QTranslator::tr("Could not open output file at specified path!"),
                                "File::Write",
