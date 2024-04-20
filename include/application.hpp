@@ -4,6 +4,7 @@
 #include <settings.hpp>
 #include <audio/audio.hpp>
 #include <subtitle/subtitle.hpp>
+#include <frame/frame.hpp>
 #include <dialogue/dialogue.hpp>
 #include <widgets/window.hpp>
 
@@ -30,6 +31,7 @@ private:
     Audio m_audio;
     Subtitle m_subtitle;
     Dialogue m_dialogue;
+    Frame m_frame;
 
     FileManager m_fileManager;
 
