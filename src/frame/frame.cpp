@@ -18,7 +18,10 @@ Frame::~Frame()
 {
 }
 
-void Frame::frameRequestedHandler(File::Read* file, int64_t timestamp, int selectedVideoIndex)
+void Frame::frameRequestedHandler(File::Read* file,
+                                  int64_t timestamp,
+                                  QString caption,
+                                  int selectedVideoIndex)
 {
     AVFormatContext* formatCtx = file->getContext();
     AVStream* stream = file->getStream(selectedVideoIndex);
@@ -110,7 +113,8 @@ void Frame::frameRequestedHandler(File::Read* file, int64_t timestamp, int selec
 
             avcodec_free_context(&avctx);
 
-            emit frameReadySignal(m_frameBinaryData);
+            emit frameReadySignal(m_frameBinaryData,
+                                  caption);
 
             return;
         }

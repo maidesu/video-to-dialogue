@@ -18,6 +18,7 @@ public:
 public slots:
     void frameRequestedHandler(File::Read* file,
                                int64_t timestamp,
+                               QString caption,
                                int selectedVideoIndex);
 
 private:
@@ -26,7 +27,8 @@ private:
     Messenger m_messenger;
 
 signals:
-    void frameReadySignal(const QVector<uint8_t>& frameBinaryData);
+    void frameReadySignal(const QVector<uint8_t>& frameBinaryData,
+                          QString caption);
 
 };
 
