@@ -17,7 +17,8 @@ int64_t stringTimeToMilliseconds(const QString& string)
 {
     QTime time = QTime::fromString(string, "HH:mm:ss.zzz");
 
-    if (!time.isValid()) {
+    if (!time.isValid())
+    {
         return -1;
     }
 
