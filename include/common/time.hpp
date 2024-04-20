@@ -5,7 +5,7 @@
 
 namespace DialogueFromVideo :: Time {
 
-QString millisecondsToStringTime(int64_t ms)
+static inline QString millisecondsToStringTime(int64_t ms)
 {
     QTime time(0, 0, 0, 0);
     time = time.addMSecs(ms); // "Note that the time will wrap if it passes midnight."
@@ -13,7 +13,7 @@ QString millisecondsToStringTime(int64_t ms)
     return time.toString("HH:mm:ss.zzz");
 }
 
-int64_t stringTimeToMilliseconds(const QString& string)
+static inline int64_t stringTimeToMilliseconds(const QString& string)
 {
     QTime time = QTime::fromString(string, "HH:mm:ss.zzz");
 
