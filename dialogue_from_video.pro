@@ -19,6 +19,7 @@ SOURCES += \
     src/file/remux.cpp \
     src/file/write.cpp \
     src/filemanager.cpp \
+    src/frame/frame.cpp \
     src/main.cpp \
     src/pipe/pipeline.cpp \
     src/pipe/stage.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 HEADERS += \
     include/application.hpp \
     include/audio/audio.hpp \
+    include/common/averror.hpp \
     include/common/console.hpp \
     include/common/exitcode.hpp \
     include/common/messenger.hpp \
@@ -44,6 +46,7 @@ HEADERS += \
     include/file/remux.hpp \
     include/file/write.hpp \
     include/filemanager.hpp \
+    include/frame/frame.hpp \
     include/pipe/pipe.hpp \
     include/pipe/pipeline.hpp \
     include/pipe/stage.hpp \
