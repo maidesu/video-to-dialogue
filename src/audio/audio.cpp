@@ -1,4 +1,5 @@
 #include <audio/audio.hpp>
+#include <common/averror.hpp>
 
 namespace DialogueFromVideo {
 
@@ -65,20 +66,16 @@ void Audio::waveformRequestedHandler(File::Read* file,
             continue;
         }
 
-        if (0 != avcodec_send_packet(avctx, avpkt))
+        if (0 != (res = avcodec_send_packet(avctx, avpkt)))
         {
-            //char buff[256];
-            //av_strerror(res, buff, 256);
-
+            av_packet_unref(avpkt);
             continue;
         }
 
-        if (0 != avcodec_receive_frame(avctx, avfrm))
+        if (0 != (res = avcodec_receive_frame(avctx, avfrm)))
         {
-            //char buff[256];
-            //av_strerror(res, buff, 256);
-
-            continue;
+            av_packet_unref(avpkt);
+            continue; // Call avcodec_send_packet again
         }
 
         AVSampleFormat sample_fmt = av_get_packed_sample_fmt(avctx->sample_fmt);
@@ -109,7 +106,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
                 break;
 
             case AV_SAMPLE_FMT_U8:
-                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(uint8_t))
                 {
                     if (avfrm->ch_layout.nb_channels > 0)
                     {
@@ -120,7 +117,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
                 break;
 
             case AV_SAMPLE_FMT_S16:
-                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(int16_t))
                 {
                     if (avfrm->ch_layout.nb_channels > 0)
                     {
@@ -131,7 +128,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
                 break;
 
             case AV_SAMPLE_FMT_S32:
-                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(int32_t))
                 {
                     if (avfrm->ch_layout.nb_channels > 0)
                     {
