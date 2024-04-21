@@ -152,7 +152,7 @@ void FileManager::subLayerRequestedHandler(const QString& index)
         return;
     }
 
-    // TODO: A parser can perform checks
+    // A parser can perform checks
 
     m_selectedSubLayerIndex = idx;
 
@@ -231,7 +231,6 @@ void FileManager::processFileHandler()
                                      m_selectedSubLayerIndex);
     }
 
-    // TODO if both success -> calls extract dialogue and draws boxes
 
     emit m_messenger.print(tr("Processed file"),
                            "FileManager",
@@ -380,7 +379,7 @@ bool FileManager::saveFile(SaveMode saveMode,
             break;
 
         case SaveMode::Extract:
-            throw std::logic_error("Not implemented"); // TODO
+            throw std::logic_error("Not implemented"); // TODO Dialogue
             break;
 
         case SaveMode::Remux:
