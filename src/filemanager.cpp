@@ -2,8 +2,7 @@
 
 #include <file/write.hpp>
 #include <file/remux.hpp>
-
-#include <cstring>
+#include <common/time.hpp>
 
 extern "C"
 {
@@ -11,11 +10,14 @@ extern "C"
     #include <libavformat/avformat.h>
 }
 
+#include <cstring>
+
 namespace DialogueFromVideo {
 
 FileManager::FileManager(QObject* parent)
     : QObject(parent)
     , m_path(nullptr)
+    , m_imageIndex(0)
     , m_selectedVideoIndex(-1)
     , m_selectedAudioIndex(-1)
     , m_selectedSubIndex(-1)
@@ -288,8 +290,6 @@ bool FileManager::saveFile(SaveMode saveMode,
                            FileMode fileMode,
                            const QTextEdit* textEdit)
 {
-    QString savePath;
-
     switch (saveMode)
     {
         default:
@@ -298,14 +298,14 @@ bool FileManager::saveFile(SaveMode saveMode,
             break;
 
         case SaveMode::Plaintext:
-            savePath = QFileDialog::getSaveFileName(nullptr,
-                                                    tr("Export Subtitle"),
-                                                    "",
-                                                    tr("Text ("
-                                                       "*.txt"
-                                                       ");;All formats (*)"));
+            m_savePath = QFileDialog::getSaveFileName(nullptr,
+                                                      tr("Export Subtitle"),
+                                                      "",
+                                                      tr("Text ("
+                                                         "*.txt"
+                                                         ");;All formats (*)"));
 
-            if (savePath.isEmpty())
+            if (m_savePath.isEmpty())
             {
                 emit m_messenger.print(tr("Received no file path!"),
                                        "FileManager",
@@ -315,7 +315,7 @@ bool FileManager::saveFile(SaveMode saveMode,
             }
 
             {
-                QFile file_out(savePath);
+                QFile file_out(m_savePath);
 
                 if (!file_out.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
                 {
@@ -332,15 +332,51 @@ bool FileManager::saveFile(SaveMode saveMode,
                 file_out.close();
             }
 
-            emit m_messenger.print(tr("Saved subtitles to file: %1").arg(savePath),
+            emit m_messenger.print(tr("Saved subtitles to file: %1").arg(m_savePath),
                                    "FileManager",
                                    MessageLevel::Info);
 
             break;
 
         case SaveMode::Slides:
-            savePath = QFileDialog::getSaveFileName(nullptr,
-                                                    tr("Export Picture Collection"));
+            m_savePath = QFileDialog::getExistingDirectory(nullptr,
+                                                           tr("Export Picture Collection"));
+
+            if (m_savePath.isEmpty())
+            {
+                emit m_messenger.print(tr("Received no file path!"),
+                                       "FileManager",
+                                       MessageLevel::Warning);
+
+                return false;
+            }
+
+            {
+                QString text = textEdit->toPlainText();
+                QStringList lines = text.split("\n");
+
+                /* Check window subtitle content is at least 2 lines
+                 * and after that assume that the format is correct */
+                if (lines.size() < 2)
+                {
+                    emit m_messenger.print(tr("There is nothing to make a Picture Book out of!"),
+                                           "FileManager",
+                                           MessageLevel::Error);
+
+                    return false;
+                }
+
+                m_imageIndex = 0;
+
+                for (int i = 0; i + 1 < lines.size(); i += 2, ++m_imageIndex)
+                {
+                    emit frameRequestedSignal(m_file,
+                                              Time::stringTimeToMilliseconds(lines[i].left(12)),
+                                              lines[i+1],
+                                              m_selectedVideoIndex);
+                }
+            }
+
             break;
 
         case SaveMode::Extract:
@@ -435,12 +471,12 @@ bool FileManager::saveFile(SaveMode saveMode,
             *format_write++ = ';';
             *format_write   = '\0';
 
-            savePath = QFileDialog::getSaveFileName(nullptr,
-                                                    tr("Export File"),
-                                                    "",
-                                                    tr("%1All formats (*)").arg(formattedExtensions));
+            m_savePath = QFileDialog::getSaveFileName(nullptr,
+                                                      tr("Export File"),
+                                                      "",
+                                                      tr("%1All formats (*)").arg(formattedExtensions));
 
-            if (savePath.isEmpty())
+            if (m_savePath.isEmpty())
             {
                 emit m_messenger.print(tr("Received no file path!"),
                                        "FileManager",
@@ -449,7 +485,7 @@ bool FileManager::saveFile(SaveMode saveMode,
                 return false;
             }
 
-            File::Write write(savePath.toUtf8().constData(), outFormat);
+            File::Write write(m_savePath.toUtf8().constData(), outFormat);
 
             if (write.getResult() < 0)
             {
@@ -469,6 +505,30 @@ bool FileManager::saveFile(SaveMode saveMode,
     }
 
     return true;
+}
+
+void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
+                                    int width,
+                                    int height,
+                                    QString caption)
+{
+    QString path = m_savePath + "/" + QString::number(m_imageIndex) + ".png";
+    QImage image(frameBinaryData.constData(), width, height, QImage::Format_RGB888);
+
+    //image.loadFromData(frameBinaryData);
+
+
+    // Save the QImage as a PNG file
+    if (!image.save(path, "PNG"))
+    {
+        emit m_messenger.print(tr("Failed to save frame image at specified location!"),
+                               "FileManager",
+                               MessageLevel::Error);
+
+        return;
+    }
+
+    (void)caption; // TODO Caption
 }
 
 bool FileManager::getFileInfo()

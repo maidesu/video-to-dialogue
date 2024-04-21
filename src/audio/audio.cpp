@@ -15,6 +15,8 @@ Audio::~Audio()
 void Audio::waveformRequestedHandler(File::Read* file,
                                      int selectedAudioIndex)
 {
+    int res = 0;
+
     clearWaveform();
 
     const AVStream* stream = file->getStream(selectedAudioIndex);
@@ -32,8 +34,10 @@ void Audio::waveformRequestedHandler(File::Read* file,
 
     AVCodecContext* avctx = avcodec_alloc_context3(decoder); // must be freed with avcodec_free_context
 
+    res = avcodec_parameters_to_context(avctx, stream->codecpar);
+
     // The AVCodecContext MUST have been opened with avcodec_open2() before packets may be fed to the decoder.
-    int res = avcodec_open2(avctx, decoder, NULL);
+    res = avcodec_open2(avctx, decoder, NULL);
 
     if (res < 0)
     {
@@ -60,23 +64,32 @@ void Audio::waveformRequestedHandler(File::Read* file,
 
     while (av_read_frame(s, avpkt) == 0)
     {
+    start:
         if (avpkt->stream_index != selectedAudioIndex)
         {
             av_packet_unref(avpkt);
             continue;
         }
 
-        if (0 != (res = avcodec_send_packet(avctx, avpkt)))
+        res = avcodec_send_packet(avctx, avpkt);
+
+        if (res < 0 || res == AVERROR(EAGAIN) || res == AVERROR_EOF)
         {
             av_packet_unref(avpkt);
             continue;
         }
 
-        if (0 != (res = avcodec_receive_frame(avctx, avfrm)))
+        do
         {
-            av_packet_unref(avpkt);
-            continue; // Call avcodec_send_packet again
+            res = avcodec_receive_frame(avctx, avfrm);
+
+            if (res == AVERROR(EAGAIN))
+            {
+                av_packet_unref(avpkt);
+                goto start; // Call avcodec_send_packet again
+            }
         }
+        while (res != 0);
 
         AVSampleFormat sample_fmt = av_get_packed_sample_fmt(avctx->sample_fmt);
 

@@ -187,6 +187,18 @@ Application::Application()
                      &m_window,
                      &Window::waveformReadyHandler);
 
+    // FileManager requests frame from Frame
+    QObject::connect(&m_fileManager,
+                     &FileManager::frameRequestedSignal,
+                     &m_frame,
+                     &Frame::frameRequestedHandler);
+
+    // Extracted frame sent to FileManager
+    QObject::connect(&m_frame,
+                     &Frame::frameReadySignal,
+                     &m_fileManager,
+                     &FileManager::frameReadyHandler);
+
 
     // Window asks for intervals
     QObject::connect(&m_window,

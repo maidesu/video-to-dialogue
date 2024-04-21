@@ -69,7 +69,8 @@ LIBS += \
 LIBS += \
     -lavformat \
     -lavcodec \
-    -lavutil
+    -lavutil \
+    -lswscale
 
 TRANSLATIONS += \
     resource/translations/hu_HU.ts \

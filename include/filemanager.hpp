@@ -3,6 +3,7 @@
 #include <file/read.hpp>
 #include <common/messenger.hpp>
 #include <common/progress.hpp>
+#include <common/subtitlestructs.hpp>
 
 extern "C"
 {
@@ -92,6 +93,11 @@ public slots:
 
     void processFileHandler();
 
+    void frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
+                           int width,
+                           int height,
+                           QString caption);
+
 private:
     bool openFile();
     bool saveFile(SaveMode saveMode = SaveMode::None,
@@ -101,10 +107,13 @@ private:
     void clearStreamInfo();
 
     const char* m_path;
+    int m_imageIndex;
     int m_selectedVideoIndex;
     int m_selectedAudioIndex;
     int m_selectedSubIndex;
     int m_selectedSubLayerIndex;
+
+    QString m_savePath;
 
     QList<SubInfo*> m_subStreams;
     QList<AudioInfo*> m_audioStreams;
@@ -129,6 +138,11 @@ signals:
 
     void waveFormRequestedSignal(File::Read* file,
                                  int selectedAudioIndex);
+
+    void frameRequestedSignal(File::Read* file,
+                              int64_t timestamp,
+                              QString caption,
+                              int selectedVideoIndex);
 };
 
 } // namespace DialogueFromVideo

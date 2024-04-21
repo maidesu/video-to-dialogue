@@ -28,6 +28,8 @@ private:
 
 signals:
     void frameReadySignal(const QVector<uint8_t>& frameBinaryData,
+                          int width,
+                          int height,
                           QString caption);
 
 };
