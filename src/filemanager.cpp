@@ -1,3 +1,4 @@
+#include "qpainter.h"
 #include <filemanager.hpp>
 
 #include <file/write.hpp>
@@ -516,9 +517,23 @@ void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
 
     //image.loadFromData(frameBinaryData);
 
+    // Insert gradient on top
+    QImage scaledGradient = QImage(":/gradient.png")
+                                .scaled(image.size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+    QPixmap merged(image.width(),
+                   image.height());
+
+    merged.fill(Qt::transparent);
+
+    QPainter painter(&merged);
+    painter.drawImage(QRect(0, 0, image.width(), image.height()),
+                      image);
+    painter.drawImage(QRect(0, 0, image.width(), image.height()),
+                      scaledGradient);
 
     // Save the QImage as a PNG file
-    if (!image.save(path, "PNG"))
+    if (!merged.toImage().save(path, "PNG"))
     {
         emit m_messenger.print(tr("Failed to save frame image at specified location!"),
                                "FileManager",
