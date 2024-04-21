@@ -532,6 +532,17 @@ void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
     painter.drawImage(QRect(0, 0, image.width(), image.height()),
                       scaledGradient);
 
+    // Insert caption on top
+    painter.setPen(QPen(QColor(255, 255, 255)));
+
+    painter.setFont(QFont("Helvetica",
+                          image.width() > 1920 ? 64 : 24,
+                          QFont::DemiBold));
+
+    painter.drawText(17 * image.width() / 200,  // 325  / 3840 pixel picked by eye
+                     3 * image.height() / 4,    // 1485 / 2160 - modified this
+                     caption);
+
     // Save the QImage as a PNG file
     if (!merged.toImage().save(path, "PNG"))
     {
