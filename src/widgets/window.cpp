@@ -62,6 +62,8 @@ Window::Window(QWidget *parent)
     m_exportAudioRemuxButton->setDisabled(true);
     m_exportSubtitleRemuxButton->setDisabled(true);
 
+    m_exportPictureCollectionButton->setDisabled(true);
+
     // Info group box
     QHBoxLayout* infoLayout = new QHBoxLayout();
     m_infoGroupBox->setLayout(infoLayout);
@@ -494,6 +496,8 @@ void Window::fileChangedHandler(int videoStream,
     m_exportVideoRemuxButton->setDisabled(videoStream == 0);
     m_exportAudioRemuxButton->setDisabled(m_audioComboBox->count() < 1);
     m_exportSubtitleRemuxButton->setDisabled(m_subComboBox->count() < 1);
+
+    m_exportPictureCollectionButton->setDisabled(videoStream == 0);
 
     // Force update
     if (!m_subLayerSpinBox->isEnabled())
