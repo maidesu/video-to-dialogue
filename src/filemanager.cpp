@@ -368,6 +368,10 @@ bool FileManager::saveFile(SaveMode saveMode,
 
                 m_imageIndex = 0;
 
+                // Progress
+                emit m_progress.progressReset();
+                emit m_progress.progressMaximum(lines.size() / 2);
+
                 for (int i = 0; i + 1 < lines.size(); i += 2, ++m_imageIndex)
                 {
                     emit frameRequestedSignal(m_file,
@@ -375,6 +379,9 @@ bool FileManager::saveFile(SaveMode saveMode,
                                               lines[i+1],
                                               m_selectedVideoIndex);
                 }
+
+                // Progress
+                emit m_progress.progressComplete();
             }
 
             break;
@@ -549,11 +556,10 @@ void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
         emit m_messenger.print(tr("Failed to save frame image at specified location!"),
                                "FileManager",
                                MessageLevel::Error);
-
-        return;
     }
 
-    (void)caption; // TODO Caption
+    // Progress
+    emit m_progress.progressAdd(1);
 }
 
 bool FileManager::getFileInfo()
