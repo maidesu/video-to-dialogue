@@ -163,8 +163,68 @@ void Audio::waveformRequestedHandler(File::Read* file,
                 }
                 break;
 
+            case AV_SAMPLE_FMT_S64:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(int64_t))
+                {
+                    if ( (i / sizeof(int64_t)) % avfrm->ch_layout.nb_channels == 0)
+                    {
+                        double value = *reinterpret_cast<int64_t*>(&avfrm->data[0][i]) / static_cast<double>(INT64_MAX);
+                        m_samples.append(value);
+                    }
+                }
+                break;
+
+            case AV_SAMPLE_FMT_DBLP:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(double))
+                {
+                    double value = *reinterpret_cast<double*>(&avfrm->data[0][i]);
+                    m_samples.append(value);
+                }
+                break;
+
+            case AV_SAMPLE_FMT_FLTP:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
+                {
+                    float value = *reinterpret_cast<float*>(&avfrm->data[0][i]);
+                    m_samples.append(value);
+                }
+                break;
+
+            case AV_SAMPLE_FMT_U8P:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(uint8_t))
+                {
+                    double value = *reinterpret_cast<uint8_t*>(&avfrm->data[0][i]) / static_cast<double>(UINT8_MAX);
+                    m_samples.append(value);
+                }
+                break;
+
+            case AV_SAMPLE_FMT_S16P:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(int16_t))
+                {
+                    double value = *reinterpret_cast<int16_t*>(&avfrm->data[0][i]) / static_cast<double>(INT16_MAX);
+                    m_samples.append(value);
+                }
+                break;
+
+            case AV_SAMPLE_FMT_S32P:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(int32_t))
+                {
+                    double value = *reinterpret_cast<int32_t*>(&avfrm->data[0][i]) / static_cast<double>(INT32_MAX);
+                    m_samples.append(value);
+                }
+                break;
+
+            case AV_SAMPLE_FMT_S64P:
+                for (int i = 0; i < avfrm->linesize[0]; i += sizeof(int64_t))
+                {
+                    double value = *reinterpret_cast<int64_t*>(&avfrm->data[0][i]) / static_cast<double>(INT64_MAX);
+                    m_samples.append(value);
+                }
+                break;
+
+            case AV_SAMPLE_FMT_NONE:
             default:
-                emit m_messenger.print(tr("Sample format support not implemented!"),
+                emit m_messenger.print(tr("Sample format was not detected!"),
                                        "Audio",
                                        MessageLevel::Error);
                 return;
