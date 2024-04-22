@@ -90,14 +90,14 @@ Window::Window(QWidget *parent)
 
     settingsPaddingLayout->addWidget(new QLabel(tr("Padding left (ms)")));
     m_subPaddingLeftSpinBox->setSingleStep(100);
-    m_subPaddingLeftSpinBox->setMinimum(0);
+    m_subPaddingLeftSpinBox->setMinimum(INT_MIN);
     m_subPaddingLeftSpinBox->setMaximum(INT_MAX);
     m_subPaddingLeftSpinBox->setMinimumWidth(60);
     settingsPaddingLayout->addWidget(m_subPaddingLeftSpinBox);
 
     settingsPaddingLayout->addWidget(new QLabel(tr("Padding right (ms)")));
     m_subPaddingRightSpinBox->setSingleStep(100);
-    m_subPaddingRightSpinBox->setMinimum(0);
+    m_subPaddingRightSpinBox->setMinimum(INT_MIN);
     m_subPaddingRightSpinBox->setMaximum(INT_MAX);
     m_subPaddingRightSpinBox->setMinimumWidth(60);
     settingsPaddingLayout->addWidget(m_subPaddingRightSpinBox);
