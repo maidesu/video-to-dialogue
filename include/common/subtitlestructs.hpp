@@ -2,7 +2,7 @@
 
 #include <QString>
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace DialogueFromVideo {
 

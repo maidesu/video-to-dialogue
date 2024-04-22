@@ -2,7 +2,7 @@
 
 #include <widgets/palettes/colors.hpp>
 
-#include "QPalette"
+#include <QPalette>
 
 namespace DialogueFromVideo :: Palettes {
 
