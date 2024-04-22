@@ -95,12 +95,24 @@ void Audio::waveformRequestedHandler(File::Read* file,
 
         switch (sample_fmt)
         {
+            /* ****************** Sample format walkthrough ********************
+             * Planar
+             * Each channel samples in corresponding data[channel] in series
+             *
+             * Interleaved
+             * Every channel is located in data[0]
+             * data[0][0]: Sample belonging to 1st channel
+             * ...
+             * data[0][i]: Sample belonging to ith channel
+             * ...
+             * data[0][n]: Sample belonging to (n % channel_count)th channel */
+
             case AV_SAMPLE_FMT_DBL:
                 for (int i = 0; i < avfrm->linesize[0]; i += sizeof(double))
                 {
-                    if (avfrm->ch_layout.nb_channels > 0)
+                    // Grab first channel
+                    if ( (i / sizeof(double)) % avfrm->ch_layout.nb_channels == 0)
                     {
-                        // Grab first channel
                         double value = *reinterpret_cast<double*>(&avfrm->data[0][i]);
                         m_samples.append(value);
                     }
@@ -110,7 +122,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
             case AV_SAMPLE_FMT_FLT:
                 for (int i = 0; i < avfrm->linesize[0]; i += sizeof(float))
                 {
-                    if (avfrm->ch_layout.nb_channels > 0)
+                    if ( (i / sizeof(float)) % avfrm->ch_layout.nb_channels == 0)
                     {
                         float value = *reinterpret_cast<float*>(&avfrm->data[0][i]);
                         m_samples.append(value);
@@ -121,7 +133,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
             case AV_SAMPLE_FMT_U8:
                 for (int i = 0; i < avfrm->linesize[0]; i += sizeof(uint8_t))
                 {
-                    if (avfrm->ch_layout.nb_channels > 0)
+                    if ( (i / sizeof(uint8_t)) % avfrm->ch_layout.nb_channels == 0)
                     {
                         double value = *reinterpret_cast<uint8_t*>(&avfrm->data[0][i]) / static_cast<double>(UINT8_MAX);
                         m_samples.append(value);
@@ -132,7 +144,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
             case AV_SAMPLE_FMT_S16:
                 for (int i = 0; i < avfrm->linesize[0]; i += sizeof(int16_t))
                 {
-                    if (avfrm->ch_layout.nb_channels > 0)
+                    if ( (i / sizeof(int16_t)) % avfrm->ch_layout.nb_channels == 0)
                     {
                         double value = *reinterpret_cast<int16_t*>(&avfrm->data[0][i]) / static_cast<double>(INT16_MAX);
                         m_samples.append(value);
@@ -143,7 +155,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
             case AV_SAMPLE_FMT_S32:
                 for (int i = 0; i < avfrm->linesize[0]; i += sizeof(int32_t))
                 {
-                    if (avfrm->ch_layout.nb_channels > 0)
+                    if ( (i / sizeof(int32_t)) % avfrm->ch_layout.nb_channels == 0)
                     {
                         double value = *reinterpret_cast<int32_t*>(&avfrm->data[0][i]) / static_cast<double>(INT32_MAX);
                         m_samples.append(value);
