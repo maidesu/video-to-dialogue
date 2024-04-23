@@ -62,9 +62,9 @@ void Audio::waveformRequestedHandler(File::Read* file,
     int64_t report_progress_frame = total_est_frames / max_progress_steps;
     // Progress end
 
+start:
     while (av_read_frame(s, avpkt) == 0)
     {
-    start:
         if (avpkt->stream_index != selectedAudioIndex)
         {
             av_packet_unref(avpkt);
@@ -73,7 +73,9 @@ void Audio::waveformRequestedHandler(File::Read* file,
 
         res = avcodec_send_packet(avctx, avpkt);
 
-        if (res < 0 || res == AVERROR(EAGAIN) || res == AVERROR_EOF)
+        if ( res != AVERROR_EOF &&
+            ( res == AVERROR(EAGAIN) ||
+              res < 0 ) )
         {
             av_packet_unref(avpkt);
             continue;
@@ -86,7 +88,13 @@ void Audio::waveformRequestedHandler(File::Read* file,
             if (res == AVERROR(EAGAIN))
             {
                 av_packet_unref(avpkt);
-                goto start; // Call avcodec_send_packet again
+                goto start; // Call avcodec_send_packet again (with a new frame)
+            }
+
+            if (res == AVERROR_EOF)
+            {
+                av_packet_unref(avpkt);
+                break;
             }
         }
         while (res != 0);
@@ -103,9 +111,9 @@ void Audio::waveformRequestedHandler(File::Read* file,
              * Every channel is located in data[0]
              * data[0][0]: Sample belonging to 1st channel
              * ...
-             * data[0][i]: Sample belonging to ith channel
+             * data[0][i-1]: Sample belonging to ith channel
              * ...
-             * data[0][n]: Sample belonging to (n % channel_count)th channel */
+             * data[0][n-1]: Sample belonging to (n % channel_count)th channel */
 
             case AV_SAMPLE_FMT_DBL:
                 for (int i = 0; i < avfrm->linesize[0]; i += sizeof(double))

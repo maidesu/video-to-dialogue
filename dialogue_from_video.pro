@@ -17,6 +17,7 @@ SOURCES += \
     src/dialogue/dialogue.cpp \
     src/file/read.cpp \
     src/file/remux.cpp \
+    src/file/transcode.cpp \
     src/file/write.cpp \
     src/filemanager.cpp \
     src/frame/frame.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     include/dialogue/dialogue.hpp \
     include/file/read.hpp \
     include/file/remux.hpp \
+    include/file/transcode.hpp \
     include/file/write.hpp \
     include/filemanager.hpp \
     include/frame/frame.hpp \

@@ -1,8 +1,8 @@
-#include "qpainter.h"
 #include <filemanager.hpp>
 
 #include <file/write.hpp>
 #include <file/remux.hpp>
+#include <file/transcode.hpp>
 #include <common/time.hpp>
 
 extern "C"
@@ -10,6 +10,8 @@ extern "C"
     #include <libavcodec/avcodec.h>
     #include <libavformat/avformat.h>
 }
+
+#include <QPainter>
 
 #include <cstring>
 
@@ -387,7 +389,43 @@ bool FileManager::saveFile(SaveMode saveMode,
             break;
 
         case SaveMode::Extract:
-            throw std::logic_error("Not implemented"); // TODO Dialogue
+            m_savePath = QFileDialog::getSaveFileName(nullptr,
+                                                      tr("Export Dialogue"),
+                                                      "",
+                                                      tr("All formats (*)"));
+
+            if (m_savePath.isEmpty())
+            {
+                emit m_messenger.print(tr("Received no file path!"),
+                                       "FileManager",
+                                       MessageLevel::Warning);
+
+                return false;
+            }
+
+            {
+                File::Write write(m_savePath.toUtf8().constData(),
+                                  av_guess_format(avcodec_get_name(AV_CODEC_ID_PCM_S16LE),
+                                                                   NULL,
+                                                                   NULL));
+
+                if (write.getResult() < 0)
+                {
+                    return false;
+                }
+
+                File::Transcode encode(m_file->getContext(),
+                                       write.getContext(),
+                                       AV_CODEC_ID_PCM_S16LE, // 16 bit wav
+                                       QList<Interval>(),
+                                       m_selectedAudioIndex);
+
+                if (encode.getResult() < 0)
+                {
+                    return false;
+                }
+            }
+
             break;
 
         case SaveMode::Remux:
@@ -492,20 +530,22 @@ bool FileManager::saveFile(SaveMode saveMode,
                 return false;
             }
 
-            File::Write write(m_savePath.toUtf8().constData(), outFormat);
-
-            if (write.getResult() < 0)
             {
-                return false;
-            }
+                File::Write write(m_savePath.toUtf8().constData(), outFormat);
 
-            File::Remux remux(m_file->getContext(),
-                              write.getContext(),
-                              selectedStream);
+                if (write.getResult() < 0)
+                {
+                    return false;
+                }
 
-            if (remux.getResult() < 0)
-            {
-                return false;
+                File::Remux remux(m_file->getContext(),
+                                  write.getContext(),
+                                  selectedStream);
+
+                if (remux.getResult() < 0)
+                {
+                    return false;
+                }
             }
 
             break;
