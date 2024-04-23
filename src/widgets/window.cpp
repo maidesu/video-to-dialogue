@@ -64,6 +64,8 @@ Window::Window(QWidget *parent)
 
     m_exportPictureCollectionButton->setDisabled(true);
 
+    m_exportDialogueButton->setDisabled(true);
+
     // Info group box
     QHBoxLayout* infoLayout = new QHBoxLayout();
     m_infoGroupBox->setLayout(infoLayout);
@@ -364,11 +366,10 @@ Window::Window(QWidget *parent)
                 emit Window::exportPictureCollectionSignal(static_cast<const QTextEdit*>(m_subTextEdit));
             });
 
-    // TODO: Dialogue
-    //connect(m_exportDialogueButton,
-    //        &QPushButton::pressed,
-    //        this,
-    //        &Window::exportDialogueSignal);
+    connect(m_exportDialogueButton,
+            &QPushButton::pressed,
+            this,
+            &Window::exportDialogueSignal);
 
     connect(m_exportVideoRemuxButton,
             &QPushButton::pressed,
@@ -498,6 +499,8 @@ void Window::fileChangedHandler(int videoStream,
     m_exportSubtitleRemuxButton->setDisabled(m_subComboBox->count() < 1);
 
     m_exportPictureCollectionButton->setDisabled(videoStream == 0);
+
+    m_exportDialogueButton->setDisabled(true); // enabled only after processing done
 
     // Force update
     if (!m_subLayerSpinBox->isEnabled())
