@@ -211,6 +211,19 @@ Application::Application()
                      &Dialogue::readyDialogueSignal,
                      &m_window,
                      &Window::readyDialogueHandler);
+
+    // FileManager flag set
+    QObject::connect(&m_dialogue,
+                     &Dialogue::readyDialogueSignal,
+                     &m_fileManager,
+                     &FileManager::readyDialogueHandler);
+
+
+    // FileManager allows dialogue export
+    QObject::connect(&m_fileManager,
+                     &FileManager::allowDialogueExportSignal,
+                     &m_window,
+                     &Window::allowDialogueExportHandler);
 }
 
 void Application::run()

@@ -98,6 +98,8 @@ public slots:
                            int height,
                            QString caption);
 
+    void readyDialogueHandler();
+
 private:
     bool openFile();
     bool saveFile(SaveMode saveMode = SaveMode::None,
@@ -112,6 +114,8 @@ private:
     int m_selectedAudioIndex;
     int m_selectedSubIndex;
     int m_selectedSubLayerIndex;
+
+    int m_dialogueFlag;
 
     QString m_savePath;
 
@@ -143,6 +147,8 @@ signals:
                               int64_t timestamp,
                               QString caption,
                               int selectedVideoIndex);
+
+    void allowDialogueExportSignal();
 };
 
 } // namespace DialogueFromVideo

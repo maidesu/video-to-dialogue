@@ -50,6 +50,8 @@ public slots:
                               const QList<Interval>& padding,
                               const QList<Interval>& gap);
 
+    void allowDialogueExportHandler();
+
 private:
     Messenger m_windowMessenger;
 

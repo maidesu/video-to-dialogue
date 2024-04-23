@@ -42,7 +42,7 @@ Window::Window(QWidget *parent)
     , m_applySettingsButton(new QPushButton(tr("Apply")))
     , m_consoleClearButton(new QPushButton(tr("Clear")))
     , m_exportSubtitleButton(new QPushButton(tr("Export subtitle")))
-    , m_exportPictureCollectionButton(new QPushButton(tr("Create picture book")))
+    , m_exportPictureCollectionButton(new QPushButton(tr("Create visual novel")))
     , m_exportVideoRemuxButton(new QPushButton(tr("Video")))
     , m_exportAudioRemuxButton(new QPushButton(tr("Audio")))
     , m_exportSubtitleRemuxButton(new QPushButton(tr("Subtitle")))
@@ -673,6 +673,11 @@ void Window::readyDialogueHandler(const QList<Interval>& dialogue,
                                     subtitle,
                                     padding,
                                     gap);
+}
+
+void Window::allowDialogueExportHandler()
+{
+    m_exportDialogueButton->setDisabled(false);
 }
 
 } // namespace DialogueFromVideo

@@ -21,7 +21,7 @@ Read::Read(const char* path)
 
     emit m_messenger.print(QTranslator::tr("Successfully opened file!"),
                            "File::Read",
-                           MessageLevel::Info);
+                           MessageLevel::Debug);
 
     if (avformat_find_stream_info(m_formatContext, nullptr) < 0)
     {

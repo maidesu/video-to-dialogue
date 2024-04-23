@@ -25,6 +25,7 @@ FileManager::FileManager(QObject* parent)
     , m_selectedAudioIndex(-1)
     , m_selectedSubIndex(-1)
     , m_selectedSubLayerIndex(-1)
+    , m_dialogueFlag(0)
     , m_file(nullptr)
 {
 
@@ -238,6 +239,17 @@ void FileManager::processFileHandler()
     emit m_messenger.print(tr("Processed file"),
                            "FileManager",
                            MessageLevel::Info);
+
+
+    if ( m_audioStreams.count() > 0 &&
+         m_dialogueFlag == 1 )
+    {
+        emit allowDialogueExportSignal();
+
+        emit m_messenger.print(tr("File ready for dialogue export!"),
+                               "FileManager",
+                               MessageLevel::Info);
+    }
 }
 
 bool FileManager::openFile()
@@ -275,6 +287,9 @@ bool FileManager::openFile()
         emit m_messenger.print(QString("Selected path: %1").arg(m_path),
                                "FileManager",
                                MessageLevel::Debug);
+
+        // Invalidate dialogue export
+        m_dialogueFlag = 0;
 
         return getFileInfo(); // note: m_path is invalid after this point
     }
@@ -342,7 +357,7 @@ bool FileManager::saveFile(SaveMode saveMode,
 
         case SaveMode::Slides:
             m_savePath = QFileDialog::getExistingDirectory(nullptr,
-                                                           tr("Export Picture Collection"));
+                                                           tr("Export Visual Novel"));
 
             if (m_savePath.isEmpty())
             {
@@ -361,7 +376,7 @@ bool FileManager::saveFile(SaveMode saveMode,
                  * and after that assume that the format is correct */
                 if (lines.size() < 2)
                 {
-                    emit m_messenger.print(tr("There is nothing to make a Picture Book out of!"),
+                    emit m_messenger.print(tr("There is nothing to make a visual novel out of!"),
                                            "FileManager",
                                            MessageLevel::Error);
 
@@ -374,13 +389,19 @@ bool FileManager::saveFile(SaveMode saveMode,
                 emit m_progress.progressReset();
                 emit m_progress.progressMaximum(lines.size() / 2);
 
-                for (int i = 0; i + 1 < lines.size(); i += 2, ++m_imageIndex)
+                for (int i = 0; i + 1 < lines.size(); i += 2)
                 {
                     emit frameRequestedSignal(m_file,
                                               Time::stringTimeToMilliseconds(lines[i].left(12)),
                                               lines[i+1],
                                               m_selectedVideoIndex);
                 }
+
+                emit m_messenger.print(tr("Created visual novel of %1 images in: %2")
+                                           .arg(QString::number(m_imageIndex),
+                                                m_savePath),
+                                       "FileManager",
+                                       MessageLevel::Info);
 
                 // Progress
                 emit m_progress.progressComplete();
@@ -559,14 +580,21 @@ void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
                                     int height,
                                     QString caption)
 {
+    m_imageIndex += 1;
+
     QString path = m_savePath + "/" + QString::number(m_imageIndex) + ".png";
-    QImage image(frameBinaryData.constData(), width, height, QImage::Format_RGB888);
+    QImage image(frameBinaryData.constData(),
+                 width,
+                 height,
+                 QImage::Format_RGB888);
 
     //image.loadFromData(frameBinaryData);
 
     // Insert gradient on top
     QImage scaledGradient = QImage(":/gradient.png")
-                                .scaled(image.size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                                .scaled(image.size(),
+                                        Qt::IgnoreAspectRatio,
+                                        Qt::SmoothTransformation);
 
     QPixmap merged(image.width(),
                    image.height());
@@ -600,6 +628,13 @@ void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
 
     // Progress
     emit m_progress.progressAdd(1);
+}
+
+void FileManager::readyDialogueHandler()
+{
+    // Current state of dialogue is ready
+    // Invalidated on file change
+    m_dialogueFlag = 1;
 }
 
 bool FileManager::getFileInfo()
@@ -709,7 +744,7 @@ bool FileManager::getFileInfo()
 
     emit m_messenger.print(tr("Found a total of %1 subtitle and %2 audio streams")
                                 .arg(QString::number(m_subStreams.count()),
-                                QString::number(m_audioStreams.count())),
+                                     QString::number(m_audioStreams.count())),
                            "FileManager",
                            MessageLevel::Info);
 
