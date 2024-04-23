@@ -1,6 +1,6 @@
 #include <subtitle/subtitle.hpp>
 
-#include <algorithm>
+#include <QRegularExpression>
 
 namespace DialogueFromVideo {
 
@@ -36,6 +36,7 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
         emit m_messenger.print(tr("Unsupported subtitle codec!"),
                                "Subtitle",
                                MessageLevel::Error);
+
         return;
     }
 
@@ -50,6 +51,7 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
         emit m_messenger.print(tr("Critical: Failed to create codec context!"),
                                "Subtitle",
                                MessageLevel::Error);
+
         return;
     }
 
@@ -113,7 +115,9 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
 
                     m_subs.append(new SubEntry { avpkt->pts, // sub->start_display_time is relative to avpkt->pts, usually 0, so we just use the packet pts
                                                  avpkt->pts + std::max(static_cast<int64_t>(0), avpkt->duration),
-                                                 QString{ plain } });
+                                                 QString{ plain }
+                                                   .remove(QRegularExpression{"\\{.*?\\}"})
+                                                   .replace("\\n", " ", Qt::CaseInsensitive) });
                 }
 
                 avsubtitle_free(&sub);
