@@ -617,11 +617,16 @@ void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
     painter.setPen(QPen(QColor(255, 255, 255)));
 
     painter.setFont(QFont("Helvetica",
-                          image.width() > 1920 ? 64 : 24,
+                          image.width() > 1920 ? 48 : 24,
                           QFont::DemiBold));
 
-    painter.drawText(17 * image.width() / 200,  // 325  / 3840 pixel picked by eye
-                     3 * image.height() / 4,    // 1485 / 2160 - modified this
+    QRect textRect(QPoint(17 * image.width() / 200, // approx: 325 / 3840
+                          17 * image.height() / 24),  // 1485 / 2160 - modified this
+                   QPoint((200-17) * image.width() / 200, // Same spacing from the right
+                          23 * image.height() / 24));
+
+    painter.drawText(textRect,
+                     Qt::AlignLeft | Qt::TextWordWrap,
                      caption);
 
     // Save the QImage as a PNG file
