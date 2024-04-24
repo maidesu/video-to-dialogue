@@ -40,6 +40,7 @@ struct AudioInfo
     int samplerate;
     int bitdepth;
     int64_t bitrate;
+    int channels;
     bool lossless;
     AVCodecID codec_id;
     QString codec_name;

@@ -696,19 +696,19 @@ bool FileManager::getFileInfo()
 
                 ai->samplerate  = stream->codecpar->sample_rate;
 
-                ai->bitdepth    = stream->codecpar->bits_per_coded_sample == 0
-                                   ? stream->codecpar->bits_per_raw_sample == 0 : stream->codecpar->bits_per_coded_sample
-                                         ? av_get_bits_per_sample(stream->codecpar->codec_id) : stream->codecpar->bits_per_raw_sample;
+                ai->bitdepth    = stream->codecpar->bits_per_raw_sample
+                                    ? stream->codecpar->bits_per_raw_sample
+                                    : stream->codecpar->bits_per_coded_sample;
 
                 ai->bitrate     = stream->codecpar->bit_rate / 1000;
 
-                ai->lossless    = desc->props ? static_cast<bool>(desc->props & AV_CODEC_PROP_LOSSLESS) : false;
+                ai->channels    = stream->codecpar->ch_layout.nb_channels;
+
+                ai->lossless    = static_cast<bool>(desc->props & AV_CODEC_PROP_LOSSLESS);
 
                 ai->codec_id    = stream->codecpar->codec_id;
 
-                ai->codec_name  = QString(avcodec_get_name(ai->codec_id)
-                                             ? avcodec_get_name(ai->codec_id)
-                                             : "N/A" );
+                ai->codec_name  = QString(avcodec_get_name(ai->codec_id));
 
                 ai->lang        = QString(av_dict_get(stream->metadata, "language", nullptr, 0)
                                        ? av_dict_get(stream->metadata, "language", nullptr, 0)->value
@@ -731,9 +731,7 @@ bool FileManager::getFileInfo()
 
                 si->codec_id    = stream->codecpar->codec_id;
 
-                si->codec_name  = QString(avcodec_get_name(si->codec_id)
-                                             ? avcodec_get_name(si->codec_id)
-                                             : "N/A" );
+                si->codec_name  = QString(avcodec_get_name(si->codec_id));
 
                 si->lang        = QString(av_dict_get(stream->metadata, "language", nullptr, 0)
                                        ? av_dict_get(stream->metadata, "language", nullptr, 0)->value

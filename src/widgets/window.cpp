@@ -603,9 +603,10 @@ void Window::audioDescriptionReceivedHandler(const AudioInfo audioInfo)
                                         "Sample rate: %2 Hz\n"
                                         "Bits per sample: %3\n"
                                         "Bitrate: %4 kbps\n"
-                                        "Lossless: %5\n"
-                                        "Language: %6\n"
-                                        "Codec: %7")
+                                        "Channels: %5\n"
+                                        "Lossless: %6\n"
+                                        "Language: %7\n"
+                                        "Codec: %8")
                                          .arg(QString::number(audioInfo.index),
                                               QString::number(audioInfo.samplerate),
                                               audioInfo.bitdepth != 0
@@ -614,10 +615,11 @@ void Window::audioDescriptionReceivedHandler(const AudioInfo audioInfo)
                                               audioInfo.bitrate != 0
                                                 ? QString::number(audioInfo.bitrate)
                                                 : QString("N/A"),
+                                              QString::number(audioInfo.channels),
                                               audioInfo.lossless ? tr("Yes") : tr("No"),
                                               audioInfo.lang != "und"
                                                 ? audioInfo.lang
-                                                : QString("N/A"),
+                                                : QString("unknown"),
                                               audioInfo.codec_name));
 }
 
