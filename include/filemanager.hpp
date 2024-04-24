@@ -98,7 +98,7 @@ public slots:
                            int height,
                            QString caption);
 
-    void readyDialogueHandler();
+    void readyDialogueHandler(const QList<Interval>& dialogue);
 
 private:
     bool openFile();
@@ -123,6 +123,8 @@ private:
     QList<AudioInfo*> m_audioStreams;
 
     File::Read* m_file;
+
+    const QList<Interval>* m_dialogueList;
 
     Messenger m_messenger;
     Progress m_progress;

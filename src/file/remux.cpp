@@ -79,7 +79,7 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
     // Write trailer
     if (0 != (m_result = av_write_trailer(out)) )
     {
-        emit m_messenger.print(QTranslator::tr("Failed to write file!"),
+        emit m_messenger.print(QTranslator::tr("Failed to write file trailer!"),
                                "File::Remux",
                                MessageLevel::Error);
     }

@@ -1,6 +1,6 @@
 #include <frame/frame.hpp>
 
-#include <common/averror.hpp>
+//#include <common/averror.hpp>
 
 extern "C"
 {
@@ -93,8 +93,6 @@ void Frame::frameRequestedHandler(File::Read* file,
 
         if (res < 0 || res == AVERROR(EAGAIN))
         {
-            //AV_ERR(res);
-            //(void)buff;
             av_packet_unref(avpkt);
             continue;
         }

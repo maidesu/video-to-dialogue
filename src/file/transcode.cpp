@@ -1,4 +1,5 @@
 #include <file/transcode.hpp>
+//#include <common/averror.hpp>
 
 #include <QTranslator>
 
@@ -7,14 +8,14 @@ namespace DialogueFromVideo::File {
 Transcode::Transcode(AVFormatContext* in,
                      AVFormatContext* out,
                      AVCodecID outCodec,
-                     const QList<Interval>& dialogueIntervals,
+                     const QList<Interval>* dialogueIntervals,
                      int targetStream)
     : m_inFormatContext(in)
     , m_outFormatContext(out)
     , m_result(0)
 {
     // Sanity check
-    if (dialogueIntervals.isEmpty())
+    if (!dialogueIntervals || dialogueIntervals->isEmpty())
     {
         emit m_messenger.print(QTranslator::tr("There is nothing to transcode!"),
                                "File::Transcode",
@@ -60,6 +61,61 @@ Transcode::Transcode(AVFormatContext* in,
         return;
     }
 
+    // Set stuff up on the codec contexts - directly referencing transcode.c from ffmpeg examples
+    // Decoder context
+    m_result = avcodec_parameters_to_context(decoder_ctx, inStream->codecpar);
+    if (m_result < 0)
+    {
+        emit m_messenger.print(QTranslator::tr("Failed to copy decoder parameters to input decoder context"),
+                               "File::Transcode",
+                               MessageLevel::Error);
+        return;
+    }
+
+    decoder_ctx->pkt_timebase = inStream->time_base;
+
+    m_result = avcodec_open2(decoder_ctx, decoder, NULL);
+    if (m_result < 0)
+    {
+        emit m_messenger.print(QTranslator::tr("Failed to open decoder for stream"),
+                               "File::Transcode",
+                               MessageLevel::Error);
+        return;
+    }
+
+    // Encoder context
+    encoder_ctx->sample_rate = decoder_ctx->sample_rate;
+
+    m_result = av_channel_layout_copy(&encoder_ctx->ch_layout, &decoder_ctx->ch_layout);
+
+    encoder_ctx->sample_fmt = encoder->sample_fmts[0];
+    encoder_ctx->time_base = AVRational{1, encoder_ctx->sample_rate};
+
+    if (out->oformat->flags & AVFMT_GLOBALHEADER)
+    {
+        encoder_ctx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+    }
+
+    m_result = avcodec_open2(encoder_ctx, encoder, NULL);
+    if (m_result < 0)
+    {
+        emit m_messenger.print(QTranslator::tr("Failed to open encoder for stream"),
+                               "File::Transcode",
+                               MessageLevel::Error);
+        return;
+    }
+
+    m_result = avcodec_parameters_from_context(outStream->codecpar, encoder_ctx);
+    if (m_result < 0)
+    {
+        emit m_messenger.print(QTranslator::tr("Failed to copy encoder parameters to output stream"),
+                               "File::Transcode",
+                               MessageLevel::Error);
+        return;
+    }
+
+    outStream->time_base = encoder_ctx->time_base;
+
 
     // Boilerplate for fake open or something
     if (!(out->oformat->flags & AVFMT_NOFILE))
@@ -89,8 +145,8 @@ Transcode::Transcode(AVFormatContext* in,
     AVFrame* avfrm = av_frame_alloc();
 
     int intervalIdx = 0;
-    int64_t start = dialogueIntervals[intervalIdx].start;
-    int64_t end   = dialogueIntervals[intervalIdx].end;
+    int64_t start = dialogueIntervals->at(intervalIdx).start;
+    int64_t end   = dialogueIntervals->at(intervalIdx).end;
 
     m_result = avformat_seek_file(in,
                                   targetStream,
@@ -121,15 +177,15 @@ start:
             // We need to move onto the next interval
             intervalIdx = intervalIdx + 1;
 
-            if (intervalIdx >= dialogueIntervals.size())
+            if (intervalIdx >= dialogueIntervals->size())
             {
                 // We are done
                 av_packet_unref(avpkt);
                 break;
             }
 
-            start = dialogueIntervals[intervalIdx].start;
-            end   = dialogueIntervals[intervalIdx].end;
+            start = dialogueIntervals->at(intervalIdx).start;
+            end   = dialogueIntervals->at(intervalIdx).end;
         }
 
         if (avpkt->pts < start)
@@ -194,13 +250,13 @@ start:
     // Write trailer
     if (0 != (m_result = av_write_trailer(out)) )
     {
-        emit m_messenger.print(QTranslator::tr("Failed to write file!"),
+        emit m_messenger.print(QTranslator::tr("Failed to write file trailer!"),
                                "File::Transcode",
                                MessageLevel::Error);
     }
     else
     {
-        emit m_messenger.print(QTranslator::tr("Successfully encoded to: %1").arg(
+        emit m_messenger.print(QTranslator::tr("Successfully transcoded to: %1").arg(
                                    QString(out->url)),
                                "File::Transcode",
                                MessageLevel::Info);

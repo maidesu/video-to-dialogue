@@ -27,6 +27,7 @@ FileManager::FileManager(QObject* parent)
     , m_selectedSubLayerIndex(-1)
     , m_dialogueFlag(0)
     , m_file(nullptr)
+    , m_dialogueList(nullptr)
 {
 
 }
@@ -289,6 +290,7 @@ bool FileManager::openFile()
                                MessageLevel::Debug);
 
         // Invalidate dialogue export
+        m_dialogueList = nullptr;
         m_dialogueFlag = 0;
 
         return getFileInfo(); // note: m_path is invalid after this point
@@ -427,24 +429,28 @@ bool FileManager::saveFile(SaveMode saveMode,
             {
                 File::Write write(m_savePath.toUtf8().constData(),
                                   av_guess_format(avcodec_get_name(AV_CODEC_ID_PCM_S16LE),
-                                                                   NULL,
-                                                                   NULL));
+                                                  m_savePath.toUtf8().constData(),
+                                                  NULL));
 
                 if (write.getResult() < 0)
                 {
                     return false;
                 }
 
-                File::Transcode encode(m_file->getContext(),
-                                       write.getContext(),
-                                       AV_CODEC_ID_PCM_S16LE, // 16 bit wav
-                                       QList<Interval>(),
-                                       m_selectedAudioIndex);
+                File::Transcode transcode(m_file->getContext(),
+                                          write.getContext(),
+                                          AV_CODEC_ID_PCM_S16LE, // 16 bit wav
+                                          m_dialogueList,
+                                          m_selectedAudioIndex);
 
-                if (encode.getResult() < 0)
+                if (transcode.getResult() < 0)
                 {
                     return false;
                 }
+
+                emit m_messenger.print(tr("Finished exporting dialogue"),
+                                       "FileManager",
+                                       MessageLevel::Info);
             }
 
             break;
@@ -630,8 +636,10 @@ void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
     emit m_progress.progressAdd(1);
 }
 
-void FileManager::readyDialogueHandler()
+void FileManager::readyDialogueHandler(const QList<Interval>& dialogue)
 {
+    m_dialogueList = &dialogue;
+
     // Current state of dialogue is ready
     // Invalidated on file change
     m_dialogueFlag = 1;
