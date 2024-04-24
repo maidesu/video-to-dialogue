@@ -605,7 +605,7 @@ void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
     QPixmap merged(image.width(),
                    image.height());
 
-    merged.fill(Qt::transparent);
+    //merged.fill(Qt::transparent);
 
     QPainter painter(&merged);
     painter.drawImage(QRect(0, 0, image.width(), image.height()),
