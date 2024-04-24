@@ -1,6 +1,14 @@
 #include <file/transcode.hpp>
 //#include <common/averror.hpp>
 
+extern "C"
+{
+    #include <libswresample/swresample.h>
+    #include <libavutil/opt.h>
+    #include <libavutil/channel_layout.h>
+    #include <libavutil/frame.h>
+}
+
 #include <QTranslator>
 
 namespace DialogueFromVideo::File {
@@ -86,7 +94,8 @@ Transcode::Transcode(AVFormatContext* in,
     // Encoder context
     encoder_ctx->sample_rate = decoder_ctx->sample_rate;
 
-    m_result = av_channel_layout_copy(&encoder_ctx->ch_layout, &decoder_ctx->ch_layout);
+    m_result = av_channel_layout_copy(&encoder_ctx->ch_layout,
+                                      &decoder_ctx->ch_layout);
 
     encoder_ctx->sample_fmt = encoder->sample_fmts[0];
     encoder_ctx->time_base = AVRational{1, encoder_ctx->sample_rate};
@@ -142,7 +151,8 @@ Transcode::Transcode(AVFormatContext* in,
 
     // Transcode packets
     AVPacket* avpkt = av_packet_alloc();
-    AVFrame* avfrm = av_frame_alloc();
+    AVFrame* avfrm_out = av_frame_alloc();
+    AVFrame* avfrm_in = av_frame_alloc();
 
     int intervalIdx = 0;
     int64_t start = dialogueIntervals->at(intervalIdx).start;
@@ -198,53 +208,150 @@ start:
         // Decode part
         m_result = avcodec_send_packet(decoder_ctx, avpkt);
 
-        if ( m_result != AVERROR_EOF &&
-             ( m_result == AVERROR(EAGAIN) ||
-               m_result < 0 ) )
+        if (m_result != 0)
         {
             av_packet_unref(avpkt);
             continue;
         }
 
-        do
+        //do
         {
-            m_result = avcodec_receive_frame(decoder_ctx, avfrm);
+            m_result = avcodec_receive_frame(decoder_ctx, avfrm_out);
 
-            if (m_result == AVERROR(EAGAIN))
+            if (m_result == AVERROR(EAGAIN) || m_result == AVERROR_EOF)
             {
                 av_packet_unref(avpkt);
-                goto start; // Call avcodec_send_packet again (with a new frame)
+                goto start; // Call avcodec_send_packet again (with a new packet)
             }
 
-            if (m_result == AVERROR_EOF)
+            if (m_result < 0)
+            {
+                emit m_messenger.print(QTranslator::tr("Could not receive frame"),
+                                       "File::Transcode",
+                                       MessageLevel::Error);
+                return;
+            }
+
+            //avfrm->pts = avfrm->best_effort_timestamp;
+
+            /* Sample rate and channel layout should match,
+             * only resample if format is different,
+             * otherwise move the frame into the new frame */
+            if (decoder_ctx->sample_fmt != encoder_ctx->sample_fmt)
+            {
+                // Sample conversion - referencing resample_audio.c
+                SwrContext* swr_ctx = swr_alloc();
+
+                // input opts
+                av_opt_set_chlayout(swr_ctx,
+                                    "in_chlayout",
+                                    &decoder_ctx->ch_layout,
+                                    0);
+                av_opt_set_int(swr_ctx,
+                               "in_sample_rate",
+                               decoder_ctx->sample_rate,
+                               0);
+                av_opt_set_sample_fmt(swr_ctx,
+                                      "in_sample_fmt",
+                                      decoder_ctx->sample_fmt,
+                                      0);
+
+                // output opts
+                av_opt_set_chlayout(swr_ctx,
+                                    "out_chlayout",
+                                    &encoder_ctx->ch_layout,
+                                    0);
+                av_opt_set_int(swr_ctx,
+                               "out_sample_rate",
+                               encoder_ctx->sample_rate,
+                               0);
+                av_opt_set_sample_fmt(swr_ctx,
+                                      "out_sample_fmt",
+                                      encoder_ctx->sample_fmt,
+                                      0);
+
+                m_result = swr_init(swr_ctx);
+                if (m_result < 0)
+                {
+                    emit m_messenger.print(QTranslator::tr("Failed to initialize context!"),
+                                           "File::Transcode::swresample",
+                                           MessageLevel::Error);
+                    return;
+                }
+
+                // Have to set these again, even though I did in av_opt_set
+                avfrm_in->ch_layout = encoder_ctx->ch_layout;
+                avfrm_in->sample_rate = encoder_ctx->sample_rate;
+                avfrm_in->format = encoder_ctx->sample_fmt;
+
+                m_result = swr_convert_frame(swr_ctx,  // yay i found this function
+                                             avfrm_in, // which makes everything much easier
+                                             avfrm_out);
+
+                swr_free(&swr_ctx);
+            }
+            else
+            {
+                av_frame_unref(avfrm_in);
+
+                av_frame_move_ref(avfrm_in,
+                                  avfrm_out);
+            }
+
+            // Encode part
+        start2:
+            m_result = avcodec_send_frame(encoder_ctx, avfrm_in);
+
+            if (m_result != 0)
             {
                 av_packet_unref(avpkt);
-                break;
+                continue;
             }
+
+            //do
+            {
+                m_result = avcodec_receive_packet(encoder_ctx, avpkt);
+
+                if (m_result == AVERROR(EAGAIN) || m_result == AVERROR_EOF)
+                {
+                    av_packet_unref(avpkt);
+                    goto start2; // Call avcodec_send_frame again (with a new frame)
+                }
+
+                if (m_result < 0)
+                {
+                    emit m_messenger.print(QTranslator::tr("Could not receive packet!"),
+                                           "File::Transcode",
+                                           MessageLevel::Error);
+                    return;
+                }
+
+                // Prepare packet for muxing
+                avpkt->stream_index = 0;
+                av_packet_rescale_ts(avpkt,
+                                     encoder_ctx->time_base,
+                                     outStream->time_base);
+
+                // Mux
+                m_result = av_interleaved_write_frame(out, avpkt);
+
+                if (m_result < 0)
+                {
+                    emit m_messenger.print(QTranslator::tr("Failed to write packet!"),
+                                           "File::Transcode",
+                                           MessageLevel::Error);
+                    return;
+                }
+            }
+            //while (m_result >= 0);
         }
-        while (m_result != 0);
-
-        // Encode part
-        m_result = avcodec_send_frame(encoder_ctx, avfrm);
-
-        av_packet_unref(avpkt);
-
-        m_result = avcodec_receive_packet(encoder_ctx, avpkt);
-
-        m_result = av_interleaved_write_frame(out, avpkt);
-
-        if (m_result < 0)
-        {
-            emit m_messenger.print(QTranslator::tr("Failed to write packet!"),
-                                   "File::Transcode",
-                                   MessageLevel::Error);
-            return;
-        }
+        //while (m_result >= 0);
 
         av_packet_unref(avpkt);
     }
 
-    av_frame_free(&avfrm);
+    av_frame_free(&avfrm_out);
+    av_frame_free(&avfrm_in);
     av_packet_free(&avpkt);
 
     // Write trailer
