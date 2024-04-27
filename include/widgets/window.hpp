@@ -53,6 +53,10 @@ public slots:
     void allowDialogueExportHandler();
 
 private:
+    void fillDialogueExportContainers();
+
+    void fillDialogueExportOptions();
+
     Messenger m_windowMessenger;
 
     QVBoxLayout* m_layout;
@@ -78,6 +82,8 @@ private:
 
     QLabel* m_subDescriptionLabel;
     QLabel* m_audioDescriptionLabel;
+    QLabel* m_exportContainerLabel;
+    QLabel* m_exportOptionsLabel;
 
     QSpinBox* m_subLayerSpinBox;
     QSpinBox* m_subPaddingLeftSpinBox;
@@ -137,7 +143,7 @@ signals:
 
     void exportPictureCollectionSignal(const QTextEdit* textEdit);
 
-    void exportDialogueSignal();
+    void exportDialogueSignal(FormatOptions::Option option);
 
     void exportVideoRemuxSignal();
 

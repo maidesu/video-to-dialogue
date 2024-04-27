@@ -4,6 +4,7 @@
 #include <common/messenger.hpp>
 #include <common/progress.hpp>
 #include <common/subtitlestructs.hpp>
+#include <common/formatopts.hpp>
 
 extern "C"
 {
@@ -76,7 +77,7 @@ public slots:
 
     void exportPictureCollectionHandler(const QTextEdit* textEdit);
 
-    void exportDialogueHandler();
+    void exportDialogueHandler(FormatOptions::Option option);
 
     void exportVideoRemuxHandler();
 
@@ -105,7 +106,8 @@ private:
     bool openFile();
     bool saveFile(SaveMode saveMode = SaveMode::None,
                   FileMode fileMode = FileMode::None,
-                  const QTextEdit* textEdit = nullptr);
+                  const QTextEdit* textEdit = nullptr,
+                  FormatOptions::Option option = {});
     bool getFileInfo();
     void clearStreamInfo();
 

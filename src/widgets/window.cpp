@@ -3,6 +3,7 @@
 #include <common/console.hpp>
 #include <common/time.hpp>
 #include <common/progressbar.hpp>
+#include <common/formatopts.hpp>
 
 #include <QLabel>
 #include <QSplitter>
@@ -32,6 +33,8 @@ Window::Window(QWidget *parent)
     , m_darkUiRadioButton(new QRadioButton(tr("Dark")))
     , m_subDescriptionLabel(new QLabel())
     , m_audioDescriptionLabel(new QLabel())
+    , m_exportContainerLabel(new QLabel(tr("codec")))
+    , m_exportOptionsLabel(new QLabel())
     , m_subLayerSpinBox(new QSpinBox())
     , m_subPaddingLeftSpinBox(new QSpinBox())
     , m_subPaddingRightSpinBox(new QSpinBox())
@@ -212,6 +215,12 @@ Window::Window(QWidget *parent)
     exportDialogueRadioButtonLayout->addWidget(m_exportLossyRadioButton);
     exportDialogueRadioButtonLayout->addWidget(m_exportLosslessRadioButton);
 
+    QWidget* exportDialogueLabelContainer = new QWidget();
+    QVBoxLayout* exportDialogueLabelLayout = new QVBoxLayout();
+    exportDialogueLabelContainer->setLayout(exportDialogueLabelLayout);
+    exportDialogueLabelLayout->addWidget(m_exportContainerLabel);
+    exportDialogueLabelLayout->addWidget(m_exportOptionsLabel);
+
     QWidget* exportDialogueComboBoxContainer = new QWidget();
     QVBoxLayout* exportDialogueComboBoxLayout = new QVBoxLayout();
     exportDialogueComboBoxContainer->setLayout(exportDialogueComboBoxLayout);
@@ -219,6 +228,7 @@ Window::Window(QWidget *parent)
     exportDialogueComboBoxLayout->addWidget(m_exportOptionsComboBox);
 
     exportDialogueLayout->addWidget(exportDialogueRadioButtonContainer);
+    exportDialogueLayout->addWidget(exportDialogueLabelContainer);
     exportDialogueLayout->addWidget(exportDialogueComboBoxContainer);
     exportDialogueLayout->addWidget(m_exportDialogueButton);
 
@@ -369,7 +379,9 @@ Window::Window(QWidget *parent)
     connect(m_exportDialogueButton,
             &QPushButton::pressed,
             this,
-            &Window::exportDialogueSignal);
+            [this](){
+                emit Window::exportDialogueSignal(m_exportOptionsComboBox->currentData().value<FormatOptions::Option>());
+            });
 
     connect(m_exportVideoRemuxButton,
             &QPushButton::pressed,
@@ -448,6 +460,32 @@ Window::Window(QWidget *parent)
                 emit Window::colorSchemeSettingsChangedSignal(true);
                 m_waveformWidget->setTheme(QChart::ChartThemeDark);
             });
+
+    connect(m_exportLossyRadioButton,
+            &QRadioButton::clicked,
+            this,
+            [this]()
+            {
+                this->fillDialogueExportContainers();
+            });
+
+    connect(m_exportLosslessRadioButton,
+            &QRadioButton::clicked,
+            this,
+            [this]()
+            {
+                this->fillDialogueExportContainers();
+            });
+
+    connect(m_exportContainerComboBox,
+            &QComboBox::currentTextChanged,
+            this,
+            [this]()
+            {
+                this->fillDialogueExportOptions();
+            });
+
+    m_exportLossyRadioButton->click();
 }
 
 void Window::fileChangedHandler(int videoStream,
@@ -680,6 +718,55 @@ void Window::readyDialogueHandler(const QList<Interval>& dialogue,
 void Window::allowDialogueExportHandler()
 {
     m_exportDialogueButton->setDisabled(false);
+}
+
+void Window::fillDialogueExportContainers()
+{
+    int lossy = m_exportLossyRadioButton->isChecked();
+
+    m_exportContainerComboBox->clear();
+
+    if (lossy)
+    {
+        m_exportContainerComboBox->addItems(FormatOptions::lossyOptions().keys());
+    }
+    else
+    {
+        m_exportContainerComboBox->addItems(FormatOptions::losslessOptions().keys());
+    }
+}
+
+void Window::fillDialogueExportOptions()
+{
+    // Ignore currentTextChanged signals containing empty string
+    if (!m_exportContainerComboBox || m_exportContainerComboBox->currentText().isEmpty())
+    {
+        return;
+    }
+
+    int lossy = m_exportLossyRadioButton->isChecked();
+
+    QMap<QString, QList<FormatOptions::Option>> map;
+
+    if (lossy)
+    {
+        map = FormatOptions::lossyOptions();
+    }
+    else
+    {
+        map = FormatOptions::losslessOptions();
+    }
+
+    QList<FormatOptions::Option> options = map[m_exportContainerComboBox->currentText()];
+
+    m_exportOptionsLabel->setText(options[0].key);
+
+    m_exportOptionsComboBox->clear();
+
+    for (const FormatOptions::Option& option : options)
+    {
+        m_exportOptionsComboBox->addItem(option.value, QVariant::fromValue(option));
+    }
 }
 
 } // namespace DialogueFromVideo

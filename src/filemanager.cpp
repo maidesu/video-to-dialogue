@@ -69,9 +69,12 @@ void FileManager::exportPictureCollectionHandler(const QTextEdit *textEdit)
              textEdit);
 }
 
-void FileManager::exportDialogueHandler()
+void FileManager::exportDialogueHandler(FormatOptions::Option option)
 {
-    saveFile(SaveMode::Extract);
+    saveFile(SaveMode::Extract,
+             FileMode::None,
+             nullptr,
+             option);
 }
 
 void FileManager::exportVideoRemuxHandler()
@@ -307,7 +310,8 @@ bool FileManager::openFile()
 
 bool FileManager::saveFile(SaveMode saveMode,
                            FileMode fileMode,
-                           const QTextEdit* textEdit)
+                           const QTextEdit* textEdit,
+                           FormatOptions::Option option)
 {
     switch (saveMode)
     {
@@ -428,7 +432,7 @@ bool FileManager::saveFile(SaveMode saveMode,
 
             {
                 File::Write write(m_savePath.toUtf8().constData(),
-                                  av_guess_format(avcodec_get_name(AV_CODEC_ID_PCM_S16LE),
+                                  av_guess_format(avcodec_get_name(static_cast<AVCodecID>(option.id)),
                                                   m_savePath.toUtf8().constData(),
                                                   NULL));
 
@@ -439,7 +443,7 @@ bool FileManager::saveFile(SaveMode saveMode,
 
                 File::Transcode transcode(m_file->getContext(),
                                           write.getContext(),
-                                          AV_CODEC_ID_PCM_S16LE, // 16 bit wav
+                                          static_cast<AVCodecID>(option.id),
                                           m_dialogueList,
                                           m_selectedAudioIndex);
 

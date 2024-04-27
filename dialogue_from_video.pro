@@ -14,6 +14,8 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 SOURCES += \
     src/application.cpp \
     src/audio/audio.cpp \
+    src/common/formatopts.cpp \
+    src/common/time.cpp \
     src/dialogue/dialogue.cpp \
     src/file/read.cpp \
     src/file/remux.cpp \
@@ -36,6 +38,7 @@ HEADERS += \
     include/common/averror.hpp \
     include/common/console.hpp \
     include/common/exitcode.hpp \
+    include/common/formatopts.hpp \
     include/common/messenger.hpp \
     include/common/progress.hpp \
     include/common/progressbar.hpp \
