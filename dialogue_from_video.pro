@@ -76,7 +76,8 @@ LIBS += \
     -lavcodec \
     -lavutil \
     -lswscale \
-    -lswresample
+    -lswresample \
+    -lavfilter
 
 TRANSLATIONS += \
     resource/translations/hu_HU.ts \
