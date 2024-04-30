@@ -90,27 +90,40 @@ void Frame::frameRequestedHandler(File::Read* file,
         }
 
         res = avcodec_send_packet(avctx, avpkt);
-
-        if (res < 0 || res == AVERROR(EAGAIN))
+        if (res < 0)
         {
-            av_packet_unref(avpkt);
-            continue;
+            emit m_messenger.print(tr("Failed to send packet!"),
+                                   "Frame",
+                                   MessageLevel::Error);
+
+            break;
         }
 
         do
         {
             res = avcodec_receive_frame(avctx, frame);
 
-            if (res == AVERROR(EAGAIN) || res == AVERROR_EOF) // avcodec_send_packet again
+            if (res == AVERROR(EAGAIN)) // avcodec_send_packet again
             {
                 av_packet_unref(avpkt);
                 goto start;
             }
+
+            if (res < 0 && res != AVERROR(EAGAIN) && res != AVERROR_EOF)
+            {
+                emit m_messenger.print(tr("Failed to receive frame!"),
+                                       "File::Transcode",
+                                       MessageLevel::Error);
+
+                goto end;
+            }
         }
-        while (res != 0);
+        while ( res >= 0 &&
+                !(frame->flags & AV_FRAME_FLAG_KEY) ); // Receive until keyframe or out of frames
+        // frame->key_frame deprecated
+
 
         // Copy the keyframe to m_frameBinaryData
-        if (frame->flags & AV_FRAME_FLAG_KEY) // frame->key_frame deprecated
         {
             // SWSCALE
             SwsContext* sws_ctx = NULL;
@@ -131,7 +144,8 @@ void Frame::frameRequestedHandler(File::Read* file,
                 emit m_messenger.print(tr("Failed to get context!"),
                                        "Frame::swscale",
                                        MessageLevel::Error);
-                return;
+
+                break;
             }
 
             // RGB frame
@@ -147,7 +161,8 @@ void Frame::frameRequestedHandler(File::Read* file,
                 emit m_messenger.print(tr("Couldn't allocate frame!"),
                                        "Frame",
                                        MessageLevel::Error);
-                return;
+
+                break;
             }
 
             res = sws_scale(sws_ctx,
@@ -162,7 +177,8 @@ void Frame::frameRequestedHandler(File::Read* file,
                 emit m_messenger.print(tr("Failed to scale image!"),
                                        "Frame::swscale",
                                        MessageLevel::Error);
-                return;
+
+                break;
             }
 
 
@@ -208,6 +224,7 @@ void Frame::frameRequestedHandler(File::Read* file,
         av_packet_unref(avpkt);
     }
 
+end:
     av_frame_free(&frame);
 
     avcodec_free_context(&avctx);
