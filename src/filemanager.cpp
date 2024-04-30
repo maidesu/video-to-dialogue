@@ -416,115 +416,132 @@ bool FileManager::saveFile(SaveMode saveMode,
             break;
 
         case SaveMode::Extract:
-            m_savePath = QFileDialog::getSaveFileName(nullptr,
-                                                      tr("Export Dialogue"),
-                                                      "",
-                                                      tr("All formats (*)"));
-
-            if (m_savePath.isEmpty())
             {
-                emit m_messenger.print(tr("Received no file path!"),
-                                       "FileManager",
-                                       MessageLevel::Warning);
+                char exts[256] = {0};
+                const char prefix[] = "Audio";
 
-                return false;
-            }
+                const AVCodecID codecId = static_cast<AVCodecID>(option.id);
 
-            {
-                File::Write write(m_savePath.toUtf8().constData(),
-                                  av_guess_format(avcodec_get_name(static_cast<AVCodecID>(option.id)),
-                                                  m_savePath.toUtf8().constData(),
-                                                  NULL));
+                const char* short_name = avcodec_get_name(codecId);
+                const AVOutputFormat* of = av_guess_format(short_name,
+                                                           m_file->getContext()->url,
+                                                           nullptr);
+                emit m_messenger.print(short_name, "FileManager", MessageLevel::Debug);
 
-                if (write.getResult() < 0)
+                getFormatExtensions(exts, prefix, of);
+
+                m_savePath = QFileDialog::getSaveFileName(nullptr,
+                                                          tr("Export Dialogue"),
+                                                          "",
+                                                          tr("%1All formats (*)").arg(exts));
+
+                if (m_savePath.isEmpty())
                 {
+                    emit m_messenger.print(tr("Received no file path!"),
+                                           "FileManager",
+                                           MessageLevel::Warning);
+
                     return false;
                 }
 
-                File::Transcode transcode(m_file->getContext(),
-                                          write.getContext(),
-                                          static_cast<AVCodecID>(option.id),
-                                          m_dialogueList,
-                                          m_selectedAudioIndex);
-
-                if (transcode.getResult() < 0)
                 {
-                    return false;
-                }
+                    File::Write write(m_savePath.toUtf8().constData(),
+                                      av_guess_format(short_name,
+                                                      m_savePath.toUtf8().constData(),
+                                                      NULL));
 
-                emit m_messenger.print(tr("Finished exporting dialogue"),
-                                       "FileManager",
-                                       MessageLevel::Info);
+                    if (write.getResult() < 0)
+                    {
+                        return false;
+                    }
+
+                    File::Transcode transcode(m_file->getContext(),
+                                              write.getContext(),
+                                              codecId,
+                                              m_dialogueList,
+                                              m_selectedAudioIndex);
+
+                    if (transcode.getResult() < 0)
+                    {
+                        return false;
+                    }
+
+                    emit m_messenger.print(tr("Finished exporting dialogue"),
+                                           "FileManager",
+                                           MessageLevel::Info);
+                }
             }
 
             break;
 
         case SaveMode::Remux:
-            int selectedStream;
-            char exts[256] = {0};
-            char prefix[16] = {0};
-
-            switch (fileMode)
             {
-                default:
-                case FileMode::None:
-                    return false;
+                int selectedStream;
+                char exts[256] = {0};
+                char prefix[16] = {0};
 
-                case FileMode::Video: // Containers may support many videos, will remux the first
-                    selectedStream = m_selectedVideoIndex;
-                    strcpy(prefix, "Video");
-                    break;
-
-                case FileMode::Audio:
-                    selectedStream = m_selectedAudioIndex;
-                    strcpy(prefix, "Audio");
-                    break;
-
-                case FileMode::Subtitle:
-                    selectedStream = m_selectedSubIndex;
-                    strcpy(prefix, "Subtitle");
-                    break;
-            }
-
-            const char* short_name = avcodec_get_name(m_file->getStream(selectedStream)->codecpar->codec_id);
-
-            const AVOutputFormat* outFormat = av_guess_format(short_name,
-                                                              m_file->getContext()->url,
-                                                              nullptr);
-
-            emit m_messenger.print(short_name, "FileManager", MessageLevel::Debug);
-
-            getFormatExtensions(exts, prefix, outFormat);
-
-            m_savePath = QFileDialog::getSaveFileName(nullptr,
-                                                      tr("Export File"),
-                                                      "",
-                                                      tr("%1All formats (*)").arg(exts));
-
-            if (m_savePath.isEmpty())
-            {
-                emit m_messenger.print(tr("Received no file path!"),
-                                       "FileManager",
-                                       MessageLevel::Warning);
-
-                return false;
-            }
-
-            {
-                File::Write write(m_savePath.toUtf8().constData(), outFormat);
-
-                if (write.getResult() < 0)
+                switch (fileMode)
                 {
+                    default:
+                    case FileMode::None:
+                        return false;
+
+                    case FileMode::Video: // Containers may support many videos, will remux the first
+                        selectedStream = m_selectedVideoIndex;
+                        strcpy(prefix, "Video");
+                        break;
+
+                    case FileMode::Audio:
+                        selectedStream = m_selectedAudioIndex;
+                        strcpy(prefix, "Audio");
+                        break;
+
+                    case FileMode::Subtitle:
+                        selectedStream = m_selectedSubIndex;
+                        strcpy(prefix, "Subtitle");
+                        break;
+                }
+
+                const char* short_name = avcodec_get_name(m_file->getStream(selectedStream)->codecpar->codec_id);
+
+                const AVOutputFormat* outFormat = av_guess_format(short_name,
+                                                                  m_file->getContext()->url,
+                                                                  nullptr);
+
+                emit m_messenger.print(short_name, "FileManager", MessageLevel::Debug);
+
+                getFormatExtensions(exts, prefix, outFormat);
+
+                m_savePath = QFileDialog::getSaveFileName(nullptr,
+                                                          tr("Export File"),
+                                                          "",
+                                                          tr("%1All formats (*)").arg(exts));
+
+                if (m_savePath.isEmpty())
+                {
+                    emit m_messenger.print(tr("Received no file path!"),
+                                           "FileManager",
+                                           MessageLevel::Warning);
+
                     return false;
                 }
 
-                File::Remux remux(m_file->getContext(),
-                                  write.getContext(),
-                                  selectedStream);
-
-                if (remux.getResult() < 0)
                 {
-                    return false;
+                    File::Write write(m_savePath.toUtf8().constData(), outFormat);
+
+                    if (write.getResult() < 0)
+                    {
+                        return false;
+                    }
+
+                    File::Remux remux(m_file->getContext(),
+                                      write.getContext(),
+                                      selectedStream);
+
+                    if (remux.getResult() < 0)
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -762,7 +779,7 @@ void FileManager::getFormatExtensions(char* dst,
     *dst++ = ' ';
     *dst++ = '(';
 
-    if (dst)
+    if (of)
     {
         *dst++ = '*';
         *dst++ = '.';
