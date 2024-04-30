@@ -1,4 +1,4 @@
-#include <file/transcode.hpp>
+#include <transcode/transcode.hpp>
 //#include <common/averror.hpp>
 
 extern "C"
@@ -14,7 +14,7 @@ extern "C"
 
 #include <QTranslator>
 
-namespace DialogueFromVideo::File {
+namespace DialogueFromVideo {
 
 Transcode::Transcode(AVFormatContext* in,
                      AVFormatContext* out,
@@ -32,7 +32,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (!dialogueIntervals || dialogueIntervals->isEmpty())
     {
         emit m_messenger.print(QTranslator::tr("There is nothing to transcode!"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
 
         return;
@@ -46,7 +46,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (!decoder || !encoder)
     {
         emit m_messenger.print(QTranslator::tr("Unsupported audio codec!"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
         return;
     }
@@ -57,7 +57,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (!outStream)
     {
         emit m_messenger.print(QTranslator::tr("Failed to create new stream!"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
         return;
     }
@@ -70,7 +70,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (!decoder_ctx || !encoder_ctx)
     {
         emit m_messenger.print(QTranslator::tr("Failed to allocate codec context!"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
         return;
     }
@@ -81,7 +81,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (m_result < 0)
     {
         emit m_messenger.print(QTranslator::tr("Failed to copy decoder parameters to input decoder context"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -96,7 +96,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (m_result < 0)
     {
         emit m_messenger.print(QTranslator::tr("Failed to open decoder for stream"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -127,7 +127,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (m_result < 0)
     {
         emit m_messenger.print(QTranslator::tr("Failed to open encoder for stream"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -140,7 +140,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (m_result < 0)
     {
         emit m_messenger.print(QTranslator::tr("Failed to copy encoder parameters to output stream"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -157,7 +157,7 @@ Transcode::Transcode(AVFormatContext* in,
         if (0 > (m_result = avio_open(&out->pb, out->url, AVIO_FLAG_WRITE)) )
         {
             emit m_messenger.print(QTranslator::tr("Could not open output file at specified path!"),
-                                   "File::Transcode",
+                                   "Transcode",
                                    MessageLevel::Error);
 
             avcodec_free_context(&decoder_ctx);
@@ -171,7 +171,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (0 > (m_result = avformat_write_header(out, NULL)) )
     {
         emit m_messenger.print(QTranslator::tr("Failed to write file header!"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -193,7 +193,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (!filter_graph)
     {
         emit m_messenger.print(QTranslator::tr("Failed to allocate filter graph!"),
-                               "File::Transcode::avfilter",
+                               "Transcode::avfilter",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -209,7 +209,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (!filter || !buffer || !bufferSink)
     {
         emit m_messenger.print(QTranslator::tr("Failed to find required filter!"),
-                               "File::Transcode::avfilter",
+                               "Transcode::avfilter",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -227,7 +227,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (!filter_ctx || !buffer_ctx || !bufferSink_ctx)
     {
         emit m_messenger.print(QTranslator::tr("Failed to allocate filter context!"),
-                               "File::Transcode::avfilter",
+                               "Transcode::avfilter",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -275,7 +275,7 @@ Transcode::Transcode(AVFormatContext* in,
         avfilter_init_str(bufferSink_ctx, NULL) )
     {
         emit m_messenger.print(QTranslator::tr("Failed to initialize filter context!"),
-                               "File::Transcode::avfilter",
+                               "Transcode::avfilter",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -298,7 +298,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (m_result)
     {
         emit m_messenger.print(QTranslator::tr("Failed to connect filters!"),
-                               "File::Transcode::avfilter",
+                               "Transcode::avfilter",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -316,7 +316,7 @@ Transcode::Transcode(AVFormatContext* in,
     m_result = avfilter_graph_config(filter_graph, NULL);
     if (m_result < 0) {
         emit m_messenger.print(QTranslator::tr("Failed to configure filter graph!"),
-                               "File::Transcode::avfilter",
+                               "Transcode::avfilter",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -367,7 +367,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (m_result < 0)
     {
         emit m_messenger.print(QTranslator::tr("Failed to initialize context!"),
-                               "File::Transcode::swresample",
+                               "Transcode::swresample",
                                MessageLevel::Error);
 
         avcodec_free_context(&decoder_ctx);
@@ -402,7 +402,7 @@ Transcode::Transcode(AVFormatContext* in,
     if (0 > m_result)
     {
         emit m_messenger.print(QTranslator::tr("Failed to seek!"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Warning);
 
         return;
@@ -453,7 +453,7 @@ start:
         if (m_result != 0)
         {
             emit m_messenger.print(QTranslator::tr("Failed to send packet!"),
-                                   "File::Transcode",
+                                   "Transcode",
                                    MessageLevel::Error);
 
             goto end;
@@ -474,7 +474,7 @@ start:
             if (m_result < 0)
             {
                 emit m_messenger.print(QTranslator::tr("Failed to receive frame!"),
-                                       "File::Transcode",
+                                       "Transcode",
                                        MessageLevel::Error);
 
                 goto end;
@@ -502,7 +502,7 @@ start:
                 if (m_result < 0)
                 {
                     emit m_messenger.print(QTranslator::tr("Failed to resample frame!"),
-                                           "File::Transcode::swresample",
+                                           "Transcode::swresample",
                                            MessageLevel::Error);
 
                     goto end;
@@ -522,7 +522,7 @@ start:
             if (m_result < 0)
             {
                 emit m_messenger.print(QTranslator::tr("Failed to send frame to filter!"),
-                                       "File::Transcode::avfilter",
+                                       "Transcode::avfilter",
                                        MessageLevel::Error);
 
                 goto end;
@@ -565,7 +565,7 @@ start2:
             //m_result = avcodec_send_frame(encoder_ctx, NULL);
 
             emit m_messenger.print(QTranslator::tr("Encoder bad argument!"),
-                                   "File::Transcode",
+                                   "Transcode",
                                    MessageLevel::Error);
 
             goto end;
@@ -574,7 +574,7 @@ start2:
         if (m_result != 0)
         {
             emit m_messenger.print(QTranslator::tr("Failed to send frame!"),
-                                   "File::Transcode",
+                                   "Transcode",
                                    MessageLevel::Error);
 
             goto end;
@@ -602,7 +602,7 @@ start2:
             if (m_result < 0 && m_result != AVERROR(EAGAIN) && m_result != AVERROR_EOF)
             {
                 emit m_messenger.print(QTranslator::tr("Failed to receive packet!"),
-                                       "File::Transcode",
+                                       "Transcode",
                                        MessageLevel::Error);
 
                 goto end;
@@ -619,7 +619,7 @@ start2:
             if (m_result < 0)
             {
                 emit m_messenger.print(QTranslator::tr("Failed to write packet!"),
-                                       "File::Transcode",
+                                       "Transcode",
                                        MessageLevel::Error);
 
                 goto end;
@@ -637,14 +637,14 @@ start2:
     if (0 != (m_result = av_write_trailer(out)) )
     {
         emit m_messenger.print(QTranslator::tr("Failed to write file trailer!"),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Error);
     }
     else
     {
         emit m_messenger.print(QTranslator::tr("Successfully transcoded to: %1").arg(
                                    QString(out->url)),
-                               "File::Transcode",
+                               "Transcode",
                                MessageLevel::Info);
     }
 
@@ -676,4 +676,4 @@ Transcode::~Transcode()
 
 }
 
-} // namespace DialogueFromVideo::File
+} // namespace DialogueFromVideo

@@ -112,7 +112,7 @@ void Frame::frameRequestedHandler(File::Read* file,
             if (res < 0 && res != AVERROR(EAGAIN) && res != AVERROR_EOF)
             {
                 emit m_messenger.print(tr("Failed to receive frame!"),
-                                       "File::Transcode",
+                                       "Frame",
                                        MessageLevel::Error);
 
                 goto end;

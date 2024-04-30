@@ -18,9 +18,9 @@ SOURCES += \
     src/common/time.cpp \
     src/dialogue/dialogue.cpp \
     src/file/read.cpp \
-    src/file/remux.cpp \
-    src/file/transcode.cpp \
     src/file/write.cpp \
+    src/remux/remux.cpp \
+    src/transcode/transcode.cpp \
     src/filemanager.cpp \
     src/frame/frame.cpp \
     src/main.cpp \
@@ -47,9 +47,9 @@ HEADERS += \
     include/common/time.hpp \
     include/dialogue/dialogue.hpp \
     include/file/read.hpp \
-    include/file/remux.hpp \
-    include/file/transcode.hpp \
     include/file/write.hpp \
+    include/remux/remux.hpp \
+    include/transcode/transcode.hpp \
     include/filemanager.hpp \
     include/frame/frame.hpp \
     include/pipe/pipe.hpp \

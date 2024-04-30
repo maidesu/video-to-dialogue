@@ -9,7 +9,7 @@ extern "C"
     #include <libavcodec/avcodec.h>
 }
 
-namespace DialogueFromVideo::File {
+namespace DialogueFromVideo {
 
 class Transcode
 {
@@ -35,4 +35,4 @@ private:
     Messenger m_messenger;
 };
 
-} // namespace DialogueFromVideo::File
+} // namespace DialogueFromVideo

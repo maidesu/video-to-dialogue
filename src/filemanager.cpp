@@ -1,8 +1,8 @@
 #include <filemanager.hpp>
 
 #include <file/write.hpp>
-#include <file/remux.hpp>
-#include <file/transcode.hpp>
+#include <remux/remux.hpp>
+#include <transcode/transcode.hpp>
 #include <common/time.hpp>
 
 extern "C"
@@ -466,12 +466,12 @@ bool FileManager::saveFile(SaveMode saveMode,
                                 option.value.toStdString().c_str(),
                                 0);
 
-                    File::Transcode transcode(m_file->getContext(),
-                                              write.getContext(),
-                                              codecId,
-                                              m_dialogueList,
-                                              options,
-                                              m_selectedAudioIndex);
+                    Transcode transcode(m_file->getContext(),
+                                        write.getContext(),
+                                        codecId,
+                                        m_dialogueList,
+                                        options,
+                                        m_selectedAudioIndex);
 
                     if (transcode.getResult() < 0)
                     {
@@ -546,9 +546,9 @@ bool FileManager::saveFile(SaveMode saveMode,
                         return false;
                     }
 
-                    File::Remux remux(m_file->getContext(),
-                                      write.getContext(),
-                                      selectedStream);
+                    Remux remux(m_file->getContext(),
+                                write.getContext(),
+                                selectedStream);
 
                     if (remux.getResult() < 0)
                     {

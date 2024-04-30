@@ -1,10 +1,12 @@
-#include <file/remux.hpp>
+#include <remux/remux.hpp>
 
 #include <QTranslator>
 
-namespace DialogueFromVideo::File {
+namespace DialogueFromVideo {
 
-Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
+Remux::Remux(AVFormatContext* in,
+             AVFormatContext* out,
+             int target)
     : m_inFormatContext(in)
     , m_outFormatContext(out)
     , m_result(0)
@@ -21,7 +23,7 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
     if (0 > (m_result = avcodec_parameters_copy(outStream->codecpar, inStream->codecpar)))
     {
         emit m_messenger.print(QTranslator::tr("Failed to copy codec parameters!"),
-                               "File::Remux",
+                               "Remux",
                                MessageLevel::Error);
         return;
     }
@@ -32,7 +34,7 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
         if (0 > (m_result = avio_open(&out->pb, out->url, AVIO_FLAG_WRITE)) )
         {
             emit m_messenger.print(QTranslator::tr("Could not open output file at specified path!"),
-                                   "File::Remux",
+                                   "Remux",
                                    MessageLevel::Error);
 
             return;
@@ -43,7 +45,7 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
     if (0 > (m_result = avformat_write_header(out, NULL)) )
     {
         emit m_messenger.print(QTranslator::tr("Failed to write file header!"),
-                               "File::Remux",
+                               "Remux",
                                MessageLevel::Error);
 
         return;
@@ -74,7 +76,7 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
             if (0 > (m_result = av_write_frame(out, avpkt)) )
             {
                 emit m_messenger.print(QTranslator::tr("Error muxing packet!"),
-                                       "File::Remux",
+                                       "Remux",
                                        MessageLevel::Error);
 
                 return;
@@ -98,14 +100,14 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
     if (0 != (m_result = av_write_trailer(out)) )
     {
         emit m_messenger.print(QTranslator::tr("Failed to write file trailer!"),
-                               "File::Remux",
+                               "Remux",
                                MessageLevel::Error);
     }
     else
     {
         emit m_messenger.print(QTranslator::tr("Successfully remuxed to: %1").arg(
                                    QString(out->url)),
-                               "File::Remux",
+                               "Remux",
                                MessageLevel::Info);
     }
 
@@ -119,4 +121,4 @@ Remux::~Remux()
 
 }
 
-} // namespace DialogueFromVideo::File
+} // namespace DialogueFromVideo

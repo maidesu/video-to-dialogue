@@ -9,12 +9,14 @@ extern "C"
     #include <libavcodec/avcodec.h>
 }
 
-namespace DialogueFromVideo::File {
+namespace DialogueFromVideo {
 
 class Remux
 {
 public:
-    explicit Remux(AVFormatContext* in, AVFormatContext* out, int target);
+    explicit Remux(AVFormatContext* in,
+                   AVFormatContext* out,
+                   int target);
     ~Remux();
 
     Remux(Remux&) = delete;
@@ -31,4 +33,4 @@ private:
     Progress m_progress;
 };
 
-} // namespace DialogueFromVideo::File
+} // namespace DialogueFromVideo
