@@ -239,7 +239,7 @@ Transcode::Transcode(AVFormatContext* in,
 
     av_opt_set_int(filter_ctx,
                    "nb_out_samples",
-                   encoder_ctx->frame_size ? encoder_ctx->frame_size : 4096,
+                   encoder_ctx->frame_size ? encoder_ctx->frame_size : 1024,
                    AV_OPT_SEARCH_CHILDREN);
     //av_opt_set(filter_ctx,
     //           "nb_out_samples",
@@ -485,8 +485,9 @@ start:
 
             /* Sample rate and channel layout should match,
              * only resample if format is different,
-             * otherwise move the frame into the new frame */
-            if (decoder_ctx->sample_fmt != encoder_ctx->sample_fmt)
+             * otherwise move the frame into the new frame
+             * note: always resample to avoid weird errors */
+            if (true || decoder_ctx->sample_fmt != encoder_ctx->sample_fmt)
             {
                 avfrm_in->ch_layout = encoder_ctx->ch_layout;
                 avfrm_in->sample_rate = encoder_ctx->sample_rate;
