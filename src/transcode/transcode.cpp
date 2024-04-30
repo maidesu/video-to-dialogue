@@ -568,7 +568,14 @@ start:
     emit m_progress.progressReset();
     emit m_progress.progressMaximum(max_progress_steps);
     // We just counted those!
-    total_est_frames = frame_count * decoder_ctx->frame_size / encoder_ctx->frame_size;
+    if (decoder_ctx->frame_size && encoder_ctx->frame_size)
+    {
+        total_est_frames = frame_count * decoder_ctx->frame_size / encoder_ctx->frame_size;
+    }
+    else
+    {
+        total_est_frames = frame_count;
+    }
     frame_count = 0;
     report_progress_frame = total_est_frames / max_progress_steps;
     // Progress end
