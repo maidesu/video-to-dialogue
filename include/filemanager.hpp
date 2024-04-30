@@ -110,6 +110,9 @@ private:
                   FormatOptions::Option option = {});
     bool getFileInfo();
     void clearStreamInfo();
+    void getFormatExtensions(char* dst,
+                             const char* prefix,
+                             const AVOutputFormat* of);
 
     const char* m_path;
     int m_imageIndex;

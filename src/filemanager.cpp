@@ -461,8 +461,8 @@ bool FileManager::saveFile(SaveMode saveMode,
 
         case SaveMode::Remux:
             int selectedStream;
-            char formattedExtensions[256] = {0};
-            char* format_write = formattedExtensions;
+            char exts[256] = {0};
+            char prefix[16] = {0};
 
             switch (fileMode)
             {
@@ -472,85 +472,34 @@ bool FileManager::saveFile(SaveMode saveMode,
 
                 case FileMode::Video: // Containers may support many videos, will remux the first
                     selectedStream = m_selectedVideoIndex;
-                    strcpy(formattedExtensions, "Video");
+                    strcpy(prefix, "Video");
                     break;
 
                 case FileMode::Audio:
                     selectedStream = m_selectedAudioIndex;
-                    strcpy(formattedExtensions, "Audio");
+                    strcpy(prefix, "Audio");
                     break;
 
                 case FileMode::Subtitle:
                     selectedStream = m_selectedSubIndex;
-                    strcpy(formattedExtensions, "Subtitle");
+                    strcpy(prefix, "Subtitle");
                     break;
             }
 
             const char* short_name = avcodec_get_name(m_file->getStream(selectedStream)->codecpar->codec_id);
 
-            emit m_messenger.print(short_name, "FileManager", MessageLevel::Debug);
-
             const AVOutputFormat* outFormat = av_guess_format(short_name,
                                                               m_file->getContext()->url,
                                                               nullptr);
 
+            emit m_messenger.print(short_name, "FileManager", MessageLevel::Debug);
 
-            while (*format_write++ != '\0');
-            --format_write; // Move to right after the text
-
-            *format_write++ = ' ';
-            *format_write++ = '(';
-
-            if (outFormat)
-            {
-                *format_write++ = '*';
-                *format_write++ = '.';
-
-                const char* exts = outFormat->extensions;
-
-                for (;;)
-                {
-                    if (*exts == '\0')
-                    {
-                        break;
-                    }
-
-                    if (*exts == ',')
-                    {
-                        *format_write++ = ' ';
-                        *format_write++ = '*';
-                        *format_write++ = '.';
-                    }
-                    else
-                    {
-                        *format_write++ = *exts;
-                    }
-
-                    ++exts;
-                }
-
-                emit m_messenger.print(QString("Found extensions: %1").arg(outFormat->extensions),
-                                       "FileManager",
-                                       MessageLevel::Debug);
-            }
-            else
-            {
-                *format_write++ = '*';
-
-                emit m_messenger.print(tr("Did not find corresponding extensions!"),
-                                       "FileManager",
-                                       MessageLevel::Warning);
-            }
-
-            *format_write++ = ')';
-            *format_write++ = ';';
-            *format_write++ = ';';
-            *format_write   = '\0';
+            getFormatExtensions(exts, prefix, outFormat);
 
             m_savePath = QFileDialog::getSaveFileName(nullptr,
                                                       tr("Export File"),
                                                       "",
-                                                      tr("%1All formats (*)").arg(formattedExtensions));
+                                                      tr("%1All formats (*)").arg(exts));
 
             if (m_savePath.isEmpty())
             {
@@ -799,6 +748,65 @@ void FileManager::clearStreamInfo()
     {
         delete m_audioStreams.takeLast();
     }
+}
+
+void FileManager::getFormatExtensions(char* dst,
+                                      const char* prefix,
+                                      const AVOutputFormat* of)
+{
+    strcpy(dst, prefix);
+
+    while (*dst++ != '\0');
+    --dst; // Move to right after the text
+
+    *dst++ = ' ';
+    *dst++ = '(';
+
+    if (dst)
+    {
+        *dst++ = '*';
+        *dst++ = '.';
+
+        const char* of_exts = of->extensions;
+
+        for (;;)
+        {
+            if (*of_exts == '\0')
+            {
+                break;
+            }
+
+            if (*of_exts == ',')
+            {
+                *dst++ = ' ';
+                *dst++ = '*';
+                *dst++ = '.';
+            }
+            else
+            {
+                *dst++ = *of_exts;
+            }
+
+            ++of_exts;
+        }
+
+        emit m_messenger.print(QString("Found extensions: %1").arg(of->extensions),
+                               "FileManager",
+                               MessageLevel::Debug);
+    }
+    else
+    {
+        *dst++ = '*';
+
+        emit m_messenger.print(tr("Did not find corresponding extensions!"),
+                               "FileManager",
+                               MessageLevel::Warning);
+    }
+
+    *dst++ = ')';
+    *dst++ = ';';
+    *dst++ = ';';
+    *dst   = '\0';
 }
 
 } // namespace DialogueFromVideo
