@@ -54,6 +54,15 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
 
     av_seek_frame(in, target, 0, AVSEEK_FLAG_ANY);
 
+    // Progress begin
+    emit m_progress.progressReset();
+    emit m_progress.progressMaximum(max_progress_steps);
+
+    int64_t frame_count = 0;
+    int64_t total_est_frames = in->duration / (1000*1000) * 30;
+    int64_t report_progress_frame = total_est_frames / max_progress_steps;
+    // Progress end
+
     while (av_read_frame(in, avpkt) == 0)
     {
         if (avpkt->stream_index == target)
@@ -70,6 +79,15 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
 
                 return;
             }
+
+            // Progress begin
+            if (frame_count % report_progress_frame == 0)
+            {
+                emit m_progress.progressAdd(1);
+            }
+
+            ++frame_count;
+            // Progress end
         }
         av_packet_unref(avpkt);
     }
@@ -90,6 +108,10 @@ Remux::Remux(AVFormatContext* in, AVFormatContext* out, int target)
                                "File::Remux",
                                MessageLevel::Info);
     }
+
+    // Progress begin
+    emit m_progress.progressComplete();
+    // Progress end
 }
 
 Remux::~Remux()
