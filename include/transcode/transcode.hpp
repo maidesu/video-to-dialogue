@@ -2,6 +2,7 @@
 
 #include <common/subtitlestructs.hpp>
 #include <common/messenger.hpp>
+#include <common/progress.hpp>
 
 extern "C"
 {
@@ -33,6 +34,7 @@ private:
     int m_result;
 
     Messenger m_messenger;
+    Progress m_progress;
 };
 
 } // namespace DialogueFromVideo

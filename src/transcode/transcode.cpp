@@ -411,6 +411,15 @@ Transcode::Transcode(AVFormatContext* in,
     // Manually settings pts for accurate stream duration
     //int64_t pts = 0;
 
+    // Progress begin
+    emit m_progress.progressReset();
+    emit m_progress.progressMaximum(max_progress_steps);
+
+    int64_t frame_count = 0;
+    int64_t total_est_frames = in->duration / (1000*1000) * 30;
+    int64_t report_progress_frame = total_est_frames / max_progress_steps;
+    // Progress end
+
 start:
     while (av_read_frame(in, avpkt_out) == 0)
     {
@@ -534,6 +543,15 @@ start:
 
             av_frame_unref(avfrm_out);
             av_frame_unref(avfrm_in);
+
+            // Progress begin
+            if (frame_count % report_progress_frame == 0)
+            {
+                emit m_progress.progressAdd(1);
+            }
+
+            ++frame_count;
+            // Progress end
         }
         while (m_result >= 0);
 
@@ -542,9 +560,31 @@ start:
         av_packet_unref(avpkt_out);
     }
 
+    // Progress begin
+    emit m_progress.progressComplete();
+    // Progress end
+
+    // Progress begin
+    emit m_progress.progressReset();
+    emit m_progress.progressMaximum(max_progress_steps);
+    // We just counted those!
+    total_est_frames = frame_count * decoder_ctx->frame_size / encoder_ctx->frame_size;
+    frame_count = 0;
+    report_progress_frame = total_est_frames / max_progress_steps;
+    // Progress end
+
 start2:
     while (av_buffersink_get_frame(bufferSink_ctx, avfrm_in) >= 0)
     {
+        // Progress begin
+        if (frame_count % report_progress_frame == 0)
+        {
+            emit m_progress.progressAdd(1);
+        }
+
+        ++frame_count;
+        // Progress end
+
         m_result = avcodec_send_frame(encoder_ctx, avfrm_in);
 
         if (m_result == AVERROR(EINVAL))
@@ -669,6 +709,10 @@ end:
     swr_free(&swr_ctx);
 
     // note: format context free is handled by write/read wrapper
+
+    // Progress begin
+    emit m_progress.progressComplete();
+    // Progress end
 }
 
 Transcode::~Transcode()
