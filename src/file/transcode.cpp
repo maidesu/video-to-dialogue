@@ -20,6 +20,7 @@ Transcode::Transcode(AVFormatContext* in,
                      AVFormatContext* out,
                      AVCodecID outCodec,
                      const QList<Interval>* dialogueIntervals,
+                     AVDictionary* options,
                      int targetStream)
     : m_inFormatContext(in)
     , m_outFormatContext(out)
@@ -122,7 +123,7 @@ Transcode::Transcode(AVFormatContext* in,
         encoder_ctx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
     }
 
-    m_result = avcodec_open2(encoder_ctx, encoder, NULL);
+    m_result = avcodec_open2(encoder_ctx, encoder, &options);
     if (m_result < 0)
     {
         emit m_messenger.print(QTranslator::tr("Failed to open encoder for stream"),

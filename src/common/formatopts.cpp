@@ -9,19 +9,34 @@ extern "C"
 
 namespace DialogueFromVideo :: FormatOptions {
 
+// https://ffmpeg.org/ffmpeg-codecs.html -> Options
+
 QMap<QString, QList<Option>> lossyOptions()
 {
     QMap<QString, QList<Option>> map;
 
-    map["mp3"] =  { { AV_CODEC_ID_MP3, "bit_rate", "96" },
-                    { AV_CODEC_ID_MP3, "bit_rate", "128" },
-                    { AV_CODEC_ID_MP3, "bit_rate", "192" },
-                    { AV_CODEC_ID_MP3, "bit_rate", "256" },
-                    { AV_CODEC_ID_MP3, "bit_rate", "320" } };
+    map["mp3"] =  { { AV_CODEC_ID_MP3, "b", "96000" },
+                    { AV_CODEC_ID_MP3, "b", "128000" },
+                    { AV_CODEC_ID_MP3, "b", "192000" },
+                    { AV_CODEC_ID_MP3, "b", "256000" },
+                    { AV_CODEC_ID_MP3, "b", "320000" } };
 
-    map["aac"] =  { { AV_CODEC_ID_AAC, "bit_rate", "400" } };
+    map["aac"] =  { { AV_CODEC_ID_AAC, "b", "32000" },
+                    { AV_CODEC_ID_AAC, "b", "48000" },
+                    { AV_CODEC_ID_AAC, "b", "64000" },
+                    { AV_CODEC_ID_AAC, "b", "96000" },
+                    { AV_CODEC_ID_AAC, "b", "128000" },
+                    { AV_CODEC_ID_AAC, "b", "160000" },
+                    { AV_CODEC_ID_AAC, "b", "192000" },
+                    { AV_CODEC_ID_AAC, "b", "224000" },
+                    { AV_CODEC_ID_AAC, "b", "256000" },
+                    { AV_CODEC_ID_AAC, "b", "320000" },
+                    { AV_CODEC_ID_AAC, "b", "384000" },
+                    { AV_CODEC_ID_AAC, "b", "448000" },
+                    { AV_CODEC_ID_AAC, "b", "512000" } };
 
-    map["opus"] = { { AV_CODEC_ID_OPUS, "bit_rate", "400" } };
+    // no options
+    map["opus"] = { { AV_CODEC_ID_OPUS, "", "" } };
 
     return map;
 }

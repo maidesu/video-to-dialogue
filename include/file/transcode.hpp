@@ -18,6 +18,7 @@ public:
                        AVFormatContext* out,
                        AVCodecID outCodec,
                        const QList<Interval>* dialogueIntervals,
+                       AVDictionary* options,
                        int targetStream);
     ~Transcode();
 

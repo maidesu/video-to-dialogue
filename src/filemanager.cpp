@@ -455,10 +455,18 @@ bool FileManager::saveFile(SaveMode saveMode,
                         return false;
                     }
 
+                    AVDictionary* options = nullptr;
+
+                    av_dict_set(&options,
+                                option.key.toStdString().c_str(),
+                                option.value.toStdString().c_str(),
+                                0);
+
                     File::Transcode transcode(m_file->getContext(),
                                               write.getContext(),
                                               codecId,
                                               m_dialogueList,
+                                              options,
                                               m_selectedAudioIndex);
 
                     if (transcode.getResult() < 0)
