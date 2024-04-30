@@ -338,6 +338,8 @@ bool FileManager::saveFile(SaveMode saveMode,
             }
 
             {
+                m_progress.progressReset();
+
                 QFile file_out(m_savePath);
 
                 if (!file_out.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
@@ -353,6 +355,8 @@ bool FileManager::saveFile(SaveMode saveMode,
                 stream_out << textEdit->toPlainText();
 
                 file_out.close();
+
+                m_progress.progressComplete();
             }
 
             emit m_messenger.print(tr("Saved subtitles to file: %1").arg(m_savePath),
