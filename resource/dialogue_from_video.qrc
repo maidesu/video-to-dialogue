@@ -2,5 +2,6 @@
 <qresource>
     <file alias="gradient.png">img/gradient.png</file>
     <file alias="logo.png">img/logo.png</file>
+    <file alias="icon.ico">img/icon.ico</file>
 </qresource>
 </RCC>

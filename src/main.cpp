@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QResource>
 #include <QApplication>
+#include <QIcon>
 
 using namespace DialogueFromVideo;
 
@@ -18,6 +19,8 @@ int main(int argc, char** argv)
     QGuiApplication::setApplicationName("Video to Dialogue");
     QGuiApplication::setApplicationDisplayName("V₂D");
     QGuiApplication::setApplicationVersion("0.0.1");
+
+    QGuiApplication::setWindowIcon(QIcon(":/icon.ico"));
 
     Application app;
     app.run();
