@@ -80,7 +80,7 @@ Transcode::Transcode(AVFormatContext* in,
     m_result = avcodec_parameters_to_context(decoder_ctx, inStream->codecpar);
     if (m_result < 0)
     {
-        emit m_messenger.print(QTranslator::tr("Failed to copy decoder parameters to input decoder context"),
+        emit m_messenger.print(QTranslator::tr("Failed to copy decoder parameters to input decoder context!"),
                                "Transcode",
                                MessageLevel::Error);
 
@@ -95,7 +95,7 @@ Transcode::Transcode(AVFormatContext* in,
     m_result = avcodec_open2(decoder_ctx, decoder, NULL);
     if (m_result < 0)
     {
-        emit m_messenger.print(QTranslator::tr("Failed to open decoder for stream"),
+        emit m_messenger.print(QTranslator::tr("Failed to open decoder for stream!"),
                                "Transcode",
                                MessageLevel::Error);
 
@@ -126,7 +126,7 @@ Transcode::Transcode(AVFormatContext* in,
     m_result = avcodec_open2(encoder_ctx, encoder, &options);
     if (m_result < 0)
     {
-        emit m_messenger.print(QTranslator::tr("Failed to open encoder for stream"),
+        emit m_messenger.print(QTranslator::tr("Failed to open encoder for stream!"),
                                "Transcode",
                                MessageLevel::Error);
 
@@ -139,7 +139,7 @@ Transcode::Transcode(AVFormatContext* in,
     m_result = avcodec_parameters_from_context(outStream->codecpar, encoder_ctx);
     if (m_result < 0)
     {
-        emit m_messenger.print(QTranslator::tr("Failed to copy encoder parameters to output stream"),
+        emit m_messenger.print(QTranslator::tr("Failed to copy encoder parameters to output stream!"),
                                "Transcode",
                                MessageLevel::Error);
 
@@ -156,7 +156,7 @@ Transcode::Transcode(AVFormatContext* in,
     {
         if (0 > (m_result = avio_open(&out->pb, out->url, AVIO_FLAG_WRITE)) )
         {
-            emit m_messenger.print(QTranslator::tr("Could not open output file at specified path!"),
+            emit m_messenger.print(QTranslator::tr("Failed to open output file at specified path!"),
                                    "Transcode",
                                    MessageLevel::Error);
 

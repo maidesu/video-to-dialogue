@@ -33,7 +33,7 @@ Remux::Remux(AVFormatContext* in,
     {
         if (0 > (m_result = avio_open(&out->pb, out->url, AVIO_FLAG_WRITE)) )
         {
-            emit m_messenger.print(QTranslator::tr("Could not open output file at specified path!"),
+            emit m_messenger.print(QTranslator::tr("Failed to open output file at specified path!"),
                                    "Remux",
                                    MessageLevel::Error);
 

@@ -41,7 +41,7 @@ void Audio::waveformRequestedHandler(File::Read* file,
 
     if (res < 0)
     {
-        emit m_messenger.print(tr("Critical: Failed to create codec context!"),
+        emit m_messenger.print(tr("Failed to create codec context!"),
                                "Audio",
                                MessageLevel::Error);
         return;

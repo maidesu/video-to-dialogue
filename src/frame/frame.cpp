@@ -48,7 +48,7 @@ void Frame::frameRequestedHandler(File::Read* file,
 
     if (res < 0)
     {
-        emit m_messenger.print(tr("Critical: Couldn't copy codec parameters to context!"),
+        emit m_messenger.print(tr("Failed to copy codec parameters to context!"),
                                "Frame",
                                MessageLevel::Error);
         return;
@@ -59,7 +59,7 @@ void Frame::frameRequestedHandler(File::Read* file,
 
     if (res < 0)
     {
-        emit m_messenger.print(tr("Critical: Couldn't open codec context!"),
+        emit m_messenger.print(tr("Failed to open codec context!"),
                                "Frame",
                                MessageLevel::Error);
         return;
@@ -158,7 +158,7 @@ void Frame::frameRequestedHandler(File::Read* file,
             res = av_frame_get_buffer(rgbFrame, 0);
             if (res < 0)
             {
-                emit m_messenger.print(tr("Couldn't allocate frame!"),
+                emit m_messenger.print(tr("Failed to allocate frame!"),
                                        "Frame",
                                        MessageLevel::Error);
 

@@ -611,7 +611,7 @@ void FileManager::frameReadyHandler(const QVector<uint8_t>& frameBinaryData,
                      Qt::AlignLeft | Qt::TextWordWrap,
                      caption);
 
-    // Save the QImage as a PNG file
+    // Save as .png
     if (!merged.toImage().save(path, "PNG"))
     {
         emit m_messenger.print(tr("Failed to save frame image at specified location!"),

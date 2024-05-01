@@ -12,7 +12,7 @@ Write::Write(const char* path,
 {
     if (0 > (m_result = avformat_alloc_output_context2(&m_formatContext, m_oformat, NULL, path)) )
     {
-        emit m_messenger.print(QTranslator::tr("Could not open output file at specified path!"),
+        emit m_messenger.print(QTranslator::tr("Failed to open output file at specified path!"),
                                "File::Write",
                                MessageLevel::Error);
 
