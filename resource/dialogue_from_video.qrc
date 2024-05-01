@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file alias="gradient.png">img/gradient.png</file>
+    <file alias="logo.png">img/logo.png</file>
 </qresource>
 </RCC>

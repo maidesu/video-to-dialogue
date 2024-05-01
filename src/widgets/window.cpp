@@ -5,10 +5,11 @@
 #include <common/progressbar.hpp>
 #include <common/formatopts.hpp>
 
-#include <QLabel>
-#include <QSplitter>
-#include <QTabWidget>
+#include <QGuiApplication>
 #include <QChartView>
+#include <QTabWidget>
+#include <QSplitter>
+#include <QLabel>
 
 namespace DialogueFromVideo {
 
@@ -158,7 +159,7 @@ Window::Window(QWidget *parent)
 
     // Subtitle text edit
     m_subTextEdit->setReadOnly(true);
-    m_subTextEdit->insertPlainText("<no subtitle loaded>");
+    m_subTextEdit->insertPlainText(tr("<no subtitle loaded>"));
     m_subTextEdit->ensureCursorVisible();
 
     // Subtitle text edit buttons
@@ -242,6 +243,48 @@ Window::Window(QWidget *parent)
     exportMethodsLayout->addWidget(m_exportDialogueGroupBox);
 
 
+    // Settings - options
+    QWidget* optionsContainer = new QWidget();
+    QVBoxLayout* optionsLayout = new QVBoxLayout();
+
+    optionsContainer->setLayout(optionsLayout);
+
+    optionsLayout->setSpacing(20);
+    optionsLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    optionsLayout->addWidget(new QLabel(tr("Language")));
+    optionsLayout->addWidget(m_languageComboBox);
+    optionsLayout->addWidget(new QLabel(tr("UI mode")));
+    optionsLayout->addWidget(m_lightUiRadioButton);
+    optionsLayout->addWidget(m_darkUiRadioButton);
+
+    // Settings vertical line
+    QFrame* vLine = new QFrame();
+    vLine->setFrameShape(QFrame::VLine);
+    vLine->setFrameShadow(QFrame::Raised);
+
+    // Settings - logo
+    QWidget* logoContainer = new QWidget();
+    QVBoxLayout* logoLayout = new QVBoxLayout();
+
+    logoContainer->setLayout(logoLayout);
+
+    logoLayout->setAlignment(Qt::AlignCenter);
+
+    QPixmap logoPixmap = QPixmap{":/logo.png"};
+
+    QLabel* logoLabel = new QLabel();
+    logoLabel->setScaledContents(true);
+    //logoLabel->setFixedSize(logoPixmap.size());
+    //logoLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    logoLabel->setPixmap(logoPixmap.scaled(logoLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    logoLayout->addWidget(logoLabel);
+
+    QString logoString = QString{"<i>%1 ver. %2</i>"}.arg(QGuiApplication::applicationDisplayName(),
+                                                          QGuiApplication::applicationVersion());
+    logoLayout->addWidget(new QLabel(logoString), 0, Qt::AlignHCenter);
+
+
     // Tabs
     QTabWidget* tabWidget = new QTabWidget();
 
@@ -253,7 +296,7 @@ Window::Window(QWidget *parent)
     QVBoxLayout* fileContainerLayout = new QVBoxLayout();
     QVBoxLayout* subtitleContainerLayout = new QVBoxLayout();
     QVBoxLayout* exportContainerLayout = new QVBoxLayout();
-    QVBoxLayout* settingsContainerLayout = new QVBoxLayout();
+    QHBoxLayout* settingsContainerLayout = new QHBoxLayout();
 
     fileContainer->setLayout(fileContainerLayout);
     subtitleContainer->setLayout(subtitleContainerLayout);
@@ -275,14 +318,11 @@ Window::Window(QWidget *parent)
     exportContainerLayout->addWidget(exportMethodsContainer);
 
     // Tabs: Settings tab
-    settingsContainerLayout->setSpacing(20);
-    settingsContainerLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    //settingsContainerLayout->setAlignment(Qt::AlignCenter);
 
-    settingsContainerLayout->addWidget(new QLabel(tr("Language")));
-    settingsContainerLayout->addWidget(m_languageComboBox);
-    settingsContainerLayout->addWidget(new QLabel(tr("UI mode")));
-    settingsContainerLayout->addWidget(m_lightUiRadioButton);
-    settingsContainerLayout->addWidget(m_darkUiRadioButton);
+    settingsContainerLayout->addWidget(optionsContainer, 10);
+    settingsContainerLayout->addWidget(vLine, 1);
+    settingsContainerLayout->addWidget(logoContainer, 10);
 
     // Tabs: Final
     tabWidget->addTab(fileContainer, tr("File"));
@@ -501,7 +541,7 @@ void Window::fileChangedHandler(int videoStream,
 
     // Clear subtitles
     m_subTextEdit->clear();
-    m_subTextEdit->insertPlainText("<no subtitle loaded>");
+    m_subTextEdit->insertPlainText(tr("<no subtitle loaded>"));
     emit subtitleClearSignal();
 
     // Clear audio widget
@@ -671,7 +711,7 @@ void Window::subtitleExtractedHandler(const QList<SubEntry*>& subs)
 
     if (subs.isEmpty())
     {
-        m_subTextEdit->insertPlainText("<no subtitle loaded>");
+        m_subTextEdit->insertPlainText(tr("<no subtitle loaded>"));
         return;
     }
 
