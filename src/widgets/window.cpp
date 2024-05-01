@@ -269,19 +269,17 @@ Window::Window(QWidget *parent)
 
     logoContainer->setLayout(logoLayout);
 
-    logoLayout->setAlignment(Qt::AlignCenter);
-
-    QPixmap logoPixmap = QPixmap{":/logo.png"};
+    QPixmap logoPixmap{":/logo.png"};
 
     QLabel* logoLabel = new QLabel();
-    logoLabel->setScaledContents(true);
-    //logoLabel->setFixedSize(logoPixmap.size());
-    //logoLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    logoLabel->setPixmap(logoPixmap.scaled(logoLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    logoLayout->addWidget(logoLabel);
+    logoLabel->setPixmap(logoPixmap.scaled(QSize(384, 384), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     QString logoString = QString{"<i>%1 ver. %2</i>"}.arg(QGuiApplication::applicationDisplayName(),
                                                           QGuiApplication::applicationVersion());
+
+    logoLayout->setAlignment(Qt::AlignCenter);
+
+    logoLayout->addWidget(logoLabel);
     logoLayout->addWidget(new QLabel(logoString), 0, Qt::AlignHCenter);
 
 
