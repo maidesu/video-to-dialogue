@@ -313,6 +313,7 @@ Window::Window(QWidget *parent)
     // Tabs: Export tab
     QChartView* chartView = new QChartView(m_waveformWidget);
     chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->setRubberBand(QChartView::HorizontalRubberBand);
     exportContainerLayout->addWidget(chartView);
     exportContainerLayout->addWidget(exportMethodsContainer);
 
