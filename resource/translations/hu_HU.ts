@@ -294,6 +294,16 @@
         <source>Gap</source>
         <translation>Rés</translation>
     </message>
+    <message>
+        <location filename="../../src/widgets/waveformwidget.cpp" line="41"/>
+        <source>Samples</source>
+        <translation>Minták</translation>
+    </message>
+    <message>
+        <location filename="../../src/widgets/waveformwidget.cpp" line="46"/>
+        <source>Level</source>
+        <translation>Szint</translation>
+    </message>
 </context>
 <context>
     <name>DialogueFromVideo::Window</name>
@@ -429,6 +439,13 @@
         <location filename="../../src/widgets/window.cpp" line="145"/>
         <source>Audio stream (id)</source>
         <translation>Hang adatfolyam (id)</translation>
+    </message>
+    <message>
+        <location filename="../../src/widgets/window.cpp" line="162"/>
+        <location filename="../../src/widgets/window.cpp" line="544"/>
+        <location filename="../../src/widgets/window.cpp" line="714"/>
+        <source>&lt;no subtitle loaded&gt;</source>
+        <translation>&lt;nincs betöltött felirat&gt;</translation>
     </message>
     <message>
         <location filename="../../src/widgets/window.cpp" line="255"/>

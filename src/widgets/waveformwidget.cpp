@@ -38,12 +38,12 @@ WaveformWidget::WaveformWidget()
     m_gapSeries->setName(tr("Gap"));
 
 
-    m_xaxis->setTitleText("Samples");
+    m_xaxis->setTitleText(tr("Samples"));
     m_xaxis->setTickCount(2);
     m_xaxis->setLabelFormat("%n"); // printf nothing printed
     m_xaxis->setRange(1, m_target);
 
-    m_yaxis->setTitleText("Level");
+    m_yaxis->setTitleText(tr("Level"));
     m_yaxis->setTickCount(2);
     m_yaxis->setLabelFormat("%n");
 
