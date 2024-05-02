@@ -1,4 +1,4 @@
-# Building
+# Building on Windows
 
 ## 0. Prerequisites
 
@@ -57,6 +57,16 @@ mingw32-make.exe
 - *`ffmpeg-6.6.1-full_build-shared/lib/*` to `lib/ffmpeg/lib/*`*
 
 ## 3. Configure project
+
+### Developing in Qt Creator:
+
+1. Open the project file `dialogue_from_video.pro` located in the root directory.
+
+2. Select one of the kits to be used for compilation.
+
+3. Click "Configure Project".
+
+4. Use a profile and one of the options on the *bottom-left* to *build*, *debug* or *run* the project.
 
 ## 4. Finally, place the dynamic-link library inside the build directory
 
