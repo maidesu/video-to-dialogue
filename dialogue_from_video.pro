@@ -67,10 +67,10 @@ HEADERS += \
 
 INCLUDEPATH += \
     include \
-    lib/ffmpeg-6.1.1-full_build-shared/include
+    lib/ffmpeg/include
 
 LIBS += \
-    -L"$$PWD/lib/ffmpeg-6.1.1-full_build-shared/lib"
+    -L"$$PWD/lib/ffmpeg/lib"
 
 LIBS += \
     -lavformat \
