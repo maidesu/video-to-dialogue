@@ -14,14 +14,19 @@ TEMPLATE = app
 
 INCLUDEPATH += \
     include \
-    ../include
+    ../include \
+    ../lib/include
 
 HEADERS += \
     include/consoletest.hpp \
-    ../include/common/console.hpp # including this is an exception
+    ../include/common/console.hpp \
+    include/formatoptstest.hpp \
+    ../include/common/formatopts.hpp
 
 SOURCES += \
     src/main.cpp \
-    src/consoletest.cpp
+    src/consoletest.cpp \
+    src/formatoptstest.cpp \
+    ../src/common/formatopts.cpp
 
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wstrict-aliasing -pedantic -Werror

@@ -2,6 +2,7 @@
 #include <QtTest>
 
 #include <consoletest.hpp>
+#include <formatoptstest.hpp>
 
 using namespace DialogueTest;
 
@@ -13,6 +14,7 @@ int main(int argc, char** argv)
     QVector<QObject*> tests;
 
     tests.append(new ConsoleTest);
+    tests.append(new FormatOptionsTest);
 
     for (QObject* test : tests)
         ret |= QTest::qExec(test, argc, argv);
