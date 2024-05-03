@@ -67,10 +67,10 @@ HEADERS += \
 
 INCLUDEPATH += \
     include \
-    lib/ffmpeg/include
+    lib/include
 
 LIBS += \
-    -L"$$PWD/lib/ffmpeg/lib"
+    -L"$$PWD/lib/lib"
 
 LIBS += \
     -lavformat \

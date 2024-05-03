@@ -1,1 +1,4 @@
-ffmpeg-*/
+bin/
+include/
+lib/
+share/

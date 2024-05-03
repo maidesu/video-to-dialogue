@@ -14,12 +14,11 @@ TEMPLATE = app
 
 INCLUDEPATH += \
     include \
-    ../include \
-    ../lib/ffmpeg-6.1.1-full_build-shared/include
+    ../include
 
 HEADERS += \
     include/consoletest.hpp \
-    ../include/common/console.hpp
+    ../include/common/console.hpp # including this is an exception
 
 SOURCES += \
     src/main.cpp \

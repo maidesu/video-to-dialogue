@@ -87,6 +87,8 @@ libavdevice/
 libavfilter/
 libavformat/
 libavutil/
+libswresample/
+libswscale/
 /.config
 /.version
 /config.asm
