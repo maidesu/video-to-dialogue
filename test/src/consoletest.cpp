@@ -10,6 +10,8 @@ ConsoleTest::ConsoleTest(QObject* parent)
 void ConsoleTest::initTestCase()
 {
     m_consoleTextEdit = DialogueFromVideo::Console::instance().textEdit();
+
+    QCOMPARE(m_consoleTextEdit->toPlainText(), "");
 }
 
 void ConsoleTest::initTestCase_data()
@@ -79,23 +81,65 @@ void ConsoleTest::testPrint_data()
 
 void ConsoleTest::testFilter()
 {
+    /* The blockCount of an empty document is 1,
+     * therefore n lines on the console will
+     * have a block count of n+1 */
 
+    DialogueFromVideo::Console::instance().printHandler("Message1",
+                                                        "id1",
+                                                        DialogueFromVideo::MessageLevel::Info);
+    DialogueFromVideo::Console::instance().printHandler("Message2",
+                                                        "id2",
+                                                        DialogueFromVideo::MessageLevel::Warning);
+    DialogueFromVideo::Console::instance().printHandler("Message3",
+                                                        "id3",
+                                                        DialogueFromVideo::MessageLevel::Error);
+    DialogueFromVideo::Console::instance().printHandler("Message2",
+                                                        "id2",
+                                                        DialogueFromVideo::MessageLevel::Warning);
+
+    QVERIFY( !(m_consoleTextEdit->toPlainText().isEmpty()) ); // Not empty after printing
+
+    DialogueFromVideo::Console::instance().filterHandler(DialogueFromVideo::MessageLevel::Debug);
+
+    QCOMPARE(m_consoleTextEdit->document()->blockCount(), 4+1); // Expect 4 messages to be filtered
+
+    DialogueFromVideo::Console::instance().filterHandler(DialogueFromVideo::MessageLevel::Error);
+
+    QVERIFY( !(m_consoleTextEdit->toPlainText().isEmpty()) );
+    QCOMPARE(m_consoleTextEdit->document()->blockCount(), 1+1); // Expect 1 Error to be present
+
+    DialogueFromVideo::Console::instance().filterHandler(DialogueFromVideo::MessageLevel::Warning);
+
+    QCOMPARE(m_consoleTextEdit->document()->blockCount(), 3+1); // Expect 3 messages to be present
 }
 
 void ConsoleTest::testFilter_data()
 {
-
 }
 
 
 void ConsoleTest::testClear()
 {
+    DialogueFromVideo::Console::instance().printHandler("Message1",
+                                                        "id1",
+                                                        DialogueFromVideo::MessageLevel::Info);
+    DialogueFromVideo::Console::instance().printHandler("Message2",
+                                                        "id2",
+                                                        DialogueFromVideo::MessageLevel::Warning);
+    DialogueFromVideo::Console::instance().printHandler("Message3",
+                                                        "id3",
+                                                        DialogueFromVideo::MessageLevel::Error);
 
+    QVERIFY( !(m_consoleTextEdit->toPlainText().isEmpty()) ); // Not empty after printing
+
+    DialogueFromVideo::Console::instance().clearHandler();
+
+    QVERIFY( m_consoleTextEdit->toPlainText().isEmpty() );    // Empty after clearing
 }
 
 void ConsoleTest::testClear_data()
 {
-
 }
 
 } // namespace DialogueTest
