@@ -21,12 +21,15 @@ HEADERS += \
     include/consoletest.hpp \
     ../include/common/console.hpp \
     include/formatoptstest.hpp \
-    ../include/common/formatopts.hpp
+    ../include/common/formatopts.hpp \
+    include/messengertest.hpp \
+    ../include/common/messenger.hpp
 
 SOURCES += \
     src/main.cpp \
     src/consoletest.cpp \
     src/formatoptstest.cpp \
-    ../src/common/formatopts.cpp
+    ../src/common/formatopts.cpp \
+    src/messengertest.cpp
 
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wstrict-aliasing -pedantic -Werror

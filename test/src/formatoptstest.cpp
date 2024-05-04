@@ -45,7 +45,7 @@ void FormatOptionsTest::testLossyOptions_data()
     QTest::addColumn<int>("optionCount");
 
     QTest::newRow("mp3") << "mp3" << 5;
-    QTest::newRow("mp3") << "aac" << 13;
+    QTest::newRow("aac") << "aac" << 13;
     QTest::newRow("opus") << "opus" << 1;
 }
 
