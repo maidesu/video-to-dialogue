@@ -578,6 +578,8 @@ start:
     }
     frame_count = 0;
     report_progress_frame = total_est_frames / max_progress_steps;
+    // Safeguard from zero division (thanks clang)
+    report_progress_frame = (report_progress_frame < 1) ? 1 : report_progress_frame;
     // Progress end
 
 start2:
@@ -596,8 +598,8 @@ start2:
 
         if (m_result == AVERROR(EINVAL))
         {
-            //int isOpen = avcodec_is_open(encoder_ctx); (void)isopen;
-            //int isEncoder = av_codec_is_encoder(encoder_ctx->codec); (void)isencoder;
+            //int isOpen = avcodec_is_open(encoder_ctx); Q_UNUSED(isopen);
+            //int isEncoder = av_codec_is_encoder(encoder_ctx->codec); Q_UNUSED(isencoder);
 
             /* The encoder wants to flush (BUT WHY???)
              *

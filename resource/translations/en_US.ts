@@ -9,22 +9,27 @@
         <translation>Unsupported audio codec!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="44"/>
+        <location filename="../../src/audio/audio.cpp" line="41"/>
+        <source>Failed to copy codec parameters to context!</source>
+        <translation>Failed to copy codec parameters to context!</translation>
+    </message>
+    <message>
+        <location filename="../../src/audio/audio.cpp" line="52"/>
         <source>Failed to create codec context!</source>
         <translation>Failed to create codec context!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="96"/>
+        <location filename="../../src/audio/audio.cpp" line="104"/>
         <source>Failed to receive frame!</source>
         <translation>Failed to receive frame!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="238"/>
+        <location filename="../../src/audio/audio.cpp" line="246"/>
         <source>Sample format was not detected!</source>
         <translation>Sample format was not detected!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="267"/>
+        <location filename="../../src/audio/audio.cpp" line="275"/>
         <source>Processed audio</source>
         <translation>Processed audio</translation>
     </message>
@@ -551,7 +556,7 @@ Codec: %8</translation>
     </message>
     <message>
         <location filename="../../src/remux/remux.cpp" line="102"/>
-        <location filename="../../src/transcode/transcode.cpp" line="686"/>
+        <location filename="../../src/transcode/transcode.cpp" line="688"/>
         <source>Failed to write file trailer!</source>
         <translation>Failed to write file trailer!</translation>
     </message>
@@ -661,27 +666,27 @@ Codec: %8</translation>
         <translation>Failed to send frame to filter!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="614"/>
+        <location filename="../../src/transcode/transcode.cpp" line="616"/>
         <source>Encoder bad argument!</source>
         <translation>Encoder bad argument!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="623"/>
+        <location filename="../../src/transcode/transcode.cpp" line="625"/>
         <source>Failed to send frame!</source>
         <translation>Failed to send frame!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="651"/>
+        <location filename="../../src/transcode/transcode.cpp" line="653"/>
         <source>Failed to receive packet!</source>
         <translation>Failed to receive packet!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="668"/>
+        <location filename="../../src/transcode/transcode.cpp" line="670"/>
         <source>Failed to write packet!</source>
         <translation>Failed to write packet!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="692"/>
+        <location filename="../../src/transcode/transcode.cpp" line="694"/>
         <source>Successfully transcoded to: %1</source>
         <translation>Successfully transcoded to: %1</translation>
     </message>

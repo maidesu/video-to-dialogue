@@ -9,22 +9,27 @@
         <translation>Nem támogatott hang kodek!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="44"/>
+        <location filename="../../src/audio/audio.cpp" line="41"/>
+        <source>Failed to copy codec parameters to context!</source>
+        <translation>Nem sikerült átmásolni a kodek paramétereket a kontextusba!</translation>
+    </message>
+    <message>
+        <location filename="../../src/audio/audio.cpp" line="52"/>
         <source>Failed to create codec context!</source>
         <translation>Nem sikerült létrehozni kodek kontextust!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="96"/>
+        <location filename="../../src/audio/audio.cpp" line="104"/>
         <source>Failed to receive frame!</source>
         <translation>Nem sikerült átvenni a keretet!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="238"/>
+        <location filename="../../src/audio/audio.cpp" line="246"/>
         <source>Sample format was not detected!</source>
         <translation>Nem található a mintaformátum!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="267"/>
+        <location filename="../../src/audio/audio.cpp" line="275"/>
         <source>Processed audio</source>
         <translation>Hang feldolgozva</translation>
     </message>
@@ -551,7 +556,7 @@ Kodek: %8</translation>
     </message>
     <message>
         <location filename="../../src/remux/remux.cpp" line="102"/>
-        <location filename="../../src/transcode/transcode.cpp" line="686"/>
+        <location filename="../../src/transcode/transcode.cpp" line="688"/>
         <source>Failed to write file trailer!</source>
         <translation>Nem sikerült fájl láblécet írni!</translation>
     </message>
@@ -661,27 +666,27 @@ Kodek: %8</translation>
         <translation>Nem sikerült elküldeni a keretet a szűrőnek!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="614"/>
+        <location filename="../../src/transcode/transcode.cpp" line="616"/>
         <source>Encoder bad argument!</source>
         <translation>Kódoló rossz paraméter!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="623"/>
+        <location filename="../../src/transcode/transcode.cpp" line="625"/>
         <source>Failed to send frame!</source>
         <translation>Nem sikerült elküldeni a keretet!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="651"/>
+        <location filename="../../src/transcode/transcode.cpp" line="653"/>
         <source>Failed to receive packet!</source>
         <translation>Nem sikerült átvenni a csomagot!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="668"/>
+        <location filename="../../src/transcode/transcode.cpp" line="670"/>
         <source>Failed to write packet!</source>
         <translation>Sikertelen a csomag írása!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="692"/>
+        <location filename="../../src/transcode/transcode.cpp" line="694"/>
         <source>Successfully transcoded to: %1</source>
         <translation>Sikeresen átkódolt ide: %1</translation>
     </message>

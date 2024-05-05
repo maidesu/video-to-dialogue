@@ -21,7 +21,7 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
                                         int selectedSubIndex,
                                         int selectedSubLayerIndex)
 {
-    (void)selectedSubLayerIndex;
+    Q_UNUSED(selectedSubLayerIndex);
 
     clearSubs();
 

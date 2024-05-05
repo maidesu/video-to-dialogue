@@ -36,6 +36,14 @@ void Audio::waveformRequestedHandler(File::Read* file,
 
     res = avcodec_parameters_to_context(avctx, stream->codecpar);
 
+    if (res < 0)
+    {
+        emit m_messenger.print(tr("Failed to copy codec parameters to context!"),
+                               "Audio",
+                               MessageLevel::Error);
+        return;
+    }
+
     // The AVCodecContext MUST have been opened with avcodec_open2() before packets may be fed to the decoder.
     res = avcodec_open2(avctx, decoder, NULL);
 
