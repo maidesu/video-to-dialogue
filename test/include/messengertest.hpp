@@ -1,9 +1,12 @@
 #pragma once
 
+#include <common/messenger.hpp>
+
+#include <QSignalSpy>
 #include <QObject>
 #include <QTest>
 
-#include <common/messenger.hpp>
+using namespace DialogueFromVideo;
 
 namespace DialogueTest {
 
@@ -26,6 +29,8 @@ private slots:
     void testPrint_data();
 
 private:
+    Messenger* m_testMessenger;
+    QSignalSpy* m_signalSpy;
 };
 
 } // namespace DialogueTest

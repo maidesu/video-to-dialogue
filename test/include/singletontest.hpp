@@ -5,11 +5,11 @@
 
 namespace DialogueTest {
 
-class FormatOptionsTest : public QObject
+class SingletonTest : public QObject
 {
     Q_OBJECT
 public:
-    explicit FormatOptionsTest(QObject* parent = nullptr);
+    explicit SingletonTest(QObject* parent = nullptr);
 
 signals:
 
@@ -20,11 +20,7 @@ private slots:
     void init();
     void cleanup();
 
-    void testLossyOptions();
-    void testLossyOptions_data();
-
-    void testLosslessOptions();
-    void testLosslessOptions_data();
+    void testSingleton();
 
 private:
 };

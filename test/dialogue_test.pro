@@ -23,13 +23,26 @@ HEADERS += \
     include/formatoptstest.hpp \
     ../include/common/formatopts.hpp \
     include/messengertest.hpp \
-    ../include/common/messenger.hpp
+    ../include/common/messenger.hpp \
+    include/singletontest.hpp \
+    ../include/common/singleton.hpp \
+    include/timetest.hpp \
+    ../include/common/time.hpp \
+    include/progresstest.hpp \
+    ../include/common/progress.hpp \
+    include/progressbartest.hpp \
+    ../include/common/progressbar.hpp
 
 SOURCES += \
     src/main.cpp \
     src/consoletest.cpp \
     src/formatoptstest.cpp \
     ../src/common/formatopts.cpp \
-    src/messengertest.cpp
+    src/messengertest.cpp \
+    src/singletontest.cpp \
+    src/timetest.cpp \
+    ../src/common/time.cpp \
+    src/progresstest.cpp \
+    src/progressbartest.cpp
 
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wstrict-aliasing -pedantic -Werror

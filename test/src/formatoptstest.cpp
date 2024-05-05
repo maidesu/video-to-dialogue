@@ -1,5 +1,9 @@
 #include <formatoptstest.hpp>
 
+#include <common/formatopts.hpp>
+
+using namespace DialogueFromVideo;
+
 namespace DialogueTest {
 
 FormatOptionsTest::FormatOptionsTest(QObject* parent)
@@ -33,7 +37,7 @@ void FormatOptionsTest::testLossyOptions()
     QFETCH(QString, format);
     QFETCH(int, optionCount);
 
-    QMap<QString, QList<DialogueFromVideo::FormatOptions::Option>> lossy_map = DialogueFromVideo::FormatOptions::lossyOptions();
+    QMap<QString, QList<FormatOptions::Option>> lossy_map = FormatOptions::lossyOptions();
 
     QVERIFY(lossy_map.contains(format));
     QCOMPARE(lossy_map[format].size(), optionCount);
@@ -55,7 +59,7 @@ void FormatOptionsTest::testLosslessOptions()
     QFETCH(QString, format);
     QFETCH(int, optionCount);
 
-    QMap<QString, QList<DialogueFromVideo::FormatOptions::Option>> lossless_map = DialogueFromVideo::FormatOptions::losslessOptions();
+    QMap<QString, QList<FormatOptions::Option>> lossless_map = FormatOptions::losslessOptions();
 
     QVERIFY(lossless_map.contains(format));
     QCOMPARE(lossless_map[format].size(), optionCount);

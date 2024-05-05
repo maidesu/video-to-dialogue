@@ -2,8 +2,7 @@
 
 #include <QObject>
 #include <QTest>
-
-#include <common/console.hpp>
+#include <QTextEdit>
 
 namespace DialogueTest {
 
