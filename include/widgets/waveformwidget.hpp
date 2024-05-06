@@ -17,6 +17,8 @@ public:
 
     virtual ~WaveformWidget();
 
+    void setCustomTheme(QChart::ChartTheme theme);
+
     void initialize(int sampleCount,
                     int sampleRate);
 

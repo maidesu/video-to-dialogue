@@ -70,6 +70,23 @@ WaveformWidget::WaveformWidget()
     this->legend()->hide();
 }
 
+void WaveformWidget::setCustomTheme(QChart::ChartTheme theme)
+{
+    this->setTheme(theme);
+
+    m_dialogueSeries->setPen(Qt::NoPen);
+    m_dialogueSeries->setColor(m_intervalColors[0]);
+
+    m_subtitleSeries->setPen(Qt::NoPen);
+    m_subtitleSeries->setColor(m_intervalColors[1]);
+
+    m_paddingSeries->setPen(Qt::NoPen);
+    m_paddingSeries->setColor(m_intervalColors[2]);
+
+    m_gapSeries->setPen(Qt::NoPen);
+    m_gapSeries->setColor(m_intervalColors[3]);
+}
+
 void WaveformWidget::initialize(int sampleCount, int sampleRate)
 {
     m_sampleRate = sampleRate;

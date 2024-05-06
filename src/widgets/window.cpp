@@ -489,7 +489,7 @@ Window::Window(QWidget *parent)
             [this]()
             {
                 emit Window::colorSchemeSettingsChangedSignal(false);
-                m_waveformWidget->setTheme(QChart::ChartThemeLight);
+                m_waveformWidget->setCustomTheme(QChart::ChartThemeLight);
             });
 
     connect(m_darkUiRadioButton,
@@ -498,7 +498,7 @@ Window::Window(QWidget *parent)
             [this]()
             {
                 emit Window::colorSchemeSettingsChangedSignal(true);
-                m_waveformWidget->setTheme(QChart::ChartThemeDark);
+                m_waveformWidget->setCustomTheme(QChart::ChartThemeDark);
             });
 
     connect(m_exportLossyRadioButton,
@@ -643,12 +643,12 @@ void Window::initialColorSchemeHandler(bool darkModeEnabled)
     if (!darkModeEnabled)
     {
         m_lightUiRadioButton->click();
-        m_waveformWidget->setTheme(QChart::ChartThemeLight);
+        m_waveformWidget->setCustomTheme(QChart::ChartThemeLight);
     }
     else
     {
         m_darkUiRadioButton->click();
-        m_waveformWidget->setTheme(QChart::ChartThemeDark);
+        m_waveformWidget->setCustomTheme(QChart::ChartThemeDark);
     }
 
     m_lightUiRadioButton->blockSignals(false);
