@@ -338,7 +338,7 @@ bool FileManager::saveFile(SaveMode saveMode,
             }
 
             {
-                m_progress.progressReset();
+                emit m_progress.progressReset();
 
                 QFile file_out(m_savePath);
 
@@ -356,7 +356,7 @@ bool FileManager::saveFile(SaveMode saveMode,
 
                 file_out.close();
 
-                m_progress.progressComplete();
+                emit m_progress.progressComplete();
             }
 
             emit m_messenger.print(tr("Saved subtitles to file: %1").arg(m_savePath),
