@@ -23,7 +23,7 @@ public:
     Application& operator= (const Application&) = delete;
     Application& operator= (const Application&&) = delete;
 
-    void run();
+    bool run();
 
 private:
     Settings m_settings;

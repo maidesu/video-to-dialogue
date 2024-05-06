@@ -226,7 +226,7 @@ Application::Application()
                      &Window::allowDialogueExportHandler);
 }
 
-void Application::run()
+bool Application::run()
 {
     m_window.show();
 
@@ -239,6 +239,8 @@ void Application::run()
                                       MessageLevel::Info);
 
     m_settings.loadInitialSettings();
+
+    return 1;
 }
 
 } // namespace DialogueFromVideo

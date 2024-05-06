@@ -11,6 +11,8 @@
 
 #include <dialoguetest.hpp>
 
+#include <applicationtest.hpp>
+
 using namespace DialogueTest;
 
 int main(int argc, char** argv)
@@ -33,7 +35,7 @@ int main(int argc, char** argv)
     tests.append(new ProcessDialogueTest());
 
     // System tests
-
+    tests.append(new ApplicationTest());
 
     for (QObject* test : tests)
         ret |= QTest::qExec(test, argc, argv);
