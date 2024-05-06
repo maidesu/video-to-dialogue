@@ -9,6 +9,8 @@
 #include <progresstest.hpp>
 #include <progressbartest.hpp>
 
+#include <dialoguetest.hpp>
+
 using namespace DialogueTest;
 
 int main(int argc, char** argv)
@@ -27,8 +29,14 @@ int main(int argc, char** argv)
     tests.append(new ProgressTest());
     tests.append(new ProgressBarTest());
 
+    // Dialogue module
+    tests.append(new ProcessDialogueTest());
+
+    // System tests
+
+
     for (QObject* test : tests)
         ret |= QTest::qExec(test, argc, argv);
 
-    return ret;
+    return ret; // A return value of 0 guarantees no errors
 }

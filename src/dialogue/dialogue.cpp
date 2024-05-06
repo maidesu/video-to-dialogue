@@ -106,7 +106,14 @@ void Dialogue::processDialogue(const QList<SubEntry*>& subs,
         {
             if (start < end) // The 0th element is not validated
             {
-                m_gap.append({ end, next_start });
+                /*
+                 * Yet another place where the
+                 * interval could be negative
+                 */
+                if (end < next_start)
+                {
+                    m_gap.append({ end, next_start });
+                }
             }
             else
             {

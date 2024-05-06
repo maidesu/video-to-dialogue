@@ -31,7 +31,9 @@ HEADERS += \
     include/progresstest.hpp \
     ../include/common/progress.hpp \
     include/progressbartest.hpp \
-    ../include/common/progressbar.hpp
+    ../include/common/progressbar.hpp \
+    include/dialoguetest.hpp \
+    ../include/dialogue/dialogue.hpp
 
 SOURCES += \
     src/main.cpp \
@@ -43,6 +45,8 @@ SOURCES += \
     src/timetest.cpp \
     ../src/common/time.cpp \
     src/progresstest.cpp \
-    src/progressbartest.cpp
+    src/progressbartest.cpp \
+    src/dialoguetest.cpp \
+    ../src/dialogue/dialogue.cpp
 
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wstrict-aliasing -pedantic -Werror
