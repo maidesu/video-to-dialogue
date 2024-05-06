@@ -59,7 +59,7 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
     AVPacket* avpkt = av_packet_alloc();
     AVSubtitle sub;
 
-    int got_sub;
+    int got_sub = 0;
 
     av_seek_frame(s, selectedSubIndex, 0, AVSEEK_FLAG_ANY);
 
@@ -134,7 +134,11 @@ void Subtitle::subtitleRequestedHandler(File::Read* file,
         av_packet_unref(avpkt);
     }
 
-    avsubtitle_free(&sub);
+    if (got_sub)
+    {
+        avsubtitle_free(&sub);
+    }
+
     av_packet_free(&avpkt);
     avcodec_free_context(&avctx); // expects AVCodecContext** for some reason even though alloc returns AVCodecContext*
 
