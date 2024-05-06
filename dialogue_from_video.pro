@@ -90,6 +90,8 @@ CONFIG += embed_translations
 RESOURCES += \
     resource/dialogue_from_video.qrc
 
+RC_ICONS = resource/img/icon.ico
+
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wstrict-aliasing -pedantic -Werror
 
 # Default rules for deployment.
