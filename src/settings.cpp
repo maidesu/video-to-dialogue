@@ -67,10 +67,10 @@ void Settings::loadInitialSettings()
                            MessageLevel::Debug);
 
     m_settings->beginGroup("Subtitle");
-    m_usPaddingLeft     = m_settings->value("PaddingLeft", 0).toLongLong();
-    m_usPaddingRight    = m_settings->value("PaddingRight", 0).toLongLong();
+    m_usPaddingLeft     = m_settings->value("PaddingLeft", 200).toLongLong(); // milliseconds
+    m_usPaddingRight    = m_settings->value("PaddingRight", 200).toLongLong();
     m_usOffset          = m_settings->value("Offset", 0).toLongLong();
-    m_usMerge           = m_settings->value("Merge", 2000000).toLongLong(); // 2 seconds
+    m_usMerge           = m_settings->value("Merge", 1000).toLongLong();
     m_settings->endGroup();
 
     emit m_messenger.print(tr("Loaded settings: Left pad -> %1ms | Right pad -> %2ms | Offset -> %3ms | Minimum gap -> %4ms")
