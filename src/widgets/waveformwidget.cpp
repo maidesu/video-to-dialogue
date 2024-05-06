@@ -167,11 +167,15 @@ void WaveformWidget::drawIntervals(const QList<Interval>& dialogue,
 
         for (int i = 1; i < intervals.size(); ++i)
         {
-            upperBuff.append({ (intervals[i-1].end * m_target) / duration, 0 });
-            upperBuff.append({ (intervals[i].start * m_target) / duration, 0 });
+            // Fix for overlapping rects
+            if (intervals[i-1].end < intervals[i].start)
+            {
+                upperBuff.append({ (intervals[i-1].end * m_target) / duration, 0 });
+                upperBuff.append({ (intervals[i].start * m_target) / duration, 0 });
 
-            lowerBuff.append({ (intervals[i-1].end * m_target) / duration, 0 });
-            lowerBuff.append({ (intervals[i].start * m_target) / duration, 0 });
+                lowerBuff.append({ (intervals[i-1].end * m_target) / duration, 0 });
+                lowerBuff.append({ (intervals[i].start * m_target) / duration, 0 });
+            }
 
             upperBuff.append({ (intervals[i].start * m_target) / duration, height });
             upperBuff.append({ (intervals[i].end * m_target) / duration, height });
