@@ -22,15 +22,9 @@ void TestFileManager::openFileTestHandler()
 
 void TestFileManager::setTestPath(QString path)
 {
-    QString dir { STR(PROJECT_PATH) + QString{"/data/"} };
+    QString merged { PROJECT_PATH + QString{"/data/"} + path};
 
-    QString platformAbsolute =  QDir::toNativeSeparators(QDir(dir).absoluteFilePath(path));
-
-    m_testPathBytes = new QByteArray{ platformAbsolute.toUtf8().constData() };
-#ifdef Q_OS_WIN
-    (*m_testPathBytes)[0] = (*m_testPathBytes)[1];
-    (*m_testPathBytes)[1] = ':';
-#endif
+    m_testPathBytes = new QByteArray{ merged.toUtf8().constData() };
     m_testPath = m_testPathBytes->constData();
 }
 

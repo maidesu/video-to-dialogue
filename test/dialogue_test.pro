@@ -10,7 +10,7 @@ CONFIG += qt warn_on depend_includepath testcase
 CONFIG += c++17
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_DEPRECATED_WARNINGS
-DEFINES += PROJECT_PATH="$$shell_path($$_PRO_FILE_PWD_)"
+DEFINES += PROJECT_PATH='\\"$$absolute_path($$_PRO_FILE_PWD_)\\"'
 
 TEMPLATE = app
 
