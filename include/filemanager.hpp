@@ -102,7 +102,7 @@ public slots:
 
     void readyDialogueHandler(const QList<Interval>& dialogue);
 
-private:
+protected:
     bool openFile();
     bool saveFile(SaveMode saveMode = SaveMode::None,
                   FileMode fileMode = FileMode::None,

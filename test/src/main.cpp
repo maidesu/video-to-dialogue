@@ -11,6 +11,8 @@
 
 #include <dialoguetest.hpp>
 
+#include <windowtest.hpp>
+
 #include <applicationtest.hpp>
 
 using namespace DialogueTest;
@@ -22,6 +24,7 @@ int main(int argc, char** argv)
     int ret = 0;
     QVector<QObject*> tests;
 
+    // Unit tests
     // Common modules
     tests.append(new ConsoleTest());
     tests.append(new FormatOptionsTest());
@@ -33,6 +36,9 @@ int main(int argc, char** argv)
 
     // Dialogue module
     tests.append(new ProcessDialogueTest());
+
+    // Integration tests
+    tests.append(new WindowTest());
 
     // System tests
     tests.append(new ApplicationTest());

@@ -10,6 +10,7 @@ CONFIG += qt warn_on depend_includepath testcase
 CONFIG += c++17
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_DEPRECATED_WARNINGS
+DEFINES += PROJECT_PATH="$$shell_path($$_PRO_FILE_PWD_)"
 
 TEMPLATE = app
 
@@ -27,6 +28,7 @@ HEADERS += \
     include/progresstest.hpp \
     include/progressbartest.hpp \
     include/dialoguetest.hpp \
+    include/windowtest.hpp \
     include/applicationtest.hpp \
     \
     ../include/application.hpp \
@@ -70,6 +72,7 @@ SOURCES += \
     src/progresstest.cpp \
     src/progressbartest.cpp \
     src/dialoguetest.cpp \
+    src/windowtest.cpp \
     src/applicationtest.cpp \
     \
     ../src/application.cpp \
