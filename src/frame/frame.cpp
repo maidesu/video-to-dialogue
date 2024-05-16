@@ -80,9 +80,9 @@ void Frame::frameRequestedHandler(File::Read* file,
     AVFrame* frame = av_frame_alloc(); // free with av_frame_free
     AVPacket* avpkt = av_packet_alloc(); // av_packet_unref after every av_read_frame
 
+start:
     while (av_read_frame(formatCtx, avpkt) >= 0)
     {
-    start:
         if (avpkt->stream_index != selectedVideoIndex) // Skip wrong index
         {
             av_packet_unref(avpkt);
