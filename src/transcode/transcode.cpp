@@ -1,5 +1,5 @@
 #include <transcode/transcode.hpp>
-//#include <common/averror.hpp>
+#include <common/averror.hpp>
 
 extern "C"
 {
@@ -126,7 +126,9 @@ Transcode::Transcode(AVFormatContext* in,
     m_result = avcodec_open2(encoder_ctx, encoder, &options);
     if (m_result < 0)
     {
-        emit m_messenger.print(QTranslator::tr("Failed to open encoder for stream!"),
+        AV_ERR(m_result);
+
+        emit m_messenger.print(QTranslator::tr("Failed to open encoder for stream!") + QString(" AV String error: %1").arg(buff),
                                "Transcode",
                                MessageLevel::Error);
 
