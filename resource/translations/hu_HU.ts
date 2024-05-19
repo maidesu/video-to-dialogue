@@ -19,17 +19,26 @@
         <translation>Nem sikerült létrehozni kodek kontextust!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="104"/>
+        <location filename="../../src/audio/audio.cpp" line="88"/>
+        <source>Failed to send packet!</source>
+        <translation>Nem sikerült elküldeni a csomagot!</translation>
+    </message>
+    <message>
+        <source>Failed to send frame!</source>
+        <translation type="obsolete">Nem sikerült elküldeni a keretet!</translation>
+    </message>
+    <message>
+        <location filename="../../src/audio/audio.cpp" line="108"/>
         <source>Failed to receive frame!</source>
         <translation>Nem sikerült átvenni a keretet!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="246"/>
+        <location filename="../../src/audio/audio.cpp" line="250"/>
         <source>Sample format was not detected!</source>
         <translation>Nem található a mintaformátum!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="275"/>
+        <location filename="../../src/audio/audio.cpp" line="279"/>
         <source>Processed audio</source>
         <translation>Hang feldolgozva</translation>
     </message>
@@ -262,12 +271,12 @@
         <translation>Nem sikerült létrehozni kodek kontextust!</translation>
     </message>
     <message>
-        <location filename="../../src/subtitle/subtitle.cpp" line="143"/>
+        <location filename="../../src/subtitle/subtitle.cpp" line="147"/>
         <source>Unsupported subtitles were found!</source>
         <translation>Talált nem támogatott feliratokat!</translation>
     </message>
     <message>
-        <location filename="../../src/subtitle/subtitle.cpp" line="150"/>
+        <location filename="../../src/subtitle/subtitle.cpp" line="154"/>
         <source>Processed subtitle</source>
         <translation>Felirat feldolgozva</translation>
     </message>
@@ -545,7 +554,7 @@ Kodek: %8</translation>
     </message>
     <message>
         <location filename="../../src/remux/remux.cpp" line="47"/>
-        <location filename="../../src/transcode/transcode.cpp" line="173"/>
+        <location filename="../../src/transcode/transcode.cpp" line="175"/>
         <source>Failed to write file header!</source>
         <translation>Nem sikerült fájl fejlécet írni!</translation>
     </message>
@@ -556,7 +565,7 @@ Kodek: %8</translation>
     </message>
     <message>
         <location filename="../../src/remux/remux.cpp" line="102"/>
-        <location filename="../../src/transcode/transcode.cpp" line="688"/>
+        <location filename="../../src/transcode/transcode.cpp" line="690"/>
         <source>Failed to write file trailer!</source>
         <translation>Nem sikerült fájl láblécet írni!</translation>
     </message>
@@ -596,104 +605,104 @@ Kodek: %8</translation>
         <translation>Nem sikerült megnyitni az adatfolyam dekódolót!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="129"/>
+        <location filename="../../src/transcode/transcode.cpp" line="131"/>
         <source>Failed to open encoder for stream!</source>
         <translation>Nem sikerült megnyitni az adatfolyam kódolót!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="142"/>
+        <location filename="../../src/transcode/transcode.cpp" line="144"/>
         <source>Failed to copy encoder parameters to output stream!</source>
         <translation>Nem sikerült átmásolni a kódoló paramétereket a kimeneti adatfolyamba!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="195"/>
+        <location filename="../../src/transcode/transcode.cpp" line="197"/>
         <source>Failed to allocate filter graph!</source>
         <translation>Nem sikerült allokálni a szűrőgráfot!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="211"/>
+        <location filename="../../src/transcode/transcode.cpp" line="213"/>
         <source>Failed to find required filter!</source>
         <translation>Nem található a szükséges szűrő!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="229"/>
+        <location filename="../../src/transcode/transcode.cpp" line="231"/>
         <source>Failed to allocate filter context!</source>
         <translation>Nem sikerült szűrő kontextust allokálni!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="277"/>
+        <location filename="../../src/transcode/transcode.cpp" line="279"/>
         <source>Failed to initialize filter context!</source>
         <translation>Nem sikerült szűrő kontextust inicializálni!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="300"/>
+        <location filename="../../src/transcode/transcode.cpp" line="302"/>
         <source>Failed to connect filters!</source>
         <translation>Nem sikerült összekötni a szűrőket!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="318"/>
+        <location filename="../../src/transcode/transcode.cpp" line="320"/>
         <source>Failed to configure filter graph!</source>
         <translation>Nem sikerült konfigurálni a szűrőgráfot!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="369"/>
+        <location filename="../../src/transcode/transcode.cpp" line="371"/>
         <source>Failed to initialize context!</source>
         <translation>Nem sikerült inicializálni a kontextust!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="404"/>
+        <location filename="../../src/transcode/transcode.cpp" line="406"/>
         <source>Failed to seek!</source>
         <translation>Nem sikerült rátalálni az időbélyegre!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="464"/>
+        <location filename="../../src/transcode/transcode.cpp" line="466"/>
         <source>Failed to send packet!</source>
         <translation>Nem sikerült elküldeni a csomagot!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="485"/>
+        <location filename="../../src/transcode/transcode.cpp" line="487"/>
         <source>Failed to receive frame!</source>
         <translation>Nem sikerült átvenni a keretet!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="513"/>
+        <location filename="../../src/transcode/transcode.cpp" line="515"/>
         <source>Failed to resample frame!</source>
         <translation>Nem sikerült újramintázni a keretet!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="533"/>
+        <location filename="../../src/transcode/transcode.cpp" line="535"/>
         <source>Failed to send frame to filter!</source>
         <translation>Nem sikerült elküldeni a keretet a szűrőnek!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="616"/>
+        <location filename="../../src/transcode/transcode.cpp" line="618"/>
         <source>Encoder bad argument!</source>
         <translation>Kódoló rossz paraméter!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="625"/>
+        <location filename="../../src/transcode/transcode.cpp" line="627"/>
         <source>Failed to send frame!</source>
         <translation>Nem sikerült elküldeni a keretet!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="653"/>
+        <location filename="../../src/transcode/transcode.cpp" line="655"/>
         <source>Failed to receive packet!</source>
         <translation>Nem sikerült átvenni a csomagot!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="670"/>
+        <location filename="../../src/transcode/transcode.cpp" line="672"/>
         <source>Failed to write packet!</source>
         <translation>Sikertelen a csomag írása!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="694"/>
+        <location filename="../../src/transcode/transcode.cpp" line="696"/>
         <source>Successfully transcoded to: %1</source>
         <translation>Sikeresen átkódolt ide: %1</translation>
     </message>
     <message>
         <location filename="../../src/file/write.cpp" line="15"/>
         <location filename="../../src/remux/remux.cpp" line="36"/>
-        <location filename="../../src/transcode/transcode.cpp" line="159"/>
+        <location filename="../../src/transcode/transcode.cpp" line="161"/>
         <source>Failed to open output file at specified path!</source>
         <translation>Nem sikerült megnyitni kimeneti fájlt a megadott elérési útvonalon!</translation>
     </message>

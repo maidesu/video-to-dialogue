@@ -19,17 +19,26 @@
         <translation>Failed to create codec context!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="104"/>
+        <location filename="../../src/audio/audio.cpp" line="88"/>
+        <source>Failed to send packet!</source>
+        <translation>Failed to send packet!</translation>
+    </message>
+    <message>
+        <source>Failed to send frame!</source>
+        <translation type="obsolete">Failed to send frame!</translation>
+    </message>
+    <message>
+        <location filename="../../src/audio/audio.cpp" line="108"/>
         <source>Failed to receive frame!</source>
         <translation>Failed to receive frame!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="246"/>
+        <location filename="../../src/audio/audio.cpp" line="250"/>
         <source>Sample format was not detected!</source>
         <translation>Sample format was not detected!</translation>
     </message>
     <message>
-        <location filename="../../src/audio/audio.cpp" line="275"/>
+        <location filename="../../src/audio/audio.cpp" line="279"/>
         <source>Processed audio</source>
         <translation>Processed audio</translation>
     </message>
@@ -262,12 +271,12 @@
         <translation>Failed to create codec context!</translation>
     </message>
     <message>
-        <location filename="../../src/subtitle/subtitle.cpp" line="143"/>
+        <location filename="../../src/subtitle/subtitle.cpp" line="147"/>
         <source>Unsupported subtitles were found!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/subtitle/subtitle.cpp" line="150"/>
+        <location filename="../../src/subtitle/subtitle.cpp" line="154"/>
         <source>Processed subtitle</source>
         <translation>Processed subtitle</translation>
     </message>
@@ -545,7 +554,7 @@ Codec: %8</translation>
     </message>
     <message>
         <location filename="../../src/remux/remux.cpp" line="47"/>
-        <location filename="../../src/transcode/transcode.cpp" line="173"/>
+        <location filename="../../src/transcode/transcode.cpp" line="175"/>
         <source>Failed to write file header!</source>
         <translation></translation>
     </message>
@@ -556,7 +565,7 @@ Codec: %8</translation>
     </message>
     <message>
         <location filename="../../src/remux/remux.cpp" line="102"/>
-        <location filename="../../src/transcode/transcode.cpp" line="688"/>
+        <location filename="../../src/transcode/transcode.cpp" line="690"/>
         <source>Failed to write file trailer!</source>
         <translation>Failed to write file trailer!</translation>
     </message>
@@ -596,104 +605,104 @@ Codec: %8</translation>
         <translation>Failed to open decoder for stream!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="129"/>
+        <location filename="../../src/transcode/transcode.cpp" line="131"/>
         <source>Failed to open encoder for stream!</source>
         <translation>Failed to open encoder for stream!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="142"/>
+        <location filename="../../src/transcode/transcode.cpp" line="144"/>
         <source>Failed to copy encoder parameters to output stream!</source>
         <translation>Failed to copy encoder parameters to output stream!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="195"/>
+        <location filename="../../src/transcode/transcode.cpp" line="197"/>
         <source>Failed to allocate filter graph!</source>
         <translation>Failed to allocate filter graph!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="211"/>
+        <location filename="../../src/transcode/transcode.cpp" line="213"/>
         <source>Failed to find required filter!</source>
         <translation>Failed to find required filter!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="229"/>
+        <location filename="../../src/transcode/transcode.cpp" line="231"/>
         <source>Failed to allocate filter context!</source>
         <translation>Failed to allocate filter context!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="277"/>
+        <location filename="../../src/transcode/transcode.cpp" line="279"/>
         <source>Failed to initialize filter context!</source>
         <translation>Failed to initialize filter context!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="300"/>
+        <location filename="../../src/transcode/transcode.cpp" line="302"/>
         <source>Failed to connect filters!</source>
         <translation>Failed to connect filters!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="318"/>
+        <location filename="../../src/transcode/transcode.cpp" line="320"/>
         <source>Failed to configure filter graph!</source>
         <translation>Failed to configure filter graph!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="369"/>
+        <location filename="../../src/transcode/transcode.cpp" line="371"/>
         <source>Failed to initialize context!</source>
         <translation>Failed to initialize context!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="404"/>
+        <location filename="../../src/transcode/transcode.cpp" line="406"/>
         <source>Failed to seek!</source>
         <translation>Failed to seek!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="464"/>
+        <location filename="../../src/transcode/transcode.cpp" line="466"/>
         <source>Failed to send packet!</source>
         <translation>Failed to send packet!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="485"/>
+        <location filename="../../src/transcode/transcode.cpp" line="487"/>
         <source>Failed to receive frame!</source>
         <translation>Failed to receive frame!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="513"/>
+        <location filename="../../src/transcode/transcode.cpp" line="515"/>
         <source>Failed to resample frame!</source>
         <translation>Failed to resample frame!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="533"/>
+        <location filename="../../src/transcode/transcode.cpp" line="535"/>
         <source>Failed to send frame to filter!</source>
         <translation>Failed to send frame to filter!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="616"/>
+        <location filename="../../src/transcode/transcode.cpp" line="618"/>
         <source>Encoder bad argument!</source>
         <translation>Encoder bad argument!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="625"/>
+        <location filename="../../src/transcode/transcode.cpp" line="627"/>
         <source>Failed to send frame!</source>
         <translation>Failed to send frame!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="653"/>
+        <location filename="../../src/transcode/transcode.cpp" line="655"/>
         <source>Failed to receive packet!</source>
         <translation>Failed to receive packet!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="670"/>
+        <location filename="../../src/transcode/transcode.cpp" line="672"/>
         <source>Failed to write packet!</source>
         <translation>Failed to write packet!</translation>
     </message>
     <message>
-        <location filename="../../src/transcode/transcode.cpp" line="694"/>
+        <location filename="../../src/transcode/transcode.cpp" line="696"/>
         <source>Successfully transcoded to: %1</source>
         <translation>Successfully transcoded to: %1</translation>
     </message>
     <message>
         <location filename="../../src/file/write.cpp" line="15"/>
         <location filename="../../src/remux/remux.cpp" line="36"/>
-        <location filename="../../src/transcode/transcode.cpp" line="159"/>
+        <location filename="../../src/transcode/transcode.cpp" line="161"/>
         <source>Failed to open output file at specified path!</source>
         <translation>Failed to open output file at specified path!</translation>
     </message>
