@@ -85,8 +85,12 @@ start:
             ( res == AVERROR(EAGAIN) ||
               res < 0 ) )
         {
+            emit m_messenger.print(tr("Failed to send packet!"),
+                                   "Audio",
+                                   MessageLevel::Error);
+
             av_packet_unref(avpkt);
-            continue;
+            goto end;
         }
 
         do
