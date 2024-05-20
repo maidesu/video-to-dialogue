@@ -528,9 +528,8 @@ Codec: %8</translation>
 <context>
     <name>QTranslator</name>
     <message>
-        <location filename="../../src/application.cpp" line="233"/>
         <source>Running %1 - %2 %3 via Qt %4</source>
-        <translation>Running %1 - %2 %3 via Qt %4</translation>
+        <translation type="vanished">Running %1 - %2 %3 via Qt %4</translation>
     </message>
     <message>
         <location filename="../../src/file/read.cpp" line="15"/>
@@ -705,6 +704,11 @@ Codec: %8</translation>
         <location filename="../../src/transcode/transcode.cpp" line="161"/>
         <source>Failed to open output file at specified path!</source>
         <translation>Failed to open output file at specified path!</translation>
+    </message>
+    <message>
+        <location filename="../../src/application.cpp" line="233"/>
+        <source>Running %1 - %2 %3 via Qt %4 [commit: %5]</source>
+        <translation>Running %1 - %2 %3 via Qt %4 [commit: %5]</translation>
     </message>
 </context>
 </TS>

@@ -230,11 +230,12 @@ bool Application::run()
 {
     m_window.show();
 
-    emit m_applicationMessenger.print(QTranslator::tr("Running %1 - %2 %3 via Qt %4")
+    emit m_applicationMessenger.print(QTranslator::tr("Running %1 - %2 %3 via Qt %4 [commit: %5]")
                                             .arg(QGuiApplication::applicationDisplayName(),
                                                  QGuiApplication::applicationName(),
                                                  QGuiApplication::applicationVersion(),
-                                                 qVersion()),
+                                                 qVersion(),
+                                                 GIT_HASH),
                                       "Application",
                                       MessageLevel::Info);
 

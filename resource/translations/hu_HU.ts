@@ -528,9 +528,8 @@ Kodek: %8</translation>
 <context>
     <name>QTranslator</name>
     <message>
-        <location filename="../../src/application.cpp" line="233"/>
         <source>Running %1 - %2 %3 via Qt %4</source>
-        <translation>%1 - %2 %3 futtatása Qt %4 által</translation>
+        <translation type="vanished">%1 - %2 %3 futtatása Qt %4 által</translation>
     </message>
     <message>
         <location filename="../../src/file/read.cpp" line="15"/>
@@ -705,6 +704,11 @@ Kodek: %8</translation>
         <location filename="../../src/transcode/transcode.cpp" line="161"/>
         <source>Failed to open output file at specified path!</source>
         <translation>Nem sikerült megnyitni kimeneti fájlt a megadott elérési útvonalon!</translation>
+    </message>
+    <message>
+        <location filename="../../src/application.cpp" line="233"/>
+        <source>Running %1 - %2 %3 via Qt %4 [commit: %5]</source>
+        <translation>%1 - %2 %3 futtatása Qt %4 által [commit: %5]</translation>
     </message>
 </context>
 </TS>
