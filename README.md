@@ -7,6 +7,12 @@
 
 > [Download Qt](https://www.qt.io/download)
 
+> [Download Qt for Open Source](https://www.qt.io/download-open-source)
+
+### Required Qt components
+
+![Qt component requirements](docs/qt_component_requirements.png)
+
 ## 1. Source code
 
 ```sh
