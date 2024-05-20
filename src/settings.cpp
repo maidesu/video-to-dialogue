@@ -113,10 +113,10 @@ void Settings::settingsChangedHandler(int64_t usPaddingLeft,
     m_usMerge           = usMerge;
 
     m_settings->beginGroup("Subtitle");
-    m_settings->setValue("PaddingLeft", m_usPaddingLeft);
-    m_settings->setValue("PaddingRight", m_usPaddingRight);
-    m_settings->setValue("Offset", m_usOffset);
-    m_settings->setValue("Merge", m_usMerge);
+    m_settings->setValue("PaddingLeft", static_cast<qint64>(m_usPaddingLeft));
+    m_settings->setValue("PaddingRight", static_cast<qint64>(m_usPaddingRight));
+    m_settings->setValue("Offset", static_cast<qint64>(m_usOffset));
+    m_settings->setValue("Merge", static_cast<qint64>(m_usMerge));
     m_settings->endGroup();
 
     //m_settings->sync(); Normally unneeded - refer to docs
