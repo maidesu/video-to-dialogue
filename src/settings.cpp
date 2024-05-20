@@ -34,7 +34,7 @@ Settings::Settings(QObject *parent)
 
     // Ui language settings
     m_settings->beginGroup("UX");
-    m_uiLanguage = m_settings->value("Language", "en_US").toString();
+    m_uiLanguage = m_settings->value("Language", "hu_HU").toString();
     m_settings->setValue("Language", m_uiLanguage); // Write language setting asap
     m_settings->endGroup();
 
