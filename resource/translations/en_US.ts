@@ -159,7 +159,12 @@
         <translation>Failed to save frame image at specified location!</translation>
     </message>
     <message>
-        <location filename="../../src/filemanager.cpp" line="830"/>
+        <location filename="../../src/filemanager.cpp" line="750"/>
+        <source>This file contains no video!</source>
+        <translation>This file contains no video!</translation>
+    </message>
+    <message>
+        <location filename="../../src/filemanager.cpp" line="841"/>
         <source>Did not find corresponding extensions!</source>
         <translation>Did not find corresponding extensions!</translation>
     </message>
@@ -169,17 +174,17 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/filemanager.cpp" line="738"/>
+        <location filename="../../src/filemanager.cpp" line="742"/>
         <source>Found a total of %1 subtitle and %2 audio streams</source>
         <translation>Found a total of %1 subtitle and %2 audio streams</translation>
     </message>
     <message>
-        <location filename="../../src/filemanager.cpp" line="746"/>
+        <location filename="../../src/filemanager.cpp" line="764"/>
         <source>This file contains no subtitles!</source>
         <translation>This file contains no subtitles!</translation>
     </message>
     <message>
-        <location filename="../../src/filemanager.cpp" line="753"/>
+        <location filename="../../src/filemanager.cpp" line="757"/>
         <source>This file contains no audio!</source>
         <translation>This file contains no audio!</translation>
     </message>

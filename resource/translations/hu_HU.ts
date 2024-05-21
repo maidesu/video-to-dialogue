@@ -159,7 +159,12 @@
         <translation>Nem sikerült a képkockát menteni a megadott helyre!</translation>
     </message>
     <message>
-        <location filename="../../src/filemanager.cpp" line="830"/>
+        <location filename="../../src/filemanager.cpp" line="750"/>
+        <source>This file contains no video!</source>
+        <translation>Ez a fájl nem tartalmaz videót!</translation>
+    </message>
+    <message>
+        <location filename="../../src/filemanager.cpp" line="841"/>
         <source>Did not find corresponding extensions!</source>
         <translation>Nem található hozzátartozó kiterjesztés!</translation>
     </message>
@@ -169,17 +174,17 @@
         <translation>Fájl Exportálás</translation>
     </message>
     <message>
-        <location filename="../../src/filemanager.cpp" line="738"/>
+        <location filename="../../src/filemanager.cpp" line="742"/>
         <source>Found a total of %1 subtitle and %2 audio streams</source>
         <translation>Talált %1 felirat és %2 hang adatfolyamot</translation>
     </message>
     <message>
-        <location filename="../../src/filemanager.cpp" line="746"/>
+        <location filename="../../src/filemanager.cpp" line="764"/>
         <source>This file contains no subtitles!</source>
         <translation>Ez a fájl nem tartalmaz feliratot!</translation>
     </message>
     <message>
-        <location filename="../../src/filemanager.cpp" line="753"/>
+        <location filename="../../src/filemanager.cpp" line="757"/>
         <source>This file contains no audio!</source>
         <translation>Ez a fájl nem tartalmaz hangot!</translation>
     </message>
