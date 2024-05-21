@@ -745,9 +745,9 @@ bool FileManager::getFileInfo()
                            "FileManager",
                            MessageLevel::Info);
 
-    if (m_subStreams.count() < 1)
+    if (m_selectedVideoIndex == -1)
     {
-        emit m_messenger.print(tr("This file contains no subtitles!"),
+        emit m_messenger.print(tr("This file contains no video!"),
                                "FileManager",
                                MessageLevel::Warning);
     }
@@ -755,6 +755,13 @@ bool FileManager::getFileInfo()
     if (m_audioStreams.count() < 1)
     {
         emit m_messenger.print(tr("This file contains no audio!"),
+                               "FileManager",
+                               MessageLevel::Warning);
+    }
+
+    if (m_subStreams.count() < 1)
+    {
+        emit m_messenger.print(tr("This file contains no subtitles!"),
                                "FileManager",
                                MessageLevel::Warning);
     }
