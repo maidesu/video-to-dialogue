@@ -670,7 +670,11 @@ bool FileManager::getFileInfo()
                 break;
 
             case AVMEDIA_TYPE_VIDEO:
-                m_selectedVideoIndex = i;
+                if (m_selectedVideoIndex == -1)
+                {
+                    m_selectedVideoIndex = i;
+                }
+
                 break;
 
             case AVMEDIA_TYPE_AUDIO:
