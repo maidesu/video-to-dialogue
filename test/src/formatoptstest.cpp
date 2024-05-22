@@ -50,7 +50,7 @@ void FormatOptionsTest::testLossyOptions_data()
 
     QTest::newRow("mp3") << "mp3" << 5;
     QTest::newRow("aac") << "aac" << 13;
-    QTest::newRow("opus") << "opus" << 1;
+    QTest::newRow("opus") << "opus" << 13;
 }
 
 
