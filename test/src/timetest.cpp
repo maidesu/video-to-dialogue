@@ -34,7 +34,7 @@ void TimeTest::cleanup()
 
 void TimeTest::testMsToStr()
 {
-    QFETCH(int64_t, input_ms);
+    QFETCH(qint64, input_ms);
     QFETCH(QString, expected_str);
 
     QCOMPARE(Time::millisecondsToStringTime(input_ms), expected_str);
@@ -42,7 +42,7 @@ void TimeTest::testMsToStr()
 
 void TimeTest::testMsToStr_data()
 {
-    QTest::addColumn<int64_t>("input_ms");
+    QTest::addColumn<qint64>("input_ms");
     QTest::addColumn<QString>("expected_str");
 
     QTest::newRow("zero") << 0LL << "00:00:00.000";
@@ -55,7 +55,7 @@ void TimeTest::testMsToStr_data()
 void TimeTest::testStrToMs()
 {
     QFETCH(QString, input_str);
-    QFETCH(int64_t, expected_ms);
+    QFETCH(qint64, expected_ms);
 
     QCOMPARE(Time::stringTimeToMilliseconds(input_str), expected_ms);
 }
@@ -63,7 +63,7 @@ void TimeTest::testStrToMs()
 void TimeTest::testStrToMs_data()
 {
     QTest::addColumn<QString>("input_str");
-    QTest::addColumn<int64_t>("expected_ms");
+    QTest::addColumn<qint64>("expected_ms");
 
     QTest::newRow("zero") << "00:00:00.000" << 0LL;
     QTest::newRow("positive") << "12:34:56.789" << 45296789LL;
