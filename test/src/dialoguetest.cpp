@@ -66,10 +66,10 @@ void ProcessDialogueTest::cleanup()
 
 void ProcessDialogueTest::testProcessDialogue()
 {
-    QFETCH(int64_t, left_margin);
-    QFETCH(int64_t, right_margin);
-    QFETCH(int64_t, offset);
-    QFETCH(int64_t, minimum_gap);
+    QFETCH(qint64, left_margin);
+    QFETCH(qint64, right_margin);
+    QFETCH(qint64, offset);
+    QFETCH(qint64, minimum_gap);
 
     QFETCH(QList<Interval>, expected_dialogue);
     QFETCH(QList<Interval>, expected_subtitle);
@@ -117,10 +117,10 @@ void ProcessDialogueTest::testProcessDialogue()
 
 void ProcessDialogueTest::testProcessDialogue_data()
 {
-    QTest::addColumn<int64_t>("left_margin");
-    QTest::addColumn<int64_t>("right_margin");
-    QTest::addColumn<int64_t>("offset");
-    QTest::addColumn<int64_t>("minimum_gap");
+    QTest::addColumn<qint64>("left_margin");
+    QTest::addColumn<qint64>("right_margin");
+    QTest::addColumn<qint64>("offset");
+    QTest::addColumn<qint64>("minimum_gap");
 
     QTest::addColumn<QList<Interval>>("expected_dialogue");
     QTest::addColumn<QList<Interval>>("expected_subtitle");
@@ -419,10 +419,10 @@ void ProcessDialogueTest::testProcessDialogue_data()
 
 void ProcessDialogueTest::testClearDialogue()
 {
-    QFETCH(int64_t, left_margin);
-    QFETCH(int64_t, right_margin);
-    QFETCH(int64_t, offset);
-    QFETCH(int64_t, minimum_gap);
+    QFETCH(qint64, left_margin);
+    QFETCH(qint64, right_margin);
+    QFETCH(qint64, offset);
+    QFETCH(qint64, minimum_gap);
 
     m_testDialogue->processDialogueHandler(*m_testSubs,
                                            left_margin,
@@ -467,10 +467,10 @@ void ProcessDialogueTest::testClearDialogue()
 
 void ProcessDialogueTest::testClearDialogue_data()
 {
-    QTest::addColumn<int64_t>("left_margin");
-    QTest::addColumn<int64_t>("right_margin");
-    QTest::addColumn<int64_t>("offset");
-    QTest::addColumn<int64_t>("minimum_gap");
+    QTest::addColumn<qint64>("left_margin");
+    QTest::addColumn<qint64>("right_margin");
+    QTest::addColumn<qint64>("offset");
+    QTest::addColumn<qint64>("minimum_gap");
 
     QTest::newRow("zero_setting") << 0LL << 0LL << 0LL << 1000LL;
     QTest::newRow("randomized_setting") << 543LL << -234LL << -98765LL << 1010LL;
