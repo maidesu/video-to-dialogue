@@ -35,8 +35,19 @@ QMap<QString, QList<Option>> lossyOptions()
                     { AV_CODEC_ID_AAC, "b", "448000" },
                     { AV_CODEC_ID_AAC, "b", "512000" } };
 
-    // no options
-    map["opus"] = { { AV_CODEC_ID_OPUS, "", "" } };
+    map["opus"] = { { AV_CODEC_ID_OPUS, "b", "32000" },
+                    { AV_CODEC_ID_OPUS, "b", "48000" },
+                    { AV_CODEC_ID_OPUS, "b", "64000" },
+                    { AV_CODEC_ID_OPUS, "b", "96000" },
+                    { AV_CODEC_ID_OPUS, "b", "128000" },
+                    { AV_CODEC_ID_OPUS, "b", "160000" },
+                    { AV_CODEC_ID_OPUS, "b", "192000" },
+                    { AV_CODEC_ID_OPUS, "b", "224000" },
+                    { AV_CODEC_ID_OPUS, "b", "256000" },
+                    { AV_CODEC_ID_OPUS, "b", "320000" },
+                    { AV_CODEC_ID_OPUS, "b", "384000" },
+                    { AV_CODEC_ID_OPUS, "b", "448000" },
+                    { AV_CODEC_ID_OPUS, "b", "510000" } };
 
     return map;
 }
