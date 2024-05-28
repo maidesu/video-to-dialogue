@@ -210,7 +210,7 @@ void WindowTest::testOpenFile_data()
     QTest::addColumn<bool>("valid");
 
     QTest::newRow("bad_file") << "not-a-media-file.txt" << false;
-    QTest::newRow("good_file") << "My Soul, Your Beats! ~GiDeMo Version~.mp3" << true;
+    QTest::newRow("good_file") << "left-square_right-sine.wav" << true;
 }
 
 } // namespace DialogueTest
