@@ -113,7 +113,7 @@ start:
             }
 
 
-            AVSampleFormat sample_fmt = av_get_packed_sample_fmt(avctx->sample_fmt);
+            const AVSampleFormat sample_fmt = avctx->sample_fmt;
 
             switch (sample_fmt)
             {
