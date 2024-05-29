@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 
     QGuiApplication::setApplicationName("Video to Dialogue");
     QGuiApplication::setApplicationDisplayName("V₂D");
-    QGuiApplication::setApplicationVersion("1.1.1");
+    QGuiApplication::setApplicationVersion("1.1.2");
 
     QGuiApplication::setWindowIcon(QIcon(":/icon.ico"));
 
