@@ -7,7 +7,7 @@ QT -= gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += qt warn_on depend_includepath testcase
-CONFIG += c++17
+CONFIG += c++20
 
 DEFINES += GIT_HASH="\\\"$$system(git -C \""$$_PRO_FILE_PWD_"\" rev-parse --short HEAD)\\\""
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_DEPRECATED_WARNINGS
