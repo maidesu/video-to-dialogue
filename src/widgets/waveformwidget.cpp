@@ -1,6 +1,7 @@
 #include <widgets/waveformwidget.hpp>
 
 #include <QtMath>
+#include <QDebug>
 
 namespace DialogueFromVideo {
 
@@ -93,30 +94,50 @@ void WaveformWidget::initialize(int sampleCount, int sampleRate)
     m_sampleCount = sampleCount;
 }
 
-void WaveformWidget::plotWaveform(const QVector<double>& samples)
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
+
+void __attribute__((optimize("O0"))) WaveformWidget::plotWaveform(const QVector<double>& samples)
 {
+    m_series->clear();
+
+    QVector<QPointF> buff {};
+
     if (m_sampleCount < m_target)
     {
         return;
     }
 
-    QVector<QPointF> buff;
-
-    buff.reserve(m_target);
-
-    int divisor = m_sampleCount / m_target;
-
-    for (int j = 1, i = 0; i < samples.size(); ++i)
+    buff.resize(m_target);
+    for (qsizetype i = 0; i < buff.size(); ++i)
     {
-        if (i % divisor == 0)
+        buff[i] = {0,0};
+    }
+
+    qsizetype divisor = m_sampleCount / m_target;
+
+    volatile qreal eps = 1e-6;
+
+    for (qsizetype i = 0, j = 0; i < samples.size(); ++i)
+    {
+        if (i % divisor == 0 && j < m_target)
         {
-            buff.append(QPointF(j++, samples[i])); // Cherry picking
+            QPointF point;
+            point.setX(static_cast<qreal>(j+1));
+            point.setY(static_cast<qreal>(samples[i]));
+
+            buff[j] = QPointF{point}; // Cherry picking
+
+            assert(qFabs(point.y() - static_cast<qreal>(samples[i])) < eps);
+            assert(qFabs(buff[j].y() - static_cast<qreal>(samples[i])) < eps);
+
+            ++j;
         }
     }
 
     // Abs max
     qreal max = 0;
-    for (QPointF pt : buff)
+    for (const QPointF pt : buff)
     {
         qreal val = qFabs(pt.y());
 
@@ -130,6 +151,8 @@ void WaveformWidget::plotWaveform(const QVector<double>& samples)
 
     m_series->replace(buff);
 }
+
+#pragma GCC pop_options
 
 void WaveformWidget::drawIntervals(const QList<Interval>& dialogue,
                                    const QList<Interval>& subtitle,

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <common/subtitlestructs.hpp>
+#include <common/messenger.hpp>
 
 #include <QLineSeries>
 #include <QAreaSeries>
@@ -41,6 +42,8 @@ public:
 private:
     int m_sampleRate;
     int m_sampleCount;
+
+    Messenger m_messenger;
 
     QLineSeries* m_series;
 
